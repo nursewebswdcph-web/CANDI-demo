@@ -1,0 +1,289 @@
+/* ==========================================================================
+   CANDI AI Assistant Stylesheet - IPD Nurse Workbench
+   ========================================================================== */
+
+/* Toggle Chat Panel Visibility with animations */
+#candi-chat-panel {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+
+#candi-chat-panel.active {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important;
+}
+
+/* User Message styling */
+.candi-msg-user {
+    background-color: #00a896;
+    color: white;
+    border-radius: 1rem 1rem 0 1rem;
+    box-shadow: 0 4px 12px rgba(0, 168, 150, 0.15);
+}
+
+/* Assistant Message styling */
+.candi-msg-assistant {
+    background-color: white;
+    color: #1e293b;
+    border-radius: 1rem 1rem 1rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* Custom scrollbar for message list container */
+#candi-messages::-webkit-scrollbar {
+    width: 5px;
+}
+#candi-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+#candi-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+#candi-messages::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Entry bounce and fade animations */
+.candi-bounce-in {
+    animation: candiBounceIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes candiBounceIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.candi-fade-in {
+    animation: candiFadeIn 0.25s ease-out forwards;
+}
+
+@keyframes candiFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Quick Action Chips styles */
+.candi-chip {
+    transition: all 0.2s ease;
+    user-select: none;
+}
+.candi-chip:hover {
+    box-shadow: 0 4px 8px -2px rgba(0, 168, 150, 0.15);
+}
+
+/* Quick Action Chips show/hide toggle */
+#candi-quick-chips-icon {
+    transition: transform 0.25s ease;
+}
+#candi-quick-chips-icon.rotate-180 {
+    transform: rotate(-90deg);
+}
+#candi-quick-chips-body {
+    max-height: 6rem;
+}
+#candi-quick-chips-body.hidden {
+    display: none;
+}
+
+/* Action button for Copy to SOIE Form inside Chat Bubbles */
+.candi-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #ecfdf5;
+    border: 1px dashed #10b981;
+    color: #047857;
+    font-weight: 700;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.candi-action-btn:hover {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-style: solid;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
+}
+
+.candi-action-btn:active {
+    transform: scale(0.95);
+}
+
+/* Formatting support inside message markdown/text */
+.candi-msg-content {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* System notice text styling */
+.candi-system-msg {
+    font-size: 10px;
+    color: #94a3b8;
+    text-align: center;
+    margin: 8px 0;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   AI-First Clinical Workbench Enhancements
+   ========================================================================== */
+
+/* Glassmorphism Styles */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+html.dark .glass-panel {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+/* Docking Styles */
+body.candi-docked-active {
+    padding-right: 440px;
+    transition: padding-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 1023px) {
+    body.candi-docked-active {
+        padding-right: 0;
+    }
+}
+
+#candi-chat-panel.docked {
+    position: fixed !important;
+    top: 56px !important; /* height of sticky header */
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 440px !important;
+    height: calc(100vh - 56px) !important;
+    max-height: none !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05) !important;
+    border-left: 1px solid rgba(226, 232, 240, 0.8) !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    transform: none !important;
+    /* z-index สูงพอที่จะอยู่เหนือหน้าเวชระเบียนผู้ป่วยแบบเต็มจอ (viewMode==='chart'
+       ใช้ z-index: 5000) ไม่เช่นนั้นเมื่อปักหมุดแล้วเปิดดูชาร์ตผู้ป่วย แผงแชทจะถูก
+       บังอยู่ข้างหลัง แต่ยังต่ำกว่า modal ยืนยันการทำงานต่างๆ ในหน้าชาร์ต (เช่น
+       ย้ายเตียง/จำหน่ายผู้ป่วย ซึ่งใช้ z-index ตั้งแต่ 12000 ขึ้นไป) เพื่อให้ modal
+       เหล่านั้นยังคงแสดงทับแผงแชทได้ตามปกติ ส่วน top nav (z-index: 1000) ไม่ได้
+       ทับซ้อนกับแผงแชทที่ปักหมุดอยู่แล้วในเชิงตำแหน่ง (แผงเริ่มที่ top: 56px ใต้ nav)
+       จึงไม่จำเป็นต้องมี z-index ต่ำกว่า nav อีกต่อไป */
+    z-index: 5500 !important;
+}
+
+html.dark #candi-chat-panel.docked {
+    border-left: 1px solid rgba(51, 65, 85, 0.8) !important;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Dark Mode Scrollbars */
+html.dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* Glass Header styles */
+.sticky-glass-header {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+html.dark .sticky-glass-header {
+    background: rgba(15, 23, 42, 0.85);
+    border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+/* Dark Mode Overrides for Main Container Elements */
+html.dark .bg-white {
+    background-color: #1e293b !important;
+}
+html.dark .text-slate-800 {
+    color: #f1f5f9 !important;
+}
+html.dark .text-slate-700 {
+    color: #cbd5e1 !important;
+}
+html.dark .text-slate-600 {
+    color: #94a3b8 !important;
+}
+html.dark .border-slate-200 {
+    border-color: #334155 !important;
+}
+html.dark .border-slate-100 {
+    border-color: #1e293b !important;
+}
+html.dark .bg-slate-50 {
+    background-color: #0f172a !important;
+}
+html.dark .bg-slate-100 {
+    background-color: #1e293b !important;
+}
+html.dark #candi-chat-panel {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+html.dark #candi-messages {
+    background-color: #0f172a !important;
+}
+html.dark .candi-msg-assistant {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+html.dark #candi-quick-chips {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+html.dark #candi-quick-chips-body {
+    background-color: #1e293b !important;
+}
+html.dark .candi-chip {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}
+html.dark .candi-chip:hover {
+    background-color: #1e293b !important;
+    border-color: #00a896 !important;
+    color: #00f5d4 !important;
+}
+html.dark #candi-input-form {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+html.dark #candi-input {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+html.dark #candi-input:focus {
+    border-color: #00a896 !important;
+    background-color: #1e293b !important;
+}
