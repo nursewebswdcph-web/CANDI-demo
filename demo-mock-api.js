@@ -23,6 +23,11 @@
     const STORAGE_KEY = 'candi_demo_db_v1';
     const NETWORK_DELAY_MS = 220; // หน่วงเล็กน้อยให้รู้สึกเหมือนมีการโหลดข้อมูลจริง
 
+    // ให้คำถามของผู้ช่วย AI (CANDI) "หลุด" ออกไปเรียกเซิร์ฟเวอร์ AI จริง (ต้องมีเน็ตที่บูธ)
+    // ส่วนข้อมูลผู้ป่วย/บันทึกต่างๆ ยังคงเป็นข้อมูลจำลองทั้งหมดเหมือนเดิม ไม่เกี่ยวข้องกัน
+    // -> ตั้งเป็น false ได้ถ้าต้องการปิด CANDI กลับไปใช้ข้อความสำรองเหมือนเดิม
+    const ALLOW_REAL_CANDI_CHAT = true;
+
     // ==========================================================================
     // 1. ข้อมูลผู้ป่วยจำลอง (หลากหลายเคสให้ผู้เข้าชมทดลองใช้งาน)
     // ==========================================================================
@@ -370,6 +375,22 @@
 
         if (!isApiCall) {
             return originalFetch(input, init);
+        }
+
+        // ---- ตรวจว่าเป็นคำถาม CANDI AI หรือไม่ (ไม่มี action, มี question) ----
+        // ถ้าใช่ และเปิด ALLOW_REAL_CANDI_CHAT ไว้ ให้ปล่อยผ่านไปเซิร์ฟเวอร์ AI จริง
+        if (ALLOW_REAL_CANDI_CHAT && init && init.method === 'POST' && init.body) {
+            let maybeChatBody = null;
+            try { maybeChatBody = JSON.parse(init.body); } catch (e) { /* not JSON */ }
+            const isCandiChat = maybeChatBody && !maybeChatBody.action && typeof maybeChatBody.question === 'string';
+            if (isCandiChat) {
+                return originalFetch(input, init).catch((err) => {
+                    console.warn('[Demo Mock API] CANDI real call failed, ใช้ข้อความสำรองแทน', err);
+                    return new Response(JSON.stringify({
+                        reply: 'ขณะนี้เชื่อมต่อผู้ช่วย AI (CANDI) ไม่ได้ (อาจไม่มีสัญญาณอินเทอร์เน็ตที่บูธ) กรุณาลองใหม่อีกครั้ง หรือแจ้งเจ้าหน้าที่ประจำบูธค่ะ'
+                    }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+                });
+            }
         }
 
         return new Promise((resolve) => {
