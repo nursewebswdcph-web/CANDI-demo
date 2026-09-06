@@ -1226,101 +1226,254 @@
         </div>
 
         <div x-show="viewMode === 'chart'" class="fixed inset-0 z-[5000] bg-slate-100 flex flex-col" x-cloak>
-            <header class="h-28 bg-white border-b border-slate-200 px-8 flex items-center justify-between shadow-sm shrink-0 no-print">
-                <div class="flex items-center gap-6">
-                    <div class="bg-indigo-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg shadow-indigo-100">
-                        <i class="fa-solid fa-user-injured"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-black text-slate-800 leading-tight" x-text="selectedPatient?.name"></h1>
-                        <div class="flex gap-4 text-xs text-slate-400 font-bold mt-1 uppercase tracking-widest">
-                            <span x-text="'HN: ' + selectedPatient?.hn"></span>
-                            <span x-text="'AN: ' + selectedPatient?.an"></span>
-                            <span class="text-indigo-600" x-text="'แพทย์: ' + selectedPatient?.doctor"></span>
+            <header class="bg-white border-b border-slate-200 shadow-sm shrink-0 no-print" style="position:sticky;top:0;z-index:100;">
+                <div class="px-5 py-3 flex items-center justify-between gap-4">
+
+                    <!-- Left: Patient Info & Scores (Single Row) -->
+                    <div class="flex items-center gap-4 min-w-0 flex-1">
+                        <!-- Patient Icon -->
+                        <div class="bg-indigo-600 text-white w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow shrink-0">
+                            <i class="fa-solid fa-user-injured"></i>
+                        </div>
+
+                        <!-- Details -->
+                        <div class="min-w-0 flex flex-col justify-center gap-1">
+                            <!-- Name and Scores Row -->
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                                <h1 class="text-2xl font-black text-slate-800 leading-none truncate" x-text="selectedPatient?.name"></h1>
+
+                                <div class="w-px h-5 bg-slate-300 hidden sm:block"></div>
+
+                                <!-- CC / Dx -->
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-[10px] font-black text-rose-400 uppercase tracking-wide">CC:</span>
+                                        <span class="text-xs font-semibold text-slate-600 max-w-[120px] truncate" title="Chief Complaint" x-text="selectedPatient?.cc || selectedPatient?.CC || '—'"></span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-[10px] font-black text-sky-500 uppercase tracking-wide">Dx:</span>
+                                        <span class="text-xs font-semibold text-slate-600 max-w-[150px] truncate" title="Diagnosis" x-text="selectedPatient?.dx || selectedPatient?.DX || '—'"></span>
+                                    </div>
+                                </div>
+
+                                <div class="w-px h-5 bg-slate-300 hidden md:block"></div>
+
+                                <!-- Score badges (Clickable) -->
+                                <div class="flex items-center gap-2">
+                                    <!-- Classification score -->
+                                    <template x-if="selectedPatient?.latestClass || selectedPatient?.latestClassPed">
+                                        <div class="flex items-center gap-1 bg-indigo-50 border border-indigo-100 rounded-lg px-2 py-0.5">
+                                            <i class="fa-solid fa-layer-group text-[9px] text-indigo-400"></i>
+                                            <span class="text-[9px] font-black text-indigo-400 uppercase tracking-wide">Class</span>
+                                            <span class="text-sm font-black text-indigo-700"
+                                                x-text="isAdult
+                                                    ? (selectedPatient?.latestClass?.category ?? '—')
+                                                    : (selectedPatient?.latestClassPed?.classType ?? '—')"></span>
+                                        </div>
+                                    </template>
+
+                                    <!-- Braden score -->
+                                    <template x-if="selectedPatient?.latestBraden">
+                                        <button @click.stop="openGuidelineModal('braden', selectedPatient)"
+                                            class="flex items-center gap-1 rounded-lg px-2 py-0.5 border cursor-pointer hover:scale-105 transition-transform"
+                                            title="ดูแนวปฏิบัติ Braden"
+                                            :class="parseInt(selectedPatient.latestBraden) <= 12
+                                                ? 'bg-red-50 border-red-200 hover:bg-red-100'
+                                                : parseInt(selectedPatient.latestBraden) <= 16
+                                                    ? 'bg-amber-50 border-amber-200 hover:bg-amber-100'
+                                                    : 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100'">
+                                            <i class="fa-solid fa-bed-pulse text-[9px]"
+                                                :class="parseInt(selectedPatient.latestBraden) <= 12
+                                                    ? 'text-red-400'
+                                                    : parseInt(selectedPatient.latestBraden) <= 16
+                                                        ? 'text-amber-400'
+                                                        : 'text-emerald-400'"></i>
+                                            <span class="text-[9px] font-black uppercase tracking-wide"
+                                                :class="parseInt(selectedPatient.latestBraden) <= 12
+                                                    ? 'text-red-400'
+                                                    : parseInt(selectedPatient.latestBraden) <= 16
+                                                        ? 'text-amber-400'
+                                                        : 'text-emerald-400'">Braden</span>
+                                            <span class="text-sm font-black"
+                                                :class="parseInt(selectedPatient.latestBraden) <= 12
+                                                    ? 'text-red-700'
+                                                    : parseInt(selectedPatient.latestBraden) <= 16
+                                                        ? 'text-amber-700'
+                                                        : 'text-emerald-700'"
+                                                x-text="selectedPatient.latestBraden"></span>
+                                        </button>
+                                    </template>
+
+                                    <!-- Morse score -->
+                                    <template x-if="selectedPatient?.latestMorse">
+                                        <button @click.stop="openGuidelineModal('morse', selectedPatient)"
+                                            class="flex items-center gap-1 rounded-lg px-2 py-0.5 border cursor-pointer hover:scale-105 transition-transform"
+                                            title="ดูแนวปฏิบัติ Morse"
+                                            :class="parseInt(selectedPatient.latestMorse) >= 45
+                                                ? 'bg-red-50 border-red-200 hover:bg-red-100'
+                                                : parseInt(selectedPatient.latestMorse) >= 25
+                                                    ? 'bg-amber-50 border-amber-200 hover:bg-amber-100'
+                                                    : 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100'">
+                                            <i class="fa-solid fa-person-falling text-[9px]"
+                                                :class="parseInt(selectedPatient.latestMorse) >= 45
+                                                    ? 'text-red-400'
+                                                    : parseInt(selectedPatient.latestMorse) >= 25
+                                                        ? 'text-amber-400'
+                                                        : 'text-emerald-400'"></i>
+                                            <span class="text-[9px] font-black uppercase tracking-wide"
+                                                :class="parseInt(selectedPatient.latestMorse) >= 45
+                                                    ? 'text-red-400'
+                                                    : parseInt(selectedPatient.latestMorse) >= 25
+                                                        ? 'text-amber-400'
+                                                        : 'text-emerald-400'">Morse</span>
+                                            <span class="text-sm font-black"
+                                                :class="parseInt(selectedPatient.latestMorse) >= 45
+                                                    ? 'text-red-700'
+                                                    : parseInt(selectedPatient.latestMorse) >= 25
+                                                        ? 'text-amber-700'
+                                                        : 'text-emerald-700'"
+                                                x-text="selectedPatient.latestMorse"></span>
+                                        </button>
+                                    </template>
+
+                                    <!-- MAAS score -->
+                                    <template x-if="selectedPatient?.latestMaas">
+                                        <button @click.stop="openGuidelineModal('maas', selectedPatient)"
+                                            class="flex items-center gap-1 bg-purple-50 border border-purple-100 hover:bg-purple-100 rounded-lg px-2 py-0.5 cursor-pointer hover:scale-105 transition-transform"
+                                            title="ดูแนวปฏิบัติ MAAS">
+                                            <i class="fa-solid fa-brain text-[9px] text-purple-400"></i>
+                                            <span class="text-[9px] font-black text-purple-400 uppercase tracking-wide">MAAS</span>
+                                            <span class="text-sm font-black text-purple-700" x-text="selectedPatient.latestMaas"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Sub Info Row -->
+                            <div class="flex gap-4 text-[11px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                                <span x-text="'HN: ' + (selectedPatient?.hn || '-')"></span>
+                                <span x-text="'AN: ' + (selectedPatient?.an || '-')"></span>
+                                <span x-text="'อายุ: ' + (selectedPatient?.ageDisplay || selectedPatient?.age || '-')"></span>
+                                <span class="text-indigo-500" x-text="'แพทย์: ' + (selectedPatient?.doctor || '-')"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex items-center gap-8">
-                    <div class="bg-emerald-50 border-2 border-emerald-200 px-8 py-2 rounded-2xl text-center shadow-inner">
-                        <span class="block text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-0.5">Bed</span>
-                        <span class="text-4xl font-black text-emerald-700" x-text="selectedPatient?.bed"></span>
+
+                    <!-- Right: Bed & Close Button -->
+                    <div class="flex items-center gap-3 shrink-0 ml-4">
+                        <div class="bg-emerald-50 border-2 border-emerald-200 px-4 py-1.5 rounded-xl text-center">
+                            <span class="block text-[9px] font-black text-emerald-400 uppercase tracking-widest">Bed</span>
+                            <span class="text-2xl font-black text-emerald-700 leading-none" x-text="selectedPatient?.bed"></span>
+                        </div>
+                        <button @click="viewMode = 'list'" title="กลับรายชื่อผู้ป่วย"
+                            class="w-11 h-11 rounded-xl flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all">
+                            <i class="fa-solid fa-circle-xmark text-3xl"></i>
+                        </button>
                     </div>
-                    <button @click="viewMode = 'list'" class="text-slate-300 hover:text-red-500 transition-colors ml-4">
-                        <i class="fa-solid fa-circle-xmark text-4xl"></i>
-                    </button>
+
                 </div>
             </header>
 
             <div class="flex flex-1 overflow-hidden">
-                <aside 
-                    :class="isSidebarCollapsed ? 'w-20' : 'w-96'" 
-                    class="border-r border-slate-200 bg-white transition-all duration-300 ease-in-out flex flex-col relative z-50 no-print"
+                <!-- ===== SIDEBAR (compact, sticky, full-height) ===== -->
+                <aside
+                    :class="isSidebarCollapsed ? 'w-16' : 'w-72'"
+                    class="border-r border-slate-200 bg-white transition-all duration-300 ease-in-out flex flex-col relative z-50 no-print h-full overflow-hidden"
                     @click.away="showAddDocumentDropdown = false">
-                    
-                    <div class="p-4 flex justify-center border-b border-slate-50">
-                        <button @click="isSidebarCollapsed = !isSidebarCollapsed" 
-                                class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 transition-all shadow-sm border border-slate-100">
-                            <i class="fa-solid" :class="isSidebarCollapsed ? 'fa-indent' : 'fa-outdent'"></i>
+
+                    <!-- Toggle button -->
+                    <div class="flex justify-center py-2 border-b border-slate-100 shrink-0">
+                        <button @click="isSidebarCollapsed = !isSidebarCollapsed"
+                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 transition-all">
+                            <i class="fa-solid text-sm" :class="isSidebarCollapsed ? 'fa-indent' : 'fa-outdent'"></i>
                         </button>
                     </div>
-                
-                    <div class="flex-1 overflow-y-auto p-3 space-y-2">
-                        <div x-show="!isSidebarCollapsed" class="sticky top-0 z-20 bg-white px-3 pt-2 pb-4 mb-4 border-b border-slate-100 space-y-4" x-transition>
-                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Nursing Forms</h4>
-                        </div>
 
-                        <div x-show="!isSidebarCollapsed" class="sticky top-10 z-20 bg-white pb-4 mb-4" x-transition>
-                            <div class="relative">
-                                <button @click="showAddDocumentDropdown = !showAddDocumentDropdown" class="w-full px-4 py-3 bg-white border border-slate-300 text-slate-700 rounded-2xl font-bold shadow-sm hover:bg-slate-50 transition flex items-center justify-center gap-2 text-sm">
-                                    <i class="fa-solid fa-square-plus text-emerald-600"></i>
-                                    <span>เพิ่มรายการเอกสาร</span>
-                                    <i class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
-                                </button>
-                                <div x-show="showAddDocumentDropdown" style="display: none;" class="absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 shadow-2xl rounded-2xl overflow-hidden" x-transition>
-                                    <div class="bg-slate-50 px-4 py-3 border-b border-slate-200">
-                                        <div class="font-bold text-slate-700">เอกสารเพิ่มเติม</div>
-                                        <div class="text-xs text-slate-500 mt-1">แสดงเฉพาะรายการที่ยังไม่ได้เพิ่มเข้ามา</div>
-                                    </div>
-                                    <div class="p-2 max-h-[50vh] overflow-y-auto space-y-1">
-                                        <template x-if="addableExtraForms.length === 0">
-                                            <div class="px-3 py-4 text-sm text-slate-500 text-center">ไม่มีรายการเอกสารเพิ่มเติมคงเหลือ</div>
-                                        </template>
-                                        <template x-for="opt in addableExtraForms" :key="opt.id">
-                                            <button @click="addForm(opt); showAddDocumentDropdown = false; selectForm(opt)" class="w-full text-left px-3 py-3 rounded-xl hover:bg-emerald-50 border border-transparent hover:border-emerald-200 transition">
-                                                <div class="font-bold text-slate-700" x-text="opt.title"></div>
-                                                <div class="text-xs text-slate-500 mt-1">เพิ่มเอกสารเข้ารายการและเปิดฟอร์มทันที</div>
-                                            </button>
-                                        </template>
-                                    </div>
-                                </div>
+                    <!-- Add document button -->
+                    <div x-show="!isSidebarCollapsed" class="px-3 pt-3 pb-2 shrink-0 relative" x-transition>
+                        <button @click="showAddDocumentDropdown = !showAddDocumentDropdown"
+                                class="w-full px-3 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition flex items-center justify-center gap-1.5 text-sm shadow-sm">
+                            <i class="fa-solid fa-square-plus text-emerald-500"></i>
+                            <span>เพิ่มเอกสาร</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-slate-400 ml-auto"></i>
+                        </button>
+                        <!-- Dropdown -->
+                        <div x-show="showAddDocumentDropdown" style="display:none;"
+                             class="absolute left-3 right-3 top-full mt-1 bg-white border border-slate-200 shadow-2xl rounded-xl overflow-hidden z-50" x-transition>
+                            <div class="bg-slate-50 px-3 py-2 border-b border-slate-200">
+                                <div class="font-bold text-slate-700 text-xs">เอกสารเพิ่มเติม</div>
+                                <div class="text-[10px] text-slate-400 mt-0.5">ที่ยังไม่ได้เพิ่มเข้ามา</div>
+                            </div>
+                            <div class="p-1.5 max-h-[40vh] overflow-y-auto space-y-0.5">
+                                <template x-if="addableExtraForms.length === 0">
+                                    <div class="px-3 py-3 text-xs text-slate-400 text-center">ไม่มีรายการเอกสารเพิ่มเติม</div>
+                                </template>
+                                <template x-for="opt in addableExtraForms" :key="opt.id">
+                                    <button @click="addForm(opt); showAddDocumentDropdown = false; selectForm(opt)"
+                                            class="w-full text-left px-3 py-2 rounded-lg hover:bg-emerald-50 border border-transparent hover:border-emerald-200 transition text-sm">
+                                        <div class="font-bold text-slate-700" x-text="opt.title"></div>
+                                    </button>
+                                </template>
                             </div>
                         </div>
-                
-                        <nav class="space-y-1.5">
-                            <template x-for="form in activeForms" :key="form.id">
-                                <button x-show="
-                                        (isAdult && !['assess_initial_ped', 'patient_class_ped'].includes(form.id)) || 
-                                        (!isAdult && !['assess_initial', 'patient_class', 'fall_risk', 'braden_scale'].includes(form.id))
-                                    "
-                                    @click="selectForm(form)" 
-                                    class="bg-slate-50 border border-slate-200 p-4 rounded-2xl hover:bg-indigo-50 hover:border-indigo-200 transition-all text-left group w-full">
-                                    
-                                    <div class="flex items-center gap-4">
-                                        <div class="shrink-0 w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-indigo-500 group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                                            <i class="fa-solid text-xl" :class="form.icon"></i>
-                                        </div>
-                                        <div>
-                                            <h3 class="font-bold text-slate-700 group-hover:text-indigo-700" x-text="form.title"></h3>
-                                            <p class="text-[11px] text-slate-400 mt-1">คลิกเพื่อบันทึกข้อมูล</p>
-                                        </div>
-                                    </div>
-                                </button>                            
-                            </template>
-                        </nav>
                     </div>
-                
-                    <div x-show="!isSidebarCollapsed" class="p-6 bg-slate-50 border-t border-slate-100" x-transition>
-                        <p class="text-[9px] font-bold text-slate-300 uppercase tracking-widest text-center">Nurse Workbench v3.0</p>
+
+                    <!-- Label when expanded -->
+                    <div x-show="!isSidebarCollapsed" class="px-3 pt-2 pb-1.5 shrink-0" x-transition>
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Nursing Forms</span>
+                    </div>
+
+                    <!-- Nav list (scrollable, compact) -->
+                    <nav class="flex-1 overflow-y-auto px-3 pb-3 space-y-1.5">
+                        <template x-for="form in activeForms" :key="form.id">
+                            <button x-show="
+                                    (isAdult && !['assess_initial_ped', 'patient_class_ped'].includes(form.id)) ||
+                                    (!isAdult && !['assess_initial', 'patient_class', 'fall_risk', 'braden_scale'].includes(form.id))
+                                "
+                                @click="selectForm(form)"
+                                :title="form.title"
+                                :class="currentForm?.id === form.id
+                                    ? 'bg-slate-800 border-slate-800 text-white shadow-md'
+                                    : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200 hover:border-slate-300'"
+                                class="border transition-all text-left group w-full rounded-xl">
+                                <!-- Expanded mode -->
+                                <div x-show="!isSidebarCollapsed" class="flex items-center gap-3 px-3.5 py-2.5">
+                                    <i class="fa-solid text-[15px] shrink-0"
+                                       :class="[form.icon, currentForm?.id === form.id ? 'text-slate-300' : 'text-slate-500']"></i>
+                                    <span class="text-sm font-bold leading-snug truncate" x-text="form.title"></span>
+                                </div>
+                                <!-- Collapsed mode (icon only) -->
+                                <div x-show="isSidebarCollapsed" class="flex items-center justify-center py-3">
+                                    <i class="fa-solid text-lg"
+                                       :class="[form.icon, currentForm?.id === form.id ? 'text-white' : 'text-slate-500']"></i>
+                                </div>
+                            </button>
+                        </template>
+                    </nav>
+
+                    <!-- Footer: User Info & Logout -->
+                    <div class="border-t border-slate-200 shrink-0 bg-slate-50">
+                        <div x-show="!isSidebarCollapsed" class="p-3 flex flex-col gap-2.5" x-transition>
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-200">
+                                    <i class="fa-solid fa-user-nurse text-sm"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-sm font-bold text-slate-700 truncate" x-text="nurseName || 'ผู้ใช้งานระบบ'"></div>
+                                    <div class="text-[11px] text-slate-500 truncate" x-text="nursePosition || 'พยาบาลวิชาชีพ'"></div>
+                                </div>
+                            </div>
+                            <button @click="logout()" class="w-full py-2 flex items-center justify-center gap-2 bg-red-100 hover:bg-red-500 text-red-600 hover:text-white rounded-lg transition-colors text-xs font-bold border border-red-200 hover:border-red-500">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                <span>ออกจากระบบ</span>
+                            </button>
+                        </div>
+                        <!-- Collapsed Footer (Logout Icon Only) -->
+                        <div x-show="isSidebarCollapsed" class="p-2" x-transition>
+                            <button @click="logout()" title="ออกจากระบบ" class="w-full py-3 flex items-center justify-center bg-red-50 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-colors">
+                                <i class="fa-solid fa-arrow-right-from-bracket text-lg"></i>
+                            </button>
+                        </div>
                     </div>
                 </aside>
 
