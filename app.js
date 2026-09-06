@@ -7,7 +7,41 @@
     // Wait for the DOM and Alpine to load
     document.addEventListener('DOMContentLoaded', () => {
         initCandi();
+        initFixedBannerOffset();
     });
+
+    // เผื่อมีแถบแจ้งเตือน (เช่น "ระบบสาธิตนวัตกรรม (DEMO)...") ถูกแปะไว้แบบ position:fixed
+    // อยู่บนสุดของหน้า (เพิ่มเข้ามานอกเหนือไฟล์ชุดนี้ตอน deploy) — sticky header ของหน้าชาร์ท
+    // จะได้เลื่อนไปโผล่ใต้แถบนั้นเสมอ แทนที่จะโดนแถบทับ/บังตอนเลื่อนหน้าจอ
+    // ทำงานอัตโนมัติ ไม่ผูกกับ id/class เฉพาะเจาะจงของแถบ เผื่อมีการเปลี่ยนวิธีแปะในอนาคต
+    function initFixedBannerOffset() {
+        const HEADER_ID = 'chart-topbar';
+
+        function measureAndApply() {
+            const header = document.getElementById(HEADER_ID);
+            if (!header) return;
+
+            let offset = 0;
+            const candidates = document.body.querySelectorAll('*');
+            for (const el of candidates) {
+                if (el === header || header.contains(el) || el.contains(header)) continue;
+                const style = window.getComputedStyle(el);
+                if (style.position !== 'fixed') continue;
+                const rect = el.getBoundingClientRect();
+                // นับเฉพาะแถบที่แปะติดขอบบนจริงๆ และมีความสูงพอสมควร (กันเคส fixed element อื่นๆ ที่ไม่เกี่ยวข้อง)
+                if (rect.top <= 2 && rect.height > 0 && rect.height < 200 && rect.width >= window.innerWidth * 0.5) {
+                    offset = Math.max(offset, Math.round(rect.bottom));
+                }
+            }
+            document.documentElement.style.setProperty('--fixed-banner-offset', offset + 'px');
+        }
+
+        measureAndApply();
+        window.addEventListener('resize', measureAndApply);
+        // เผื่อแถบถูกแทรกเข้ามาช้ากว่า DOMContentLoaded (เช่นโหลดผ่านสคริปต์แยก)
+        setTimeout(measureAndApply, 500);
+        setTimeout(measureAndApply, 1500);
+    }
 
     // Rolling conversation history sent to the backend on every request, so
     // Gemini can "remember" its own previous turn (e.g. the follow-up question
