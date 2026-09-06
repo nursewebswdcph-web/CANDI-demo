@@ -27,7 +27,7 @@
     const STORAGE_KEY = 'candi_demo_db_v2';
     const NETWORK_DELAY_MS = 220; // หน่วงเล็กน้อยให้รู้สึกเหมือนมีการโหลดข้อมูลจริง
 
-    // ให้คำถามของผู้ช่วย AI (CANDI) "หลุด" ออกไปเรียกเซิร์ฟเวอร์ AI จริง (ต้องมีเน็ตที่บูธ)
+    // ให้คำถามของผู้ช่วย AI (CANDI) "หลุด" ออกไปเรียก Supabase Edge Function จริง (ต้องมีเน็ตที่บูธ)
     // ส่วนข้อมูลผู้ป่วย/บันทึกต่างๆ ยังคงเป็นข้อมูลจำลองทั้งหมดเหมือนเดิม ไม่เกี่ยวข้องกัน
     // -> ตั้งเป็น false ได้ถ้าต้องการปิด CANDI กลับไปใช้ข้อความสำรองเหมือนเดิม
     const ALLOW_REAL_CANDI_CHAT = true;
@@ -714,48 +714,47 @@
         if (action === 'getAssessmentPed') return DB.assessmentPed[an] || null;
         if (action === 'saveAssessmentPed') return saveWhole('assessmentPed', an, payload.formData || {});
 
-        // ---- CANDI AI Assistant chat (ไม่มี action, มี question/context) ----
-        // ปกติจะไม่มาถึงจุดนี้เพราะถูกดักและปล่อยผ่านไปเซิร์ฟเวอร์จริงตั้งแต่ใน window.fetch แล้ว
-        // (จะมาถึงตรงนี้ก็ต่อเมื่อปิด ALLOW_REAL_CANDI_CHAT ไว้)
-        if (typeof payload.question === 'string') {
-            return {
-                reply: 'ฟีเจอร์ผู้ช่วย AI (CANDI) ปิดใช้งานอยู่ในโหมดสาธิต เนื่องจากเว็บจำลองนี้ไม่ได้เชื่อมต่อกับเซิร์ฟเวอร์ AI จริง — ฟีเจอร์นี้ใช้งานได้ตามปกติในระบบใช้งานจริงค่ะ'
-            };
-        }
-
         // ---- Fallback: ไม่รู้จัก action นี้ ----
         console.warn('[Demo Mock API] Unhandled action:', action, payload);
         return fail(`โหมดสาธิตยังไม่รองรับคำสั่งนี้ (${action || 'unknown'})`);
     }
 
     // ==========================================================================
-    // 7. ดัก window.fetch ทุกครั้งที่ปลายทางคือ API_URL ของแอป (Google Apps Script)
+    // 7. ดัก window.fetch
+    //    (ก) ปลายทาง Google Apps Script (API_URL เดิม) -> ข้อมูลผู้ป่วย/บันทึกต่างๆ ยังคงจำลองทั้งหมดเหมือนเดิม
+    //    (ข) ปลายทาง Supabase Edge Function "candi-chat" -> คำถามผู้ช่วย AI (CANDI) เท่านั้น
+    //        ควบคุมด้วย ALLOW_REAL_CANDI_CHAT เหมือนเดิม (true = ปล่อยออกไปเซิร์ฟเวอร์ AI จริง)
     // ==========================================================================
     const originalFetch = window.fetch.bind(window);
     const API_HOST_MATCH = 'script.google.com';
+    const CANDI_FUNCTION_MATCH = '/functions/v1/candi-chat';
 
     window.fetch = function (input, init) {
         const url = typeof input === 'string' ? input : (input && input.url) || '';
+
+        // ---- (ข) คำถาม CANDI AI ที่เรียกไปยัง Supabase Edge Function ----
+        if (url.includes(CANDI_FUNCTION_MATCH)) {
+            if (!ALLOW_REAL_CANDI_CHAT) {
+                return Promise.resolve(new Response(JSON.stringify({
+                    status: 'success',
+                    reply: 'ฟีเจอร์ผู้ช่วย AI (CANDI) ปิดใช้งานอยู่ในโหมดสาธิต เนื่องจากเว็บจำลองนี้ไม่ได้เชื่อมต่อกับเซิร์ฟเวอร์ AI จริง — ฟีเจอร์นี้ใช้งานได้ตามปกติในระบบใช้งานจริงค่ะ'
+                }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+            }
+            // ปล่อยผ่านไปเซิร์ฟเวอร์ AI จริง (ต้องมีเน็ตที่บูธ) พร้อมข้อความสำรองถ้าต่อไม่ติด
+            return originalFetch(input, init).catch((err) => {
+                console.warn('[Demo Mock API] CANDI real call failed, ใช้ข้อความสำรองแทน', err);
+                return new Response(JSON.stringify({
+                    status: 'error',
+                    message: 'ขณะนี้เชื่อมต่อผู้ช่วย AI (CANDI) ไม่ได้ (อาจไม่มีสัญญาณอินเทอร์เน็ตที่บูธ) กรุณาลองใหม่อีกครั้ง หรือแจ้งเจ้าหน้าที่ประจำบูธค่ะ'
+                }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+            });
+        }
+
+        // ---- (ก) เรียก API_URL เดิม (Google Apps Script) -> จำลองข้อมูลผู้ป่วยทั้งหมด ----
         const isApiCall = url.includes(API_HOST_MATCH);
 
         if (!isApiCall) {
             return originalFetch(input, init);
-        }
-
-        // ---- ตรวจว่าเป็นคำถาม CANDI AI หรือไม่ (ไม่มี action, มี question) ----
-        // ถ้าใช่ และเปิด ALLOW_REAL_CANDI_CHAT ไว้ ให้ปล่อยผ่านไปเซิร์ฟเวอร์ AI จริง
-        if (ALLOW_REAL_CANDI_CHAT && init && init.method === 'POST' && init.body) {
-            let maybeChatBody = null;
-            try { maybeChatBody = JSON.parse(init.body); } catch (e) { /* not JSON */ }
-            const isCandiChat = maybeChatBody && !maybeChatBody.action && typeof maybeChatBody.question === 'string';
-            if (isCandiChat) {
-                return originalFetch(input, init).catch((err) => {
-                    console.warn('[Demo Mock API] CANDI real call failed, ใช้ข้อความสำรองแทน', err);
-                    return new Response(JSON.stringify({
-                        reply: 'ขณะนี้เชื่อมต่อผู้ช่วย AI (CANDI) ไม่ได้ (อาจไม่มีสัญญาณอินเทอร์เน็ตที่บูธ) กรุณาลองใหม่อีกครั้ง หรือแจ้งเจ้าหน้าที่ประจำบูธค่ะ'
-                    }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-                });
-            }
         }
 
         return new Promise((resolve) => {

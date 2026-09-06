@@ -542,14 +542,23 @@
             loadingIndicator.classList.remove('hidden');
             scrollToBottom();
 
-            // Resolve GAS Web App URL from Alpine config
-            const defaultUrl = 'https://script.google.com/macros/s/AKfycbz09TV4Y0_-4HHd3OuyuYsjzqM8ei_NSXOdxRzhNrQzxX4UN-3XxwB-Z12BOv6bNx-c4w/exec';
-            const apiUrl = app ? app.API_URL : defaultUrl;
+            // เดิม CANDI ยิงตรงไปที่ Google Apps Script Web App
+            // ตอนนี้ย้ายมาเรียก Supabase Edge Function "candi-chat" แทน (ใช้โมเดล gemini-3.8-flash) เหมือนระบบจริง
+            // หมายเหตุ: โหมดสาธิตนี้ไม่ได้ใช้ Supabase Auth จริง จึงใช้ anon key แทน sessionToken ของผู้ใช้
+            const SUPABASE_URL = 'https://ipodmceqazxgxwuzbbfo.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwb2RtY2VxYXp4Z3h3dXpiYmZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NjMzMTgsImV4cCI6MjEwMzIzOTMxOH0.0zPO93RYX3_3sQ9EeeTxYEfPYdGxsz14nnvGkEDmk38';
+            const apiUrl = `${SUPABASE_URL}/functions/v1/candi-chat`;
+            const authToken = (app && app.sessionToken) ? app.sessionToken : SUPABASE_ANON_KEY;
 
             try {
-                // Post payload. Note: Simple request pattern matches saveFocusList in script.js (no content-type header)
+                // Post payload ไปยัง Supabase Edge Function
                 const response = await fetch(apiUrl, {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${authToken}`
+                    },
                     body: JSON.stringify({
                         question: question,
                         context: deIdentifiedContext,
