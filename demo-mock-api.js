@@ -27,9 +27,9 @@
     const STORAGE_KEY = 'candi_demo_db_v2';
     const NETWORK_DELAY_MS = 220; // หน่วงเล็กน้อยให้รู้สึกเหมือนมีการโหลดข้อมูลจริง
 
-    // โหมดสาธิตต้องตอบได้แม้ไม่มีอินเทอร์เน็ต จึงใช้ข้อความจำลองเป็นค่าเริ่มต้น
-    // หากต้องการทดสอบ Edge Function จริง ให้เปลี่ยนเป็น true และต้องมีเครือข่ายพร้อมใช้
-    const ALLOW_REAL_CANDI_CHAT = false;
+    // ใช้ Supabase Edge Function จริงเหมือนระบบใช้งานจริง ต้องมีอินเทอร์เน็ต
+    // หากต้องการสาธิตแบบออฟไลน์ ให้เปลี่ยนเป็น false
+    const ALLOW_REAL_CANDI_CHAT = true;
 
     function daysAgo(n) {
         const d = new Date();

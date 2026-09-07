@@ -582,7 +582,11 @@
             const SUPABASE_URL = 'https://ipodmceqazxgxwuzbbfo.supabase.co';
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwb2RtY2VxYXp4Z3h3dXpiYmZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NjMzMTgsImV4cCI6MjEwMzIzOTMxOH0.0zPO93RYX3_3sQ9EeeTxYEfPYdGxsz14nnvGkEDmk38';
             const apiUrl = `${SUPABASE_URL}/functions/v1/candi-chat`;
-            const authToken = (app && app.sessionToken) ? app.sessionToken : SUPABASE_ANON_KEY;
+            // The demo API uses its own session token for mock data; it is not a
+            // Supabase JWT and must not be sent as the Bearer token to the Edge Function.
+            const appSessionToken = app && app.sessionToken;
+            const isDemoSession = appSessionToken === 'DEMO-SESSION-TOKEN';
+            const authToken = appSessionToken && !isDemoSession ? appSessionToken : SUPABASE_ANON_KEY;
 
             try {
                 // Post payload ไปยัง Supabase Edge Function
@@ -600,11 +604,12 @@
                     })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                const data = await response.json().catch(() => ({}));
 
-                const data = await response.json();
+                if (!response.ok) {
+                    const detail = data.message || data.error || data.msg || `HTTP ${response.status}`;
+                    throw new Error(`Supabase CANDI API ${response.status}: ${detail}`);
+                }
                 
                 // Hide loading animation
                 loadingIndicator.classList.add('hidden');
