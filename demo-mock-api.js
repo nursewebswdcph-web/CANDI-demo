@@ -27,10 +27,9 @@
     const STORAGE_KEY = 'candi_demo_db_v2';
     const NETWORK_DELAY_MS = 220; // หน่วงเล็กน้อยให้รู้สึกเหมือนมีการโหลดข้อมูลจริง
 
-    // ให้คำถามของผู้ช่วย AI (CANDI) "หลุด" ออกไปเรียก Supabase Edge Function จริง (ต้องมีเน็ตที่บูธ)
-    // ส่วนข้อมูลผู้ป่วย/บันทึกต่างๆ ยังคงเป็นข้อมูลจำลองทั้งหมดเหมือนเดิม ไม่เกี่ยวข้องกัน
-    // -> ตั้งเป็น false ได้ถ้าต้องการปิด CANDI กลับไปใช้ข้อความสำรองเหมือนเดิม
-    const ALLOW_REAL_CANDI_CHAT = true;
+    // โหมดสาธิตต้องตอบได้แม้ไม่มีอินเทอร์เน็ต จึงใช้ข้อความจำลองเป็นค่าเริ่มต้น
+    // หากต้องการทดสอบ Edge Function จริง ให้เปลี่ยนเป็น true และต้องมีเครือข่ายพร้อมใช้
+    const ALLOW_REAL_CANDI_CHAT = false;
 
     function daysAgo(n) {
         const d = new Date();
@@ -39,6 +38,29 @@
     }
     function todayStr() { return daysAgo(0); }
     function isoNow() { return new Date().toISOString(); }
+
+    function makeDemoCandiReply(init) {
+        let request = {};
+        try { request = JSON.parse((init && init.body) || '{}'); } catch (e) { request = {}; }
+
+        const question = String(request.question || 'คำถามเกี่ยวกับผู้ป่วย');
+        const context = request.context || {};
+        const patient = context.patient || context.patientInfo || {};
+        const patientLabel = patient.name || patient.patientName || 'ผู้ป่วยที่เลือก';
+
+        return [
+            'นี่คือคำตอบจำลองจากน้อง CANDI สำหรับการสาธิตค่ะ',
+            `ผู้ป่วย: ${patientLabel}`,
+            `คำถาม: ${question}`,
+            '',
+            'ประเด็นที่ควรทบทวน:',
+            '• ตรวจสอบสัญญาณชีพ อาการเปลี่ยนแปลง และผลการประเมินความเสี่ยงล่าสุด',
+            '• ทบทวนแผนการพยาบาลและบันทึก Nursing Progress Note ให้สอดคล้องกับอาการปัจจุบัน',
+            '• หากพบอาการผิดปกติหรือความเสี่ยงเพิ่มขึ้น ให้ประเมินซ้ำและรายงานพยาบาลวิชาชีพ/แพทย์ตามแนวทางของหน่วยงาน',
+            '',
+            'หมายเหตุ: ข้อความนี้เป็นข้อมูลจำลองเพื่อแสดงการทำงานของระบบ ไม่ใช่คำสั่งการรักษาและไม่แทนการตัดสินใจของพยาบาลค่ะ'
+        ].join('\n');
+    }
 
     // ==========================================================================
     // 1. ข้อมูลผู้ป่วยจำลอง (หลากหลายเคสให้ผู้เข้าชมทดลองใช้งาน)
@@ -1162,7 +1184,7 @@
             if (!ALLOW_REAL_CANDI_CHAT) {
                 return Promise.resolve(new Response(JSON.stringify({
                     status: 'success',
-                    reply: 'ฟีเจอร์ผู้ช่วย AI (CANDI) ปิดใช้งานอยู่ในโหมดสาธิต เนื่องจากเว็บจำลองนี้ไม่ได้เชื่อมต่อกับเซิร์ฟเวอร์ AI จริง — ฟีเจอร์นี้ใช้งานได้ตามปกติในระบบใช้งานจริงค่ะ'
+                    reply: makeDemoCandiReply(init)
                 }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
             }
             // ปล่อยผ่านไปเซิร์ฟเวอร์ AI จริง (ต้องมีเน็ตที่บูธ) พร้อมข้อความสำรองถ้าต่อไม่ติด
