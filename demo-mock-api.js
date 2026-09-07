@@ -226,6 +226,424 @@
         { id: 2, name: 'Fall Risk Prevention', s: '-', o: 'Morse Score สูง เสี่ยงพลัดตกหกล้ม', i: 'ล็อกล้อเตียง ยกไม้กั้นเตียงขึ้นสูงสุด แนะนำญาติเฝ้าไข้', e: 'ไม่มีการพลัดตกหกล้มเกิดขึ้น' },
     ];
 
+    function parseAgeYears(patient) {
+        if (!patient) return 0;
+        const raw = String(patient.ageDisplay || patient.age || '').trim();
+        const match = raw.match(/(\d+)/);
+        return match ? Number(match[1]) : 0;
+    }
+
+    function isPediatricPatient(patient) {
+        return parseAgeYears(patient) > 0 && parseAgeYears(patient) < 15;
+    }
+
+    function makeBradenScores(total) {
+        const t = Number(total) || 18;
+        if (t <= 9) return [1, 1, 1, 2, 2, 2];
+        if (t <= 12) return [2, 2, 2, 2, 2, 2];
+        if (t <= 15) return [2, 2, 3, 2, 3, 3];
+        if (t <= 18) return [3, 3, 3, 3, 3, 3];
+        return [4, 4, 4, 4, 4, 4];
+    }
+
+    function makeFallScores(total) {
+        const t = Number(total) || 0;
+        if (t <= 10) return [0, 0, 0, 0, 0, 0];
+        if (t <= 20) return [0, 0, 15, 0, 0, 0];
+        if (t <= 35) return [0, 15, 15, 0, 0, 0];
+        if (t <= 50) return [0, 15, 15, 0, 10, 0];
+        return [25, 15, 15, 0, 10, 0];
+    }
+
+    function makeAdultClassificationScores(patient) {
+        const diagnosis = String(patient?.diagnosis || '').toLowerCase();
+        if (/(ventilator|icu|stroke|palliative|fracture|foot ulcer|pneumonia|heart failure)/.test(diagnosis)) {
+            return [3, 3, 2, 3, 2, 3, 2, 2];
+        }
+        if (/(post-op|post operative|appendectomy|observe|fever)/.test(diagnosis)) {
+            return [2, 2, 1, 2, 1, 2, 1, 1];
+        }
+        return [2, 2, 2, 2, 2, 2, 2, 2];
+    }
+
+    function makePediatricClassificationScores(patient) {
+        const diagnosis = String(patient?.diagnosis || '').toLowerCase();
+        if (/dehydration|gastroenteritis/.test(diagnosis)) {
+            return [1, 1, 2, 1, 1, 2, 1, 1, 1, 1];
+        }
+        return [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+    }
+
+    function makeAdultAssessmentSeed(patient) {
+        const diagnosis = String(patient?.diagnosis || '');
+        const diagnosisLower = diagnosis.toLowerCase();
+        const needsAssist = /(stroke|hemiplegia|fracture|icu|ventilator|palliative|ulcer|heart failure|pneumonia|diabetic foot)/.test(diagnosisLower);
+        const hasDm = /(dm|diabetes)/.test(diagnosisLower);
+        const hasHeart = /(heart failure|chf|cardiac)/.test(diagnosisLower);
+        const isSurgical = /(post-op|post operative|appendectomy|orif|laparotomy|fracture)/.test(diagnosisLower);
+        const hasCancer = /(cancer|palliative)/.test(diagnosisLower);
+
+        return {
+            HN: patient?.hn || '',
+            AN: patient?.an || '',
+            Bed: patient?.bed || '',
+            Ward: patient?.ward || DEMO_WARD,
+            AdmitDate: patient?.admitDate || todayStr(),
+            AdmitTime: '08:15',
+            AdmittedFrom: needsAssist ? 'ER' : 'OPD',
+            Refer: '',
+            ArriveBy: needsAssist ? 'เปลนอน' : 'รถนั่ง',
+            InfoSource: needsAssist ? 'ผู้นำส่ง/ญาติ' : 'ผู้ป่วย',
+            MainCaregiver_Name: isPediatricPatient(patient) ? 'มารดาผู้ป่วย' : 'ญาติผู้ป่วย',
+            MainCaregiver_Rel: isPediatricPatient(patient) ? 'บิดา/มารดา' : 'บุตร',
+            ChiefComplaint: diagnosis,
+            PresentIllness: `${diagnosis} รับไว้สังเกตอาการและดูแลต่อเนื่อง`,
+            AdmitSymptoms: needsAssist ? 'อ่อนเพลีย ต้องการช่วยเหลือในการเคลื่อนไหว' : 'รู้สึกตัวดี อาการคงที่',
+            Admit_BT: hasCancer ? '37.1' : '36.8',
+            Admit_PR: needsAssist ? '88' : '78',
+            Admit_RR: needsAssist ? '20' : '18',
+            Admit_BP: needsAssist ? '138/82' : '120/80',
+            Hx_HT: false,
+            Hx_Heart: hasHeart,
+            Hx_Liver: false,
+            Hx_Kidney: false,
+            Hx_DM: hasDm,
+            Hx_Asthma: false,
+            Hx_Epilepsy: false,
+            Hx_TB: false,
+            Hx_Cancer: hasCancer,
+            Hx_Cancer_Detail: hasCancer ? diagnosis : '',
+            Hx_Other_Check: false,
+            Hx_Other: '',
+            Allergy_Status: 'ไม่เคย',
+            Allergy_Detail: '',
+            AdmitHx_Status: 'ไม่เคย',
+            AdmitHx_Disease: '',
+            AdmitHx_When: '',
+            Sx_Status: isSurgical ? 'เคย' : 'ไม่เคย',
+            Sx_Detail: isSurgical ? diagnosis : '',
+            Sx_When: isSurgical ? (patient?.admitDate || todayStr()) : '',
+            FamilyHx_Status: 'ไม่มี',
+            FamilyHx_Detail: '',
+            Substance_Alcohol: 'ไม่ดื่ม',
+            Substance_Alcohol_Vol: '',
+            Substance_Smoke: 'ไม่สูบ',
+            Substance_Smoke_Vol: '',
+            Meds_Status: hasDm || hasHeart || hasCancer ? 'ยาโรคประจำตัวตาม Med Reconcile' : 'ไม่มี',
+            Meds_Detail: hasDm || hasHeart || hasCancer ? diagnosis : '',
+            HP_Before: 'ดี',
+            HP_Before_Detail: '',
+            HP_Current_Severity: needsAssist ? 'รุนแรง' : 'ไม่รุนแรง',
+            HP_Care: needsAssist ? ['ไปรพ./คลินิก', 'ซื้อยารับประทาน'] : ['ไปรพ./คลินิก'],
+            HP_Care_Other: '',
+            Expectation: 'หาย',
+            Nutri_Meals: isPediatricPatient(patient) ? '3' : '3',
+            Nutri_Type: hasDm ? ['อาหารเฉพาะโรค'] : ['อาหารธรรมดา'],
+            Nutri_Type_Detail: hasDm ? 'DM' : '',
+            Nutri_Problem_Status: 'ไม่มี',
+            Nutri_Problem_Detail: '',
+            Skin_Status: needsAssist ? 'ต้องเฝ้าระวัง' : 'ปกติ',
+            Skin_Detail: needsAssist ? 'เสี่ยงแผลกดทับ' : '',
+            Stress_Express: 'ปกติ',
+            Stress_Express_Other: '',
+            Stress_Resolve: ['ปรึกษาผู้อื่น'],
+            Stress_Resolve_Other: '',
+            Role_Impact: needsAssist ? ['ครอบครัว', 'การศึกษา'] : ['ครอบครัว'],
+            Menstrual_Status: '',
+            Sex_Menstrual: '',
+            Sex_Menstrual_Detail: '',
+            Sex_Breast: '',
+            Sex_Breast_Detail: '',
+            Sex_Genital: '',
+            Sex_Genital_Detail: '',
+            Belief_Cause: ['ตามวัย'],
+            Belief_Cause_Other: '',
+            Belief_Practice: 'ไม่มี',
+            Belief_Practice_Detail: '',
+            Belief_Anchor: 'มี',
+            Belief_Anchor_Detail: 'ครอบครัว',
+            Involve_Status: 'ต้องการ',
+            Involve_Detail: ['ทราบข้อมูลเรื่องโรคและแนวทางรักษาพยาบาล', 'เรียนรู้ทักษะดูแลตนเอง/ผู้ป่วย'],
+            Involve_Other: '',
+            Pain_Status: needsAssist || isSurgical ? 'มี' : 'ไม่มี',
+            Pain_Location: isSurgical ? 'บริเวณแผลผ่าตัด/ตำแหน่งที่มีอาการ' : '',
+            Pain_Cause: isSurgical ? 'หลังผ่าตัด/การอักเสบ' : '',
+            Pain_Type: isSurgical ? 'ครั้งคราว' : '',
+            Pain_Scale_Score: needsAssist || isSurgical ? '4' : '0',
+            Pain_Impact: needsAssist || isSurgical ? ['การนอน', 'การทำกิจกรรม'] : [],
+            Pain_Relief: needsAssist || isSurgical ? ['Medication', 'Reposition'] : [],
+            Assessor_Name: DEFAULT_ASSESSOR,
+            Assessor_Pos: 'พยาบาลวิชาชีพปฏิบัติการ'
+        };
+    }
+
+    function makePediatricAssessmentSeed(patient) {
+        const diagnosis = String(patient?.diagnosis || '');
+        return {
+            HN: patient?.hn || '',
+            AN: patient?.an || '',
+            Bed: patient?.bed || '',
+            Ward: patient?.ward || DEMO_WARD,
+            ped_AdmitDate: patient?.admitDate || todayStr(),
+            ped_AdmitTime: '09:00',
+            ped_AdmittedFrom: 'ER',
+            ped_Refer: '',
+            ped_ArriveBy: 'รถนั่ง',
+            ped_DeliverBy: 'มารดา',
+            ped_Informant: 'ญาติ',
+            ped_InformantOther: '',
+            ped_CC: diagnosis,
+            ped_PI: `${diagnosis} รับไว้เฝ้าระวังอาการและให้สารน้ำ`,
+            ped_AddressHome: patient?.address || '',
+            ped_AssessorName: DEFAULT_ASSESSOR,
+            ped_AssessorPosition: 'พยาบาลวิชาชีพปฏิบัติการ'
+        };
+    }
+
+    function makePatientEduSeed(patient) {
+        const diagnosis = String(patient?.diagnosis || '').toLowerCase();
+        const hasDm = /(dm|diabetes)/.test(diagnosis);
+        const hasHeart = /(heart failure|chf|cardiac)/.test(diagnosis);
+        const hasWound = /(ulcer|wound|fracture|post-op|palliative)/.test(diagnosis);
+        const baseSection = (overrides = {}) => ({
+            checked: false,
+            text1: '',
+            text2: '',
+            text3: '',
+            options: [],
+            date: daysAgo(1),
+            provider: DEFAULT_ASSESSOR,
+            pos: 'พยาบาลวิชาชีพปฏิบัติการ',
+            receiver: 'ผู้ป่วย',
+            ...overrides
+        });
+
+        return {
+            D1: baseSection({ checked: true, text1: hasDm ? 'แนะนำอาหารเบาหวาน ลดหวาน มัน เค็ม' : 'แนะนำการสังเกตอาการผิดปกติและการมาพบแพทย์', receiver: 'ผู้ป่วยและญาติ' }),
+            M1: baseSection({ checked: true, text1: hasHeart ? 'แนะนำรับประทานยาตามแพทย์สั่งอย่างต่อเนื่อง' : 'แนะนำการรับประทานยาตามแผนการรักษา', text2: 'ห้ามหยุดยาเอง', receiver: 'ผู้ป่วย' }),
+            E1: baseSection({ checked: true, options: ['การจัดสิ่งแวดล้อมสะอาด', 'อากาศถ่ายเทได้สะดวก'] }),
+            E2: baseSection({ checked: true, options: ['ปลั๊กไฟปลอดภัย', 'ทางเดินไม่กีดขวาง'] }),
+            T1: baseSection({ checked: true, options: ['การทำความสะอาดร่างกาย'], text1: hasWound ? 'เน้นล้างมือก่อนทำแผล' : 'สอนการดูแลทั่วไป' }),
+            T2: baseSection({ checked: hasWound, options: hasWound ? ['การทำแผล'] : [], text1: hasWound ? 'เปลี่ยนผ้าปิดแผลตามแผน' : '' }),
+            T3: baseSection({ checked: true, options: ['รับประทานยา/มาตามนัด'] }),
+            H1: baseSection({ checked: true, options: ['พักผ่อนให้เพียงพอ', 'ออกกำลังกายเหมาะสม'] }),
+            O1: baseSection({ checked: true, text1: 'อาการที่ควรมาพบแพทย์', text2: 'เช่น ไข้สูง หอบเหนื่อย ปวดมากขึ้น' }),
+            O2: baseSection({ checked: true, options: ['มาตามนัด', 'โทร 1669 เมื่อฉุกเฉิน'], text1: 'ให้เบอร์โทรติดต่อโรงพยาบาล' }),
+            O3: baseSection({ checked: true, text1: 'แนะนำช่องทางติดต่อเมื่อมีปัญหา' }),
+            Diet1: baseSection({ checked: true, text1: hasDm ? 'อาหารเบาหวาน' : 'อาหารครบ 5 หมู่', text2: hasHeart ? 'ลดเค็ม' : 'สุกสะอาด', text3: hasWound ? 'เพิ่มโปรตีน' : 'เหมาะสมกับโรค', receiver: 'ผู้ป่วยและญาติ' })
+        };
+    }
+
+    function makeDischargeRecordSeed(patient) {
+        const diagnosis = String(patient?.diagnosis || '').toLowerCase();
+        const hasHeart = /(heart failure|chf|cardiac)/.test(diagnosis);
+        const hasWound = /(ulcer|wound|fracture|post-op)/.test(diagnosis);
+        return {
+            date: patient?.admitDate || todayStr(),
+            exitDate: todayStr(),
+            time: '10:30',
+            type: 'แพทย์อนุญาต',
+            condition: hasHeart ? 'ดีขึ้น' : 'หายสนิท',
+            symptom: `สรุปอาการของ ${patient?.name || 'ผู้ป่วย'} ระหว่างจำหน่าย: อาการโดยรวมคงที่ รู้สึกตัวดี`,
+            bt: '36.8',
+            pr: '80',
+            rr: '18',
+            bp: '120/80',
+            d1: true,
+            d2: hasWound,
+            d3: false,
+            d4: false,
+            d_other: false,
+            d_other_text: '',
+            e1: true,
+            e_other: false,
+            e_other_text: '',
+            t1: true,
+            t2: hasWound,
+            t_other: false,
+            t_other_text: '',
+            h_other: true,
+            h_other_text: 'พักผ่อนให้เพียงพอ และทำกิจกรรมตามกำลัง',
+            diet1: true,
+            diet2: true,
+            diet3: true,
+            diet4: true,
+            diet5: hasHeart,
+            diet6: false,
+            diet7: hasHeart || hasWound,
+            diet7_text: hasHeart ? 'low salt' : 'high protein',
+            diet_other: false,
+            diet_text: '',
+            med_status: 'ได้ครบ',
+            med_text: '',
+            fu_status: 'มีนัด F/U',
+            fu_text: 'นัดติดตามอาการตามใบนัด',
+            wound_care: hasWound,
+            wound_date: hasWound ? todayStr() : '',
+            cont_other: false,
+            cont_text: '',
+            care_loc: 'รพช.',
+            care_loc_text1: '',
+            care_loc_text2: '',
+            care_loc_text3: 'โรงพยาบาลต้นสังกัด',
+            care_loc_text4: '',
+            care_loc_text5: '',
+            receiverName: 'ญาติผู้ป่วย',
+            relation: 'บุตร',
+            nurseName: DEFAULT_ASSESSOR,
+            pos: 'พยาบาลวิชาชีพปฏิบัติการ'
+        };
+    }
+
+    function makeProgressNotesSeed(patient) {
+        const diagnosis = String(patient?.diagnosis || '');
+        const needsAssist = /(stroke|hemiplegia|fracture|icu|ventilator|palliative|ulcer|heart failure|pneumonia|diabetic foot)/i.test(diagnosis);
+        return [
+            nursingNote({
+                date: daysAgo(1),
+                shift: 'เช้า',
+                time: '08:00',
+                focus: needsAssist ? 'Safety / Surveillance' : 'General Care',
+                s: `${patient?.name || 'ผู้ป่วย'} รู้สึกตัวดี ${diagnosis}`,
+                o: 'V/S stable, ไม่มีภาวะแทรกซ้อนเฉียบพลัน',
+                i: 'ประเมินอาการต่อเนื่อง จัดสิ่งแวดล้อมปลอดภัย และให้การพยาบาลตามแผน',
+                e: 'ผู้ป่วยให้ความร่วมมือดี'
+            }),
+            nursingNote({
+                date: daysAgo(1),
+                shift: 'บ่าย',
+                time: '14:00',
+                focus: needsAssist ? 'Follow-up Care' : 'Education',
+                s: 'อาการโดยรวมคงที่',
+                o: 'ไม่มีอาการผิดปกติที่ต้องเฝ้าระวังทันที',
+                i: 'ทบทวนแผนการดูแลและคำแนะนำแก่ผู้ป่วย/ญาติ',
+                e: 'เข้าใจคำแนะนำและสามารถทวนกลับได้'
+            })
+        ];
+    }
+
+    function makeFocusListSeed(patient) {
+        const diagnosis = String(patient?.diagnosis || '');
+        return [
+            focusItem({
+                focus: diagnosis.includes('fracture') ? 'Impaired Physical Mobility' : 'Acute/Chronic Condition',
+                goal: 'ผู้ป่วยได้รับการดูแลต่อเนื่องและอาการคงที่',
+                startDate: daysAgo(2)
+            }),
+            focusItem({
+                focus: diagnosis.includes('stroke') ? 'Risk for Falls' : 'Knowledge Deficit',
+                goal: 'ผู้ป่วย/ญาติปฏิบัติตัวได้ถูกต้อง',
+                startDate: daysAgo(2)
+            })
+        ];
+    }
+
+    function ensureMapKey(db, key) {
+        if (!db[key] || typeof db[key] !== 'object' || Array.isArray(db[key])) db[key] = {};
+    }
+
+    function ensureDemoPatientRecords(db) {
+        if (!db || typeof db !== 'object') return false;
+
+        ensureMapKey(db, 'patients');
+        ensureMapKey(db, 'braden');
+        ensureMapKey(db, 'fallRisk');
+        ensureMapKey(db, 'classifications');
+        ensureMapKey(db, 'classificationsPed');
+        ensureMapKey(db, 'nursingNotes');
+        ensureMapKey(db, 'focusList');
+        ensureMapKey(db, 'nutrition');
+        ensureMapKey(db, 'patientEdu');
+        ensureMapKey(db, 'dischargeRecord');
+        ensureMapKey(db, 'assessmentInitial');
+        ensureMapKey(db, 'assessmentPed');
+        if (!Array.isArray(db.serviceRequests)) db.serviceRequests = [];
+
+        let changed = false;
+        const patients = Object.values(db.patients || {});
+
+        patients.forEach(patient => {
+            if (!patient || !patient.an) return;
+            const an = patient.an;
+            const adultInitial = makeAdultAssessmentSeed(patient);
+            const pedInitial = makePediatricAssessmentSeed(patient);
+            const adultClass = { evalDate: daysAgo(1), shift: 'เช้า', scores: makeAdultClassificationScores(patient), assessor: DEFAULT_ASSESSOR };
+            const pedClass = { evalDate: daysAgo(1), shift: 'เช้า', items: makePediatricClassificationScores(patient), assessor: DEFAULT_ASSESSOR };
+            const fallRecord = fallRiskRecord({ evalDate: daysAgo(1), shift: 'เช้า', m: makeFallScores(patient.latestMorse), maas: patient.latestMaas || 3, assessor: DEFAULT_ASSESSOR });
+            const bradenRecordSeed = bradenRecord(an, patient.hn, patient.ward || DEMO_WARD, {
+                evalDate: daysAgo(1),
+                admitDate: patient.admitDate,
+                diagnosis: patient.diagnosis,
+                initialUlcer: /ulcer/i.test(String(patient.diagnosis || '')) ? 'มี' : 'ไม่มี',
+                initialUlcerDetail: /ulcer/i.test(String(patient.diagnosis || '')) ? 'มีแผลตามแผนการดูแล' : '',
+                albumin: /cancer|palliative|ulcer|foot/i.test(String(patient.diagnosis || '').toLowerCase()) ? '3.0' : '3.6',
+                hb: '11.0',
+                hct: '33',
+                bmi: /pediatric/i.test(String(patient.diagnosis || '')) ? '18.5' : '22.0',
+                s1: makeBradenScores(patient.latestBraden),
+                s3Location: /ulcer/i.test(String(patient.diagnosis || '')) ? 'ตำแหน่งแผลตามบริเวณที่มีปัญหา' : '',
+                s3Stage: /ulcer/i.test(String(patient.diagnosis || '')) ? 'Stage II' : '',
+                s3Appearance: /ulcer/i.test(String(patient.diagnosis || '')) ? 'ผิวหนังมีรอยแดง/แผลตื้น' : '',
+                assessor: DEFAULT_ASSESSOR
+            });
+
+            if (!Array.isArray(db.braden[an]) || db.braden[an].length === 0) {
+                db.braden[an] = [bradenRecordSeed];
+                changed = true;
+            }
+            if (!Array.isArray(db.fallRisk[an]) || db.fallRisk[an].length === 0) {
+                db.fallRisk[an] = [fallRecord];
+                changed = true;
+            }
+            if (!Array.isArray(db.classifications[an]) || db.classifications[an].length === 0) {
+                db.classifications[an] = [adultClass];
+                changed = true;
+            }
+            if (!Array.isArray(db.classificationsPed[an]) || db.classificationsPed[an].length === 0) {
+                db.classificationsPed[an] = [pedClass];
+                changed = true;
+            }
+            if (!Array.isArray(db.nursingNotes[an]) || db.nursingNotes[an].length === 0) {
+                db.nursingNotes[an] = makeProgressNotesSeed(patient);
+                changed = true;
+            }
+            if (!Array.isArray(db.focusList[an]) || db.focusList[an].length === 0) {
+                db.focusList[an] = makeFocusListSeed(patient);
+                changed = true;
+            }
+            if (!db.patientEdu[an] || Object.keys(db.patientEdu[an]).length === 0) {
+                db.patientEdu[an] = makePatientEduSeed(patient);
+                changed = true;
+            } else {
+                db.patientEdu[an] = { ...makePatientEduSeed(patient), ...db.patientEdu[an] };
+                changed = true;
+            }
+            if (!db.dischargeRecord[an] || Object.keys(db.dischargeRecord[an]).length === 0) {
+                db.dischargeRecord[an] = makeDischargeRecordSeed(patient);
+                changed = true;
+            } else {
+                db.dischargeRecord[an] = { ...makeDischargeRecordSeed(patient), ...db.dischargeRecord[an] };
+                changed = true;
+            }
+            if (!db.assessmentInitial[an] || Object.keys(db.assessmentInitial[an]).length === 0) {
+                db.assessmentInitial[an] = adultInitial;
+                changed = true;
+            } else {
+                db.assessmentInitial[an] = { ...adultInitial, ...db.assessmentInitial[an] };
+                changed = true;
+            }
+            if (!db.assessmentPed[an] || Object.keys(db.assessmentPed[an]).length === 0) {
+                db.assessmentPed[an] = pedInitial;
+                changed = true;
+            } else {
+                db.assessmentPed[an] = { ...pedInitial, ...db.assessmentPed[an] };
+                changed = true;
+            }
+        });
+
+        return changed;
+    }
+
     // ==========================================================================
     // 4. "ฐานข้อมูลจำลอง" ทั้งหมด — เก็บใน localStorage เพื่อให้ข้อมูลที่พยาบาล
     //    ทดลองบันทึกระหว่างสาธิต ยังอยู่ครบแม้ปิด/เปิดเบราว์เซอร์ใหม่
@@ -233,7 +651,13 @@
     function loadDB() {
         try {
             const raw = window.localStorage.getItem(STORAGE_KEY);
-            if (raw) return JSON.parse(raw);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (ensureDemoPatientRecords(parsed)) {
+                    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+                }
+                return parsed;
+            }
         } catch (e) { /* ignore */ }
         return buildFreshDB();
     }
@@ -451,6 +875,7 @@
             };
         })();
 
+        ensureDemoPatientRecords(db);
         return db;
     }
 
