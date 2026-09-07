@@ -3,475 +3,2443 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IPD Nurse Workbench — ภาพรวมนวัตกรรม</title>
+<title>IPD Nurse Workbench — ภาพรวมระบบ CANDI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root{
-    --ink:#101c26;
-    --ink-soft:#4b5a63;
+    --bg-0:#05111d;
+    --bg-1:#071727;
+    --bg-2:#0f2436;
+    --paper:#f5f8fc;
+    --paper-2:#edf4fb;
+    --panel:rgba(255,255,255,.76);
+    --panel-strong:#ffffff;
+    --ink:#102131;
+    --ink-soft:#526477;
+    --line:rgba(16,33,49,.12);
+    --teal:#13c4b6;
     --teal-deep:#0f766e;
-    --teal-cyber:#00a896;
-    --paper:#f8fafc;
-    --paper-raised:#ffffff;
-    --coral:#4338ca;
-    --line:#dde3e6;
-    --line-soft:#e8ecee;
+    --cyan:#5de2ff;
+    --blue:#5b8cff;
+    --violet:#8d7cff;
+    --rose:#ff708a;
+    --amber:#ffba5c;
+    --mint:#68f0c0;
+    --shadow:0 26px 70px rgba(7,23,39,.18);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     margin:0;
-    background:var(--paper);
-    color:var(--ink);
     font-family:'Sarabun',sans-serif;
-    font-size:16px;
-    line-height:1.65;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(93,226,255,.10), transparent 28%),
+      radial-gradient(circle at 92% 6%, rgba(19,196,182,.14), transparent 24%),
+      linear-gradient(180deg, #08111d 0%, #0a1725 24%, #f7fbff 24%, #f7fbff 100%);
+    color:var(--ink);
+    overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
   }
-  ::selection{background:var(--teal-cyber);color:#fff;}
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;}
+  img{display:block;max-width:100%;}
+  ::selection{background:var(--teal);color:#fff;}
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
-    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+    *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important;}
   }
 
-  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
-  .wrap-wide{max-width:1080px;margin:0 auto;padding:0 28px;}
-
-  a{color:inherit;}
-
-  /* ---------- top strip ---------- */
-  .topstrip{
-    border-bottom:1px solid var(--line);
-    background:var(--paper);
+  .shell{
+    width:min(1500px, calc(100% - 32px));
+    margin:0 auto;
   }
-  .topstrip-inner{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:18px 0;
+  .section-shell{
+    width:min(1500px, calc(100% - 32px));
+    margin:0 auto;
   }
-  .brandmark{
-    display:flex;align-items:center;gap:10px;
-    font-weight:700;font-size:15px;color:var(--ink);
+  .muted{color:var(--ink-soft);}
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 13px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.16);
+    color:#dff8fb;
   }
-  .brandmark .dot{
-    width:9px;height:9px;border-radius:999px;
-    background:var(--teal-cyber);
-    box-shadow:0 0 0 3px rgba(0,168,150,0.15);
-  }
-  .topstrip .hospital{
-    font-size:12.5px;color:var(--ink-soft);text-align:right;
-  }
-
-  /* ---------- hero ---------- */
-  .hero{padding:76px 0 64px;}
-  .hero-grid{
-    display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;
-  }
-  .hero h1{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:clamp(38px,5vw,58px);
-    line-height:1.06;
-    letter-spacing:-0.01em;
-    margin:0 0 20px;
-    color:var(--ink);
-  }
-  .hero h1 em{
-    font-style:normal;
+  .eyebrow.light{
+    background:#e6fdf8;
+    border-color:#c8f4ed;
     color:var(--teal-deep);
   }
-  .hero p.lede{
-    font-size:17.5px;
-    color:var(--ink-soft);
-    max-width:46ch;
-    margin:0 0 28px;
+  .section-kicker{
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    margin-bottom:10px;
   }
-  .hero-tags{display:flex;flex-wrap:wrap;gap:8px;}
-  .hero-tags span{
-    font-size:12.5px;font-weight:600;
-    padding:6px 12px;border-radius:999px;
-    border:1px solid var(--line);
-    color:var(--ink-soft);
-    background:var(--paper-raised);
+  .section-title{
+    margin:0;
+    font-family:'Fraunces',serif;
+    font-size:clamp(28px, 3vw, 48px);
+    line-height:1.03;
+    letter-spacing:-.02em;
+  }
+  .section-lede{
+    max-width:760px;
+    margin:16px 0 0;
+    font-size:16px;
+    line-height:1.8;
+    color:#526477;
   }
 
-  /* ---- mockup card ---- */
-  .mockup{
-    background:#1b2b33;
-    border-radius:20px;
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(7,18,30,.74);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .topbar-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:16px 0;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:0;
+  }
+  .brand-mark{
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    padding:8px;
+    background:linear-gradient(135deg, rgba(93,226,255,.18), rgba(19,196,182,.12));
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+    flex:0 0 auto;
+  }
+  .brand-mark img{width:100%;height:100%;object-fit:contain;}
+  .brand-copy{min-width:0;}
+  .brand-copy b{
+    display:block;
+    font-size:15px;
+    line-height:1.1;
+    color:#f6fbff;
+  }
+  .brand-copy span{
+    display:block;
+    margin-top:4px;
+    font-size:12px;
+    color:rgba(221,232,241,.72);
+    font-weight:700;
+  }
+  .owner-copy{
+    min-width:0;
+    max-width:470px;
+    margin-left:auto;
+    padding-left:18px;
+    border-left:1px solid rgba(255,255,255,.16);
+    color:rgba(232,248,255,.78);
+    font-size:11px;
+    line-height:1.55;
+  }
+  .owner-copy b{
+    display:block;
+    color:#8fffe8;
+    font-size:11px;
+    letter-spacing:.04em;
+  }
+  .owner-copy span{display:block;}
+  .top-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border-radius:14px;
+    border:1px solid transparent;
+    padding:12px 16px;
+    font-weight:900;
+    font-size:13px;
+    cursor:pointer;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease, color .25s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{
+    background:linear-gradient(135deg, var(--teal) 0%, #0b8d87 60%, #0866d4 100%);
+    color:#fff;
+    box-shadow:0 18px 40px rgba(19,196,182,.30);
+  }
+  .btn-secondary{
+    background:rgba(255,255,255,.08);
+    border-color:rgba(255,255,255,.14);
+    color:#effcff;
+  }
+  .btn-light{
+    background:#fff;
+    color:var(--ink);
+    border-color:rgba(16,33,49,.08);
+    box-shadow:0 10px 28px rgba(16,33,49,.08);
+  }
+  .btn-light:hover{
+    border-color:rgba(19,196,182,.25);
+    box-shadow:0 14px 34px rgba(19,196,182,.12);
+  }
+  .btn-soft{
+    background:#eef6ff;
+    color:#2558d8;
+    border-color:#d5e2ff;
+  }
+
+  .hero{
+    position:relative;
+    height:calc(100vh - 80px);
+    min-height:640px;
+    padding:12px 0 16px;
+    color:#effcff;
+    overflow:hidden;
+  }
+  .hero::before,
+  .hero::after{
+    content:'';
+    position:absolute;
+    border-radius:999px;
+    filter:blur(90px);
+    pointer-events:none;
+  }
+  .hero::before{
+    width:360px;height:360px;
+    left:-60px;top:0;
+    background:rgba(93,226,255,.18);
+    animation:floatGlow 11s ease-in-out infinite;
+  }
+  .hero::after{
+    width:420px;height:420px;
+    right:-100px;top:140px;
+    background:rgba(19,196,182,.18);
+    animation:floatGlow 13s ease-in-out infinite reverse;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+    gap:34px;
+    align-items:center;
+    height:100%;
+    min-height:0;
+  }
+  .hero-copy{
+    position:relative;
+    z-index:2;
+    padding:0;
+  }
+  .hero-copy h1{
+    margin:12px 0 14px;
+    font-family:'Fraunces',serif;
+    font-size:clamp(38px, 4.5vw, 64px);
+    line-height:.98;
+    letter-spacing:-.03em;
+    max-width:10.5ch;
+  }
+  .hero-copy h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg, #7fffd4 0%, #61e6ff 45%, #a1a8ff 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero-copy p{
+    max-width:68ch;
+    margin:0;
+    color:#d1e0ea;
+    font-size:clamp(14px, 1.08vw, 16px);
+    line-height:1.65;
+  }
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:16px;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    color:#f3fbff;
+    font-size:13px;
+    font-weight:800;
+  }
+  .chip i{color:#7fffd4;}
+  .hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:18px;
+  }
+  .hero-notes{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:12px;
+    margin-top:18px;
+  }
+  .note-card{
+    padding:12px 13px 11px;
+    border-radius:22px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  }
+  .note-card b{
+    display:block;
+    font-size:14px;
+    line-height:1.25;
+    margin:0 0 6px;
+  }
+  .note-card span{
+    display:block;
+    font-size:11px;
+    line-height:1.45;
+    color:rgba(225,239,247,.76);
+  }
+
+  .hero-visual{
+    position:relative;
+    z-index:2;
+    min-height:0;
+    display:grid;
+    grid-template-columns:1fr;
+    align-items:center;
+    justify-items:center;
+  }
+  .hero-orb{
+    position:absolute;
+    border-radius:999px;
+    filter:blur(10px);
+    opacity:.95;
+  }
+  .orb-a{
+    width:180px;height:180px;
+    left:0;top:44px;
+    background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.32), rgba(93,226,255,.12) 42%, rgba(93,226,255,.03) 66%, transparent 72%);
+    animation:floatOrb 8s ease-in-out infinite;
+  }
+  .orb-b{
+    width:220px;height:220px;
+    right:18px;top:92px;
+    background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.28), rgba(19,196,182,.12) 42%, rgba(19,196,182,.03) 66%, transparent 72%);
+    animation:floatOrb 10s ease-in-out infinite reverse;
+  }
+  .orb-c{
+    width:160px;height:160px;
+    left:32px;bottom:40px;
+    background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.24), rgba(141,124,255,.16) 40%, rgba(141,124,255,.05) 65%, transparent 72%);
+    animation:floatOrb 9s ease-in-out infinite;
+  }
+  .hero-float{
+    position:absolute;
+    width:220px;
     padding:14px;
-    box-shadow:0 24px 60px -20px rgba(16,28,38,0.45);
+    border-radius:22px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.13);
+    backdrop-filter:blur(20px);
+    box-shadow:0 18px 40px rgba(0,0,0,.18);
   }
-  .mockup-chrome{
-    display:flex;gap:6px;padding:2px 6px 12px;
+  .hero-float b{
+    display:block;
+    font-size:14px;
+    margin-bottom:5px;
   }
-  .mockup-chrome span{width:9px;height:9px;border-radius:50%;background:#3d525b;}
-  .mockup-screen{
-    background:#fff;border-radius:12px;overflow:hidden;
-    font-family:'Sarabun',sans-serif;
+  .hero-float span{
+    display:block;
+    font-size:12px;
+    line-height:1.55;
+    color:rgba(225,239,247,.76);
   }
-  .mockup-topbar{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:14px 16px;border-bottom:1px solid var(--line-soft);
+  .float-a{left:-6px;top:42px;transform:rotate(-4deg);}
+  .float-b{right:-6px;top:48px;transform:rotate(4deg);}
+  .float-c{left:12px;bottom:58px;transform:rotate(4deg);}
+  .float-d{right:18px;bottom:20px;transform:rotate(-3deg);}
+  .hero-device{
+    position:relative;
+    width:min(100%, 680px);
+    z-index:2;
+    grid-column:2;
+    grid-row:1;
+    transform:translateY(8px);
+    display:none;
   }
-  .mockup-patient{display:flex;align-items:center;gap:10px;}
-  .mockup-avatar{
-    width:34px;height:34px;border-radius:10px;
-    background:#4338ca;color:#fff;display:flex;align-items:center;justify-content:center;
+  .hero-character{
+    position:relative;
+    z-index:1;
+    grid-column:1;
+    grid-row:1;
+    left:auto;
+    bottom:auto;
+    width:min(100%, 760px);
+    max-width:760px;
+    height:auto;
+    justify-self:center;
+    align-self:center;
+    object-fit:contain;
+    filter:drop-shadow(0 26px 32px rgba(0,0,0,.28));
+    animation:characterFloat 7s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .device{
+    padding:18px;
+    border-radius:36px;
+    background:linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.06));
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(18px);
+  }
+  .device-screen{
+    border-radius:26px;
+    overflow:hidden;
+    background:linear-gradient(180deg, #fbfdff 0%, #edf5fb 100%);
+    color:var(--ink);
+    min-height:620px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.72);
+  }
+  .device-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:18px 20px;
+    border-bottom:1px solid rgba(16,33,49,.08);
+    background:linear-gradient(90deg, #ffffff 0%, #f4fbff 100%);
+  }
+  .device-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .device-brand img{
+    width:42px;height:42px;
+    object-fit:contain;
+    padding:2px;
+    border-radius:14px;
+    background:linear-gradient(135deg, #f6fdff, #e2f9f4);
+    border:1px solid rgba(19,196,182,.16);
+  }
+  .device-brand b{
+    display:block;
+    font-size:14px;
+    line-height:1.2;
+  }
+  .device-brand span{
+    display:block;
+    font-size:11px;
+    color:#6a7a8a;
+    font-weight:800;
+    margin-top:4px;
+    letter-spacing:.04em;
+  }
+  .device-status{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 11px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .pill.teal{background:#e6fdf8;color:#0f766e;border-color:#c7f4ee;}
+  .pill.rose{background:#fff0f4;color:#be185d;border-color:#ffd6e2;}
+  .pill.amber{background:#fff7e8;color:#b45309;border-color:#ffe1aa;}
+  .pill.blue{background:#edf4ff;color:#1d4ed8;border-color:#d5e2ff;}
+  .device-body{
+    display:grid;
+    grid-template-columns:88px minmax(0,1fr);
+    min-height:calc(620px - 74px);
+  }
+  .device-nav{
+    padding:16px 12px;
+    border-right:1px solid rgba(16,33,49,.08);
+    background:linear-gradient(180deg, #f9fbfd 0%, #edf5fb 100%);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .nav-dot{
+    width:100%;
+    height:40px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#ffffff;
+    border:1px solid rgba(16,33,49,.08);
+    color:#8fa0b0;
+    font-size:14px;
+    box-shadow:0 6px 18px rgba(16,33,49,.05);
+  }
+  .nav-dot.active{
+    background:linear-gradient(135deg, var(--teal), #0b8d87);
+    color:#fff;
+    border-color:transparent;
+  }
+  .device-main{
+    padding:18px;
+  }
+  .device-main .overview-grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:14px;
+  }
+  .overview-card{
+    border-radius:20px;
+    padding:16px;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.08);
+    box-shadow:0 8px 24px rgba(16,33,49,.05);
+  }
+  .overview-card .head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .overview-card .head b{
     font-size:13px;
   }
-  .mockup-name{font-weight:700;font-size:13px;color:var(--ink);}
-  .mockup-sub{font-size:9.5px;color:#94a3b8;font-weight:700;letter-spacing:0.03em;margin-top:2px;}
-  .mockup-badges{display:flex;gap:5px;}
-  .mockup-badges span{
-    font-size:9px;font-weight:800;padding:3px 7px;border-radius:6px;
+  .overview-card .head span{
+    font-size:11px;
+    color:#718196;
+    font-weight:800;
   }
-  .b-braden{background:#fef2f2;color:#b91c1c;}
-  .b-morse{background:#fffbeb;color:#b45309;}
-  .b-maas{background:#f5f3ff;color:#6d28d9;}
-  .mockup-bed{
-    background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:10px;
-    padding:4px 12px;text-align:center;
+  .mini-bars{
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+    min-height:104px;
   }
-  .mockup-bed b{display:block;font-size:15px;color:#047857;line-height:1;}
-  .mockup-bed small{font-size:7.5px;color:#059669;font-weight:800;}
-  .mockup-body{display:flex;}
-  .mockup-side{
-    width:74px;border-right:1px solid var(--line-soft);
-    padding:12px 8px;display:flex;flex-direction:column;gap:6px;
+  .bar{
+    flex:1 1 0;
+    border-radius:12px 12px 4px 4px;
+    background:linear-gradient(180deg, rgba(93,226,255,.98), rgba(19,196,182,.98));
+    box-shadow:0 10px 20px rgba(19,196,182,.18);
+    min-height:26px;
+    position:relative;
   }
-  .mockup-side i{
-    width:100%;height:30px;border-radius:8px;background:#f1f5f4;
-    display:flex;align-items:center;justify-content:center;color:#7c8b93;font-size:12px;
+  .bar::after{
+    content:attr(data-label);
+    position:absolute;
+    bottom:-22px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:10px;
+    color:#6c7b8a;
+    font-weight:800;
+    white-space:nowrap;
   }
-  .mockup-side i.active{background:#101c26;color:#fff;}
-  .mockup-main{flex:1;padding:16px;}
-  .mockup-main .line{height:8px;border-radius:4px;background:#eef1ee;margin-bottom:8px;}
-  .mockup-main .line.w60{width:60%;}
-  .mockup-main .line.w80{width:80%;}
-  .mockup-main .line.w40{width:40%;}
-  .mockup-chat{
-    position:absolute;right:22px;bottom:22px;
-    width:38px;height:38px;border-radius:50%;
-    background:linear-gradient(135deg,#00a896,#0f766e);
-    display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;
-    box-shadow:0 8px 20px -6px rgba(15,118,110,0.55);
+  .bar.alt{
+    background:linear-gradient(180deg, rgba(255,184,92,.98), rgba(255,112,138,.98));
   }
-  .mockup-canvas{position:relative;}
+  .bar.violet{
+    background:linear-gradient(180deg, rgba(141,124,255,.98), rgba(91,140,255,.98));
+  }
+  .list-lines{
+    display:grid;
+    gap:8px;
+  }
+  .line{
+    height:11px;
+    border-radius:999px;
+    background:linear-gradient(90deg, #eef5fb, #e3edf7);
+  }
+  .line.w80{width:80%;}
+  .line.w68{width:68%;}
+  .line.w54{width:54%;}
+  .line.w38{width:38%;}
+  .line.w92{width:92%;}
+  .line.w74{width:74%;}
+  .line.w61{width:61%;}
+  .line.w46{width:46%;}
+  .device-footer{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:14px;
+  }
+  .feed-card{
+    border-radius:20px;
+    background:linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    border:1px solid rgba(16,33,49,.08);
+    padding:16px;
+  }
+  .feed-card b{
+    display:block;
+    font-size:13px;
+    margin-bottom:10px;
+  }
+  .message{
+    border-radius:18px;
+    padding:12px 14px;
+    margin-top:10px;
+    font-size:12px;
+    line-height:1.65;
+    border:1px solid rgba(16,33,49,.08);
+  }
+  .message.teal{background:#ecfffd;color:#0f766e;}
+  .message.rose{background:#fff0f4;color:#be185d;}
+  .message.amber{background:#fff8e8;color:#b45309;}
+  .support-card{
+    border-radius:20px;
+    background:linear-gradient(135deg, #0c1525 0%, #122a3e 100%);
+    color:#eaf7ff;
+    padding:16px;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 16px 30px rgba(7,23,39,.15);
+  }
+  .support-card .avatar{
+    width:50px;height:50px;
+    border-radius:18px;
+    overflow:hidden;
+    padding:4px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.14);
+  }
+  .support-card .avatar img{width:100%;height:100%;object-fit:contain;}
+  .support-card b{
+    display:block;
+    font-size:14px;
+    margin:12px 0 6px;
+  }
+  .support-card span{
+    display:block;
+    font-size:12px;
+    line-height:1.7;
+    color:rgba(229,244,255,.76);
+  }
 
-  /* ---------- section shell ---------- */
-  section{padding:56px 0;border-top:1px solid var(--line);}
+  .section{
+    position:relative;
+    overflow:hidden;
+    padding:88px 0;
+    scroll-margin-top:92px;
+  }
+  .section::before{
+    content:'';
+    position:absolute;
+    inset:auto auto -120px -120px;
+    width:280px;height:280px;
+    border-radius:999px;
+    filter:blur(80px);
+    background:rgba(93,226,255,.10);
+    pointer-events:none;
+  }
+  .section::after{
+    content:'';
+    position:absolute;
+    inset:-80px -110px auto auto;
+    width:280px;height:280px;
+    border-radius:999px;
+    filter:blur(80px);
+    background:rgba(19,196,182,.08);
+    pointer-events:none;
+  }
+  .section.light{
+    background:linear-gradient(180deg, #f7fbff 0%, #eef6fd 100%);
+  }
+  .section.white{
+    background:linear-gradient(180deg, #f8fcff 0%, #ffffff 100%);
+  }
+  .section.mint{
+    background:linear-gradient(180deg, #ecfdf8 0%, #f7fbff 100%);
+  }
   .section-head{
-    display:grid;grid-template-columns:220px 1fr;gap:40px;margin-bottom:32px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+    align-items:start;
+    margin-bottom:30px;
   }
-  .section-head h2{
-    font-family:'Fraunces',serif;font-weight:600;
-    font-size:28px;margin:0;color:var(--ink);line-height:1.15;
+  .section-head > div:first-child{
+    width:100%;
+    padding:18px 22px 20px;
+    border-left:6px solid var(--teal);
+    border-radius:0 22px 22px 0;
+    background:linear-gradient(90deg, rgba(255,255,255,.96), rgba(255,255,255,.46));
+    box-shadow:0 12px 28px rgba(16,33,49,.05);
   }
-  .section-head .kicker{
-    font-size:13px;color:var(--teal-deep);font-weight:700;margin-bottom:6px;
-  }
-  .section-body{max-width:640px;}
+  .section-head p{margin:0;max-width:1080px;padding-left:28px;}
+  .section-title{max-width:none;color:#163047;}
+  .section-title em{font-style:normal;color:var(--teal-deep);}
+  .section-kicker{color:#d14a69;}
 
-  @media (max-width:760px){
-    .section-head{grid-template-columns:1fr;gap:10px;}
-    .hero-grid{grid-template-columns:1fr;gap:40px;}
+  .info-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:20px;
+  }
+  .info-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 12px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.08);
+    color:var(--ink);
+    font-size:12px;
+    font-weight:800;
+    box-shadow:0 8px 20px rgba(16,33,49,.05);
+  }
+  .info-pill i{color:var(--teal-deep);}
+
+  .architecture-grid{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:16px;
+  }
+  .arch-card{
+    position:relative;
+    border-radius:28px;
+    background:var(--panel-strong);
+    border:1px solid rgba(16,33,49,.08);
+    box-shadow:0 16px 34px rgba(16,33,49,.06);
+    padding:22px;
+    overflow:hidden;
+    min-height:270px;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .arch-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(19,196,182,.24);
+    box-shadow:0 24px 42px rgba(19,196,182,.10);
+  }
+  .arch-card .arch-num{
+    position:absolute;
+    right:18px;
+    top:16px;
+    font-family:'Fraunces',serif;
+    font-size:42px;
+    line-height:1;
+    color:rgba(16,33,49,.08);
+    font-weight:900;
+  }
+  .arch-card .icon{
+    width:54px;height:54px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+    background:#e9fbf7;
+    color:var(--teal-deep);
+    font-size:21px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+  }
+  .arch-card h3{
+    margin:16px 0 10px;
+    font-size:18px;
+    line-height:1.35;
+  }
+  .arch-card p{
+    margin:0;
+    color:var(--ink-soft);
+    line-height:1.75;
+    font-size:14px;
+  }
+  .arch-list{
+    margin-top:16px;
+    display:grid;
+    gap:10px;
+  }
+  .arch-list span{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    font-size:13px;
+    color:#314559;
+    line-height:1.55;
+  }
+  .arch-list i{color:var(--teal-deep);margin-top:3px;font-size:11px;}
+
+  .callout-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:18px;
+  }
+  .callout{
+    border-radius:28px;
+    background:linear-gradient(180deg, #ffffff 0%, #f8fcff 100%);
+    border:1px solid rgba(16,33,49,.08);
+    padding:20px;
+    box-shadow:0 16px 34px rgba(16,33,49,.05);
+  }
+  .callout h3{
+    margin:0 0 10px;
+    font-size:18px;
+  }
+  .callout p{
+    margin:0;
+    color:var(--ink-soft);
+    line-height:1.8;
+    font-size:14px;
+  }
+  .decision-section{
+    background:
+      radial-gradient(circle at 88% 18%, rgba(91,140,255,.20), transparent 30%),
+      linear-gradient(135deg, #102238 0%, #123c4a 48%, #0b756f 100%);
+    color:#effcff;
+  }
+  .decision-section::before{background:rgba(255,112,138,.18);}
+  .decision-section::after{background:rgba(93,226,255,.18);}
+  .decision-section .section-head > div:first-child{
+    background:rgba(255,255,255,.08);
+    border-left-color:#ff708a;
+    box-shadow:none;
+  }
+  .decision-section .section-title{color:#fff;}
+  .decision-section .section-kicker{color:#8fffe8;}
+  .decision-section .section-lede{color:rgba(232,248,255,.78);}
+  .decision-section .section-head p{color:rgba(232,248,255,.78);}
+  .risk-board{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:18px;
+    align-items:stretch;
+  }
+  .risk-panel,.practice-panel{
+    border-radius:28px;
+    padding:20px;
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.10);
+    box-shadow:0 20px 50px rgba(2,12,24,.20);
+    backdrop-filter:blur(14px);
+  }
+  .risk-panel-head,.practice-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}
+  .risk-panel-head b,.practice-panel-head b{font-size:17px;}
+  .risk-panel-head span,.practice-panel-head span{font-size:12px;color:rgba(232,248,255,.68);font-weight:800;}
+  .risk-list{display:grid;gap:12px;}
+  .risk-alert{
+    display:grid;
+    grid-template-columns:48px minmax(0,1fr) auto;
+    align-items:center;
+    gap:12px;
+    padding:13px 14px;
+    border-radius:20px;
+    background:#fff;
+    color:var(--ink);
+    border:1px solid rgba(255,255,255,.36);
+    box-shadow:0 10px 24px rgba(2,12,24,.12);
+    text-align:left;
+  }
+  .risk-alert .risk-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:15px;font-size:17px;}
+  .risk-alert.high .risk-icon{background:#ffe6ed;color:#c02654;}
+  .risk-alert.medium .risk-icon{background:#fff2d8;color:#b45309;}
+  .risk-alert.ready .risk-icon{background:#dcfff6;color:#0f766e;}
+  .risk-alert b{display:block;font-size:14px;margin-bottom:3px;}
+  .risk-alert p{margin:0;color:#64748b;font-size:12px;line-height:1.5;}
+  .risk-level{padding:7px 9px;border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap;}
+  .high .risk-level{background:#ffe6ed;color:#c02654;}
+  .medium .risk-level{background:#fff2d8;color:#b45309;}
+  .ready .risk-level{background:#dcfff6;color:#0f766e;}
+  .practice-panel{background:linear-gradient(155deg, rgba(255,112,138,.24), rgba(91,140,255,.18));display:flex;flex-direction:column;justify-content:space-between;}
+  .practice-panel .practice-icon{width:60px;height:60px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(135deg,#ff708a,#ffba5c);color:#fff;font-size:25px;box-shadow:0 14px 28px rgba(255,112,138,.24);}
+  .practice-panel h3{margin:16px 0 8px;font-size:22px;line-height:1.25;}
+  .practice-panel p{margin:0;color:rgba(232,248,255,.78);font-size:14px;line-height:1.75;}
+  .practice-panel .btn{margin-top:22px;width:100%;background:#fff;color:#163047;}
+  .practice-panel .btn:hover{background:#eafffa;color:#0f766e;}
+  .decision-note{margin-top:18px;padding:14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.12);color:rgba(232,248,255,.76);font-size:12px;line-height:1.7;}
+  .practice-modal .modal-panel{width:min(920px,100%);}
+  .practice-modal .modal-head{padding-bottom:18px;background:linear-gradient(135deg,#102238,#0f766e);color:#fff;border-radius:34px 34px 0 0;}
+  .practice-modal .modal-head h2{color:#fff;}
+  .practice-modal .modal-close{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22);color:#fff;}
+  .practice-modal .modal-body{display:block;padding-top:22px;}
+  .practice-window{display:grid;grid-template-columns:180px 1fr;gap:16px;}
+  .practice-nav{padding:14px;border-radius:22px;background:#102238;color:#e8f8ff;display:grid;align-content:start;gap:8px;}
+  .practice-nav span{padding:11px 12px;border-radius:13px;font-size:12px;font-weight:800;color:rgba(232,248,255,.68);}
+  .practice-nav span.active{background:#1a9d91;color:#fff;}
+  .practice-content{border:1px solid rgba(16,33,49,.08);border-radius:22px;padding:18px;background:#fbfdff;}
+  .practice-content-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid rgba(16,33,49,.08);}
+  .practice-content-head b{display:block;font-size:18px;color:#163047;}
+  .practice-content-head span{display:block;margin-top:4px;color:#718196;font-size:12px;}
+  .practice-checklist{display:grid;gap:10px;margin-top:16px;}
+  .practice-check{display:flex;align-items:flex-start;gap:10px;padding:12px 13px;border-radius:16px;background:#fff;border:1px solid rgba(16,33,49,.08);font-size:13px;line-height:1.6;color:#314559;}
+  .practice-check i{color:#0f9b8f;margin-top:3px;}
+  .practice-footer{margin-top:16px;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;}
+  .flow{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:12px;
+  }
+  .flow-step{
+    position:relative;
+    border-radius:24px;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.08);
+    padding:18px;
+    box-shadow:0 14px 28px rgba(16,33,49,.05);
+  }
+  .flow-step b{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    margin-bottom:8px;
+  }
+  .flow-step b i{color:var(--teal-deep);}
+  .flow-step span{
+    display:block;
+    font-size:13px;
+    line-height:1.7;
+    color:var(--ink-soft);
+  }
+  .flow-step:not(:last-child)::after{
+    content:'';
+    position:absolute;
+    right:-10px;
+    top:50%;
+    width:18px;
+    height:2px;
+    transform:translateY(-50%);
+    background:linear-gradient(90deg, rgba(19,196,182,.8), rgba(91,140,255,.8));
   }
 
-  /* ---------- rationale ---------- */
-  .goal-list{list-style:none;margin:24px 0 0;padding:0;}
-  .goal-list li{
-    display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--line-soft);
+  .module-grid{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:16px;
   }
-  .goal-list li:first-child{border-top:none;padding-top:0;}
-  .goal-list i{color:var(--teal-deep);font-size:15px;margin-top:3px;flex-shrink:0;}
-  .goal-list b{display:block;font-size:15px;color:var(--ink);margin-bottom:2px;}
-  .goal-list span{font-size:14.5px;color:var(--ink-soft);}
+  .module-card{
+    position:relative;
+    text-align:left;
+    width:100%;
+    border:none;
+    padding:20px;
+    cursor:pointer;
+    border-radius:28px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.96), rgba(247,251,255,.98));
+    border:1px solid rgba(16,33,49,.08);
+    box-shadow:0 16px 34px rgba(16,33,49,.06);
+    overflow:hidden;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .module-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(19,196,182,.24);
+    box-shadow:0 22px 42px rgba(19,196,182,.10);
+  }
+  .module-card::before{
+    content:'';
+    position:absolute;
+    inset:0 auto auto 0;
+    width:100%;
+    height:6px;
+    background:linear-gradient(90deg, var(--teal), var(--cyan), var(--blue));
+  }
+  .module-card .top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .module-card .meta{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    min-width:0;
+  }
+  .module-icon{
+    width:50px;height:50px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:18px;
+    flex:0 0 auto;
+    box-shadow:0 14px 26px rgba(16,33,49,.10);
+    background:linear-gradient(135deg, var(--teal-deep), var(--teal));
+  }
+  .module-card[data-tone="blue"] .module-icon{background:linear-gradient(135deg, #325bdb, #5b8cff);}
+  .module-card[data-tone="violet"] .module-icon{background:linear-gradient(135deg, #635bff, #8d7cff);}
+  .module-card[data-tone="amber"] .module-icon{background:linear-gradient(135deg, #b45309, #ffba5c);}
+  .module-card[data-tone="rose"] .module-icon{background:linear-gradient(135deg, #be185d, #ff708a);}
+  .module-card[data-tone="cyan"] .module-icon{background:linear-gradient(135deg, #0891b2, #5de2ff);}
+  .module-card[data-tone="mint"] .module-icon{background:linear-gradient(135deg, #059669, #68f0c0);}
+  .module-card .eyebrow-small{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    background:#ebfffd;
+    border:1px solid #caefea;
+    border-radius:999px;
+    padding:6px 10px;
+  }
+  .module-card h3{
+    margin:10px 0 8px;
+    font-size:17px;
+    line-height:1.36;
+  }
+  .module-card p{
+    margin:0;
+    color:var(--ink-soft);
+    line-height:1.7;
+    font-size:14px;
+  }
+  .module-preview{
+    margin-top:16px;
+    border-radius:22px;
+    background:linear-gradient(180deg, #fcfeff 0%, #f2f8fd 100%);
+    border:1px solid rgba(16,33,49,.08);
+    padding:14px;
+    min-height:150px;
+  }
+  .preview-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .preview-dots{
+    display:flex;
+    gap:6px;
+  }
+  .preview-dots span{
+    width:9px;height:9px;border-radius:999px;background:#d6e1ec;
+  }
+  .preview-dots span:first-child{background:#ff708a;}
+  .preview-dots span:nth-child(2){background:#ffba5c;}
+  .preview-dots span:nth-child(3){background:#68f0c0;}
+  .preview-label{
+    font-size:11px;
+    color:#6b7c8f;
+    font-weight:900;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .preview-body{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:12px;
+  }
+  .preview-column{
+    display:grid;
+    gap:8px;
+  }
+  .preview-chip{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:16px;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.07);
+    font-size:12px;
+    font-weight:800;
+    color:#314559;
+  }
+  .preview-chip strong{color:var(--teal-deep);}
+  .preview-chart{
+    display:grid;
+    align-content:end;
+    gap:8px;
+    min-height:110px;
+    padding:8px 0 0;
+  }
+  .preview-bar{
+    height:14px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(19,196,182,.96), rgba(93,226,255,.96));
+    box-shadow:0 12px 22px rgba(19,196,182,.16);
+  }
+  .preview-bar.alt{background:linear-gradient(90deg, rgba(255,112,138,.96), rgba(255,186,92,.96));}
+  .preview-bar.violet{background:linear-gradient(90deg, rgba(141,124,255,.96), rgba(91,140,255,.96));}
 
-  /* ---------- architecture layers ---------- */
-  .stack{margin-top:8px;}
-  .layer{
-    display:grid;grid-template-columns:36px 1fr;gap:18px;
-    padding:22px 0;border-top:1px solid var(--line-soft);
+  .modal{
+    position:fixed;
+    inset:0;
+    z-index:120;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(6,13,21,.68);
+    backdrop-filter:blur(14px);
   }
-  .layer:first-child{border-top:none;}
-  .layer-num{
-    font-family:'Fraunces',serif;font-weight:600;font-size:20px;color:var(--line);
+  .modal.active{display:flex;}
+  .modal-panel{
+    width:min(1200px, 100%);
+    max-height:min(92vh, 980px);
+    overflow:auto;
+    border-radius:34px;
+    background:linear-gradient(180deg, #ffffff 0%, #f5f9fd 100%);
+    box-shadow:0 30px 100px rgba(0,0,0,.26);
+    border:1px solid rgba(255,255,255,.24);
   }
-  .layer h3{margin:0 0 6px;font-size:16.5px;color:var(--ink);}
-  .layer p{margin:0 0 10px;font-size:14.5px;color:var(--ink-soft);max-width:56ch;}
-  .layer .chips{display:flex;flex-wrap:wrap;gap:6px;}
-  .layer .chips span{
-    font-size:12px;font-weight:600;padding:4px 10px;border-radius:7px;
-    background:var(--paper-raised);border:1px solid var(--line);color:var(--ink);
+  .modal-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:18px;
+    padding:22px 24px 0;
+  }
+  .modal-close{
+    width:42px;height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    border:1px solid rgba(16,33,49,.10);
+    background:#fff;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .modal-body{
+    display:grid;
+    grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+    gap:18px;
+    padding:0 24px 24px;
+  }
+  .modal-copy{
+    padding:10px 0 0;
+  }
+  .modal-copy h2{
+    margin:12px 0 12px;
+    font-family:'Fraunces',serif;
+    font-size:clamp(28px, 3vw, 42px);
+    line-height:1.04;
+    letter-spacing:-.02em;
+    color:var(--ink);
+  }
+  .modal-copy p{
+    margin:0;
+    font-size:15px;
+    line-height:1.8;
+    color:var(--ink-soft);
+  }
+  .modal-bullets{
+    list-style:none;
+    padding:0;
+    margin:18px 0 0;
+    display:grid;
+    gap:12px;
+  }
+  .modal-bullets li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:12px 14px;
+    border-radius:18px;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.08);
+    color:#314559;
+    line-height:1.65;
+    font-size:13.5px;
+  }
+  .modal-bullets i{color:var(--teal-deep);margin-top:3px;}
+  .mockup-frame{
+    border-radius:28px;
+    padding:18px;
+    background:linear-gradient(180deg, #f0f8ff 0%, #ffffff 100%);
+    border:1px solid rgba(16,33,49,.08);
+    box-shadow:0 18px 40px rgba(16,33,49,.08);
+    min-height:540px;
+  }
+  .mockup-shell{
+    border-radius:24px;
+    overflow:hidden;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.08);
+  }
+  .mockup-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:16px 18px;
+    background:linear-gradient(90deg, #0f1724 0%, #123349 100%);
+    color:#f1fbff;
+  }
+  .mockup-top b{font-size:14px;}
+  .mockup-top span{font-size:11px;color:rgba(232,248,255,.72);font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
+  .mockup-content{
+    padding:18px;
+    display:grid;
+    gap:14px;
+  }
+  .mockup-grid{
+    display:grid;
+    gap:12px;
+  }
+  .mockup-grid.two{
+    grid-template-columns:1.15fr .85fr;
+  }
+  .mockup-grid.three{
+    grid-template-columns:repeat(3, minmax(0,1fr));
+  }
+  .mock-card{
+    border-radius:20px;
+    background:linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    border:1px solid rgba(16,33,49,.08);
+    padding:14px;
+  }
+  .mock-card.dark{
+    background:linear-gradient(180deg, #0e1a2b 0%, #14253b 100%);
+    color:#edf9ff;
+  }
+  .mock-card b{
+    display:block;
+    font-size:13px;
+    margin-bottom:10px;
+  }
+  .bed-grid{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:10px;
+  }
+  .bed{
+    border-radius:18px;
+    padding:12px;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.08);
+    min-height:70px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .bed strong{font-size:12px;}
+  .bed span{font-size:11px;color:#718196;font-weight:800;}
+  .bed.teal{background:#ecfffd;border-color:#cbf4ed;}
+  .bed.rose{background:#fff0f4;border-color:#ffd5e1;}
+  .bed.amber{background:#fff8e8;border-color:#ffe1a8;}
+  .alert-stack{
+    display:grid;
+    gap:10px;
+  }
+  .alert{
+    border-radius:16px;
+    padding:12px 13px;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.08);
+    font-size:12px;
+    color:#314559;
+    line-height:1.65;
+  }
+  .alert strong{display:block;margin-bottom:4px;}
+  .alert.teal{background:#ecfffd;color:#0f766e;}
+  .alert.rose{background:#fff0f4;color:#be185d;}
+  .alert.amber{background:#fff8e8;color:#b45309;}
+  .timeline{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:10px;
+  }
+  .timeline .step{
+    padding:14px;
+    border-radius:18px;
+    background:#fff;
+    border:1px solid rgba(16,33,49,.08);
+  }
+  .timeline .step b{
+    display:block;
+    font-size:12px;
+    margin-bottom:8px;
+  }
+  .timeline .step span{
+    display:block;
+    font-size:11.5px;
+    line-height:1.7;
+    color:#6d7e90;
   }
 
-  /* ---------- features ---------- */
-  .feature-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:1px;
-    background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;
-    margin-top:8px;
+  footer{
+    padding:28px 0 42px;
+    color:#526477;
   }
-  .feature{
-    background:var(--paper-raised);padding:20px 22px;
-    display:flex;gap:14px;align-items:flex-start;
+  .footer-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:20px;
+    padding-top:18px;
+    border-top:1px solid rgba(16,33,49,.10);
+    flex-wrap:wrap;
   }
-  .feature .ic{
-    width:34px;height:34px;border-radius:9px;background:#eef2f0;color:var(--teal-deep);
-    display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;
+  .footer-box b{
+    display:block;
+    font-size:15px;
+    color:var(--ink);
   }
-  .feature h4{margin:0 0 4px;font-size:14.5px;color:var(--ink);}
-  .feature p{margin:0;font-size:13.2px;color:var(--ink-soft);}
-  @media (max-width:760px){.feature-grid{grid-template-columns:1fr;}}
-
-  /* ---------- results ---------- */
-  .stat-row{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
-    margin-top:8px;border-top:1px solid var(--line-soft);
-  }
-  .stat{padding:22px 18px 0;border-right:1px solid var(--line-soft);}
-  .stat:last-child{border-right:none;}
-  .stat b{
-    display:block;font-family:'Fraunces',serif;font-weight:600;
-    font-size:36px;color:var(--coral);line-height:1;margin-bottom:8px;
-  }
-  .stat span{font-size:13px;color:var(--ink-soft);display:block;line-height:1.4;}
-  @media (max-width:760px){
-    .stat-row{grid-template-columns:1fr 1fr;}
-    .stat{border-bottom:1px solid var(--line-soft);padding-bottom:18px;}
+  .footer-box span{
+    display:block;
+    margin-top:4px;
+    font-size:13px;
+    line-height:1.65;
   }
 
-  .note-block{
-    margin-top:32px;padding:18px 20px;border:1px solid var(--line);
-    border-radius:12px;background:var(--paper-raised);font-size:13.5px;color:var(--ink-soft);
+  @keyframes floatGlow{
+    0%,100%{transform:translateY(0) scale(1);}
+    50%{transform:translateY(18px) scale(1.04);}
   }
-  .note-block b{color:var(--ink);}
-
-  /* ---------- footer ---------- */
-  footer{padding:44px 0 60px;}
-  .footer-grid{
-    display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;
-    padding-top:24px;border-top:1px solid var(--line);
+  @keyframes floatOrb{
+    0%,100%{transform:translateY(0) translateX(0);}
+    50%{transform:translateY(-16px) translateX(10px);}
   }
-  footer .hname{font-weight:700;font-size:14.5px;color:var(--ink);}
-  footer .hsub{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
-  footer .credit{font-size:12px;color:var(--ink-soft);text-align:right;}
+  @keyframes characterFloat{
+    0%,100%{transform:translateY(0) rotate(-1deg);}
+    50%{transform:translateY(-12px) rotate(1deg);}
+  }
 
-  @media print{
-    body{background:#fff;}
-    .mockup{box-shadow:none;}
-    section{break-inside:avoid;}
+  @media (max-width: 1180px){
+    .hero{height:auto;min-height:0;padding-top:18px;}
+    .hero-grid{grid-template-columns:1fr;min-height:auto;padding-top:8px;}
+    .hero-grid{height:auto;}
+    .hero-visual{min-height:700px;grid-template-columns:1fr;}
+    .hero-notes{grid-template-columns:repeat(2, minmax(0,1fr));}
+    .architecture-grid{grid-template-columns:1fr;}
+    .module-grid{grid-template-columns:repeat(2, minmax(0,1fr));}
+    .flow{grid-template-columns:repeat(2, minmax(0,1fr));}
+    .flow-step:not(:last-child)::after{display:none;}
+    .modal-body{grid-template-columns:1fr;}
+    .mockup-frame{min-height:auto;}
+    .risk-board{grid-template-columns:1fr;}
+  }
+  @media (max-width: 760px){
+    .shell,.section-shell{width:calc(100% - 20px);}
+    .topbar-inner{flex-direction:column;align-items:flex-start;}
+    .top-actions{width:100%;justify-content:flex-start;}
+    .owner-copy{width:100%;max-width:none;margin-left:0;padding:10px 0 0;border-left:0;border-top:1px solid rgba(255,255,255,.14);}
+    .btn{padding:11px 14px;font-size:12px;}
+    .hero{padding-top:18px;}
+    .hero-copy h1{max-width:100%;}
+    .hero-actions{width:100%;}
+    .hero-actions .btn{width:100%;}
+    .hero-notes{grid-template-columns:1fr;}
+    .hero-visual{min-height:700px;grid-template-columns:1fr;align-items:end;}
+    .hero-float{display:none;}
+    .hero-character{grid-column:1;grid-row:1;width:min(100%,430px);height:auto;left:auto;bottom:auto;justify-self:center;align-self:end;margin-bottom:-6px;}
+    .hero-device{grid-column:1;grid-row:2;width:100%;transform:none;}
+    .device{padding:12px;border-radius:28px;}
+    .device-screen{min-height:auto;}
+    .device-top{padding:14px;}
+    .device-body{grid-template-columns:1fr;}
+    .device-nav{display:none;}
+    .device-main{padding:14px;}
+    .device-main .overview-grid{grid-template-columns:1fr;}
+    .device-footer{grid-template-columns:1fr;}
+    .section{padding:70px 0;}
+    .section-head{grid-template-columns:1fr;gap:10px;margin-bottom:20px;}
+    .section-head > div:first-child{padding:14px 16px 16px;}
+    .section-head p{padding-left:0;}
+    .module-grid{grid-template-columns:1fr;}
+    .timeline{grid-template-columns:1fr;}
+    .callout-grid{grid-template-columns:1fr;}
+    .modal{padding:10px;}
+    .modal-panel{border-radius:26px;}
+    .modal-head,.modal-body{padding-left:16px;padding-right:16px;}
+    .mockup-frame{padding:12px;}
+    .mockup-grid.two,.mockup-grid.three{grid-template-columns:1fr;}
+    .bed-grid{grid-template-columns:repeat(2, minmax(0,1fr));}
+    .risk-alert{grid-template-columns:42px minmax(0,1fr);}
+    .risk-level{grid-column:2;justify-self:start;}
+    .practice-window{grid-template-columns:1fr;}
+    .practice-nav{grid-template-columns:repeat(2,minmax(0,1fr));}
   }
 </style>
 </head>
 <body>
-
-  <div class="topstrip">
-    <div class="wrap topstrip-inner">
-      <div class="brandmark"><span class="dot"></span> IPD Nurse Workbench</div>
-      <div class="hospital">โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน · จังหวัดสกลนคร</div>
-    </div>
-  </div>
-
-  <header class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <h1>ระบบบันทึกการพยาบาลผู้ป่วยใน<br>ที่มี <em>ผู้ช่วย AI</em> อยู่ข้างเตียง</h1>
-        <p class="lede">
-          IPD Nurse Workbench รวมงานเวชระเบียน แบบประเมิน และบันทึกทางการพยาบาลทั้งหมดไว้ในที่เดียว
-          พร้อมผู้ช่วย AI ชื่อ “CANDI” ที่ช่วยร่างบันทึก ประเมินความเสี่ยง และตอบคำถามทางคลินิกได้ทันทีระหว่างเวร
-        </p>
-        <div class="hero-tags">
-          <span>เวชระเบียนผู้ป่วยใน</span>
-          <span>แบบฟอร์มการพยาบาล 8 ชุด</span>
-          <span>ผู้ช่วย AI: CANDI</span>
-          <span>ฐานข้อมูลกลาง Supabase</span>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">
+          <img src="icon-app.svg" alt="IPD Nurse Workbench">
+        </div>
+        <div class="brand-copy">
+          <b>IPD Nurse Workbench</b>
+          <span>CANDI Overview · Clinical Decision Support</span>
         </div>
       </div>
-
-      <div class="mockup">
-        <div class="mockup-chrome"><span></span><span></span><span></span></div>
-        <div class="mockup-screen">
-          <div class="mockup-topbar">
-            <div class="mockup-patient">
-              <div class="mockup-avatar"><i class="fa-solid fa-user-injured"></i></div>
-              <div>
-                <div class="mockup-name">นางสมหญิง ใจดี</div>
-                <div class="mockup-sub">HN 000123 &nbsp;·&nbsp; AN 690001</div>
-              </div>
-              <div class="mockup-badges">
-                <span class="b-braden">BRADEN 14</span>
-                <span class="b-morse">MORSE 40</span>
-                <span class="b-maas">MAAS 3</span>
-              </div>
-            </div>
-            <div class="mockup-bed"><b>A1</b><small>BED</small></div>
-          </div>
-          <div class="mockup-body mockup-canvas">
-            <div class="mockup-side">
-              <i class="active fa-solid fa-clipboard-list"></i>
-              <i class="fa-solid fa-layer-group"></i>
-              <i class="fa-solid fa-person-falling"></i>
-              <i class="fa-solid fa-bed-pulse"></i>
-              <i class="fa-solid fa-list-check"></i>
-              <i class="fa-solid fa-pen-to-square"></i>
-            </div>
-            <div class="mockup-main">
-              <div class="line w60"></div>
-              <div class="line w80"></div>
-              <div class="line w40"></div>
-              <div class="line w80"></div>
-              <div class="line w60"></div>
-            </div>
-            <div class="mockup-chat"><i class="fa-solid fa-robot"></i></div>
-          </div>
-        </div>
+      <div class="owner-copy" aria-label="เจ้าของผลงาน">
+        <b>เจ้าของผลงาน : นายนัทธ์นรินทร คำนาโฮม</b>
+        <span>พยาบาลวิชาชีพปฏิบัติการ โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน จังหวัดสกลนคร</span>
+      </div>
+      <div class="top-actions">
+        <a class="btn btn-secondary" href="index.html">
+          <i class="fa-solid fa-arrow-left"></i>
+          กลับไประบบสาธิต
+        </a>
+        <a class="btn btn-primary" href="#modules">
+          <i class="fa-solid fa-table-cells-large"></i>
+          ดูโมดูลหลัก
+        </a>
       </div>
     </div>
   </header>
 
-  <section id="rationale">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <div class="kicker">ที่มาและวัตถุประสงค์</div>
-        </div>
-        <h2>จากสมุดบันทึกและ Google Sheet<br>สู่ระบบเดียวที่ทุกเวรใช้ร่วมกัน</h2>
-      </div>
-      <div class="section-body">
-        <p style="color:var(--ink-soft);font-size:15px;margin:0 0 4px;">
-          หอผู้ป่วยในเดิมบันทึกข้อมูลกระจายอยู่หลายที่ ทั้งกระดาษและ Google Sheet ที่แก้ไขพร้อมกันได้ยาก
-          ค้นประวัติผู้ป่วยย้อนหลังช้า และเสี่ยงข้อมูลชนกันเวลาหลายคนพิมพ์พร้อมกัน โครงการนี้จึงถูกออกแบบมาเพื่อ
-        </p>
-        <ul class="goal-list">
-          <li>
-            <i class="fa-solid fa-database"></i>
-            <div><b>รวมข้อมูลผู้ป่วยไว้ที่เดียว</b><span>ตั้งแต่รับเข้า ย้ายเตียง จนถึงจำหน่าย ไม่ต้องสลับไฟล์หรือถามต่อกันด้วยปากเปล่า</span></div>
-          </li>
-          <li>
-            <i class="fa-solid fa-file-shield"></i>
-            <div><b>ลดความเสี่ยงข้อมูลผิดพลาด</b><span>บังคับรูปแบบแบบประเมินให้ครบตามมาตรฐาน และกันการบันทึกซ้อนทับกันระหว่างเวร</span></div>
-          </li>
-          <li>
-            <i class="fa-solid fa-comment-medical"></i>
-            <div><b>มีตัวช่วยตัดสินใจเชิงคลินิกอยู่ข้างเตียง</b><span>ให้พยาบาลถามคำถาม ขอร่างบันทึก หรือตรวจสอบยาความเสี่ยงสูงได้ทันทีโดยไม่ต้องพักงาน</span></div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section id="architecture">
-    <div class="wrap">
-      <div class="section-head">
-        <div><div class="kicker">สถาปัตยกรรมระบบ</div></div>
-        <h2>สามชั้นทำงาน ตั้งแต่หน้าจอ<br>ไปจนถึงผู้ช่วย AI</h2>
-      </div>
-      <div class="section-body" style="max-width:100%;">
-        <div class="stack">
-          <div class="layer">
-            <div class="layer-num">01</div>
-            <div>
-              <h3>หน้าจอผู้ใช้งาน — เปิดผ่านเบราว์เซอร์ได้ทุกอุปกรณ์</h3>
-              <p>ไม่ต้องติดตั้งโปรแกรม ใช้ได้ทั้งคอมพิวเตอร์และแท็บเล็ตที่หอผู้ป่วย รองรับการทำงานแบบเว็บแอปที่ติดตั้งเป็นไอคอนหน้าจอได้ (PWA)</p>
-              <div class="chips"><span>Alpine.js</span><span>Tailwind CSS</span><span>Progressive Web App</span></div>
-            </div>
+  <main>
+    <section class="hero">
+      <div class="section-shell hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">
+            <i class="fa-solid fa-wave-square"></i>
+            AI-first nursing platform
+          </span>
+          <h1>ระบบสนับสนุนการตัดสินใจทางคลินิก <em>และเวชระเบียนไร้กระดาษ</em></h1>
+          <p>
+            หน้า overview นี้ออกแบบใหม่ให้เน้นภาพรวมของโครงสร้างระบบ ฟังก์ชันการใช้งาน และบทบาทของ CANDI
+            ในการช่วยคัดกรอง เฝ้าระวัง และสรุปข้อมูลทางคลินิกสำหรับงานพยาบาลผู้ป่วยในแบบครบวงจร
+          </p>
+          <div class="chip-row">
+            <span class="chip"><i class="fa-solid fa-shield-heart"></i>Clinical Decision Support</span>
+            <span class="chip"><i class="fa-solid fa-file-signature"></i>Paperless Record</span>
+            <span class="chip"><i class="fa-solid fa-robot"></i>CANDI Assistant</span>
+            <span class="chip"><i class="fa-solid fa-table-columns"></i>Ward Dashboard</span>
           </div>
-          <div class="layer">
-            <div class="layer-num">02</div>
-            <div>
-              <h3>ฐานข้อมูลกลางและระบบยืนยันตัวตน</h3>
-              <p>ข้อมูลผู้ป่วยทุกคนอยู่บนฐานข้อมูลเดียว อัปเดตให้ทุกเวรเห็นตรงกันทันที มีการกำหนดสิทธิ์การเข้าถึงระดับแถวข้อมูล และพยาบาลตั้ง/รีเซ็ตรหัสผ่านของตัวเองได้โดยไม่ต้องรอผู้ดูแลระบบ</p>
-              <div class="chips"><span>Supabase (PostgreSQL)</span><span>Supabase Auth</span><span>Row Level Security</span></div>
-            </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="index.html">
+              <i class="fa-solid fa-circle-play"></i>
+              เปิดระบบสาธิต
+            </a>
+            <a class="btn btn-secondary" href="#architecture">
+              <i class="fa-solid fa-diagram-project"></i>
+              ดูโครงสร้างระบบ
+            </a>
+            <a class="btn btn-secondary" href="#flow">
+              <i class="fa-solid fa-diagram-project"></i>
+              ดู flow การใช้งาน
+            </a>
           </div>
-          <div class="layer">
-            <div class="layer-num">03</div>
-            <div>
-              <h3>ผู้ช่วย AI ทางคลินิก — CANDI</h3>
-              <p>คำถามจากพยาบาลถูกส่งผ่าน Edge Function ไปยังโมเดลภาษา พร้อมข้อมูลผู้ป่วยที่เข้ารหัสตามหลัก PDPA ก่อนส่งออกนอกระบบเสมอ คำตอบที่ได้ยังต้องผ่านการตัดสินใจของพยาบาลวิชาชีพเป็นขั้นสุดท้าย</p>
-              <div class="chips"><span>Supabase Edge Functions</span><span>Gemini 3.8 Flash</span><span>PDPA de-identification</span></div>
+          <div class="hero-notes">
+            <div class="note-card">
+              <b>โครงสร้างชัดเจน</b>
+              <span>แยกชั้นการแสดงผล ข้อมูล และผู้ช่วย AI เพื่อให้พยาบาลใช้งานง่ายและดูแลระบบต่อได้สะดวก</span>
+            </div>
+            <div class="note-card">
+              <b>รองรับงานคลินิก</b>
+              <span>ครอบคลุมการประเมินแรกรับ ความเสี่ยงพลัดตกหกล้ม แผลกดทับ การจำแนกประเภท และบันทึกเวร</span>
+            </div>
+            <div class="note-card">
+              <b>ไร้กระดาษ</b>
+              <span>ลดการใช้แบบฟอร์มกระดาษด้วยเวิร์กโฟลว์ดิจิทัลที่พร้อมต่อยอดกับเวชระเบียนอิเล็กทรอนิกส์</span>
+            </div>
+            <div class="note-card">
+              <b>CANDI ช่วยคิด</b>
+              <span>สรุปข้อมูล เตือนความเสี่ยง และช่วยตั้งต้นข้อความก่อนให้พยาบาลตัดสินใจขั้นสุดท้าย</span>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <section id="features">
-    <div class="wrap">
-      <div class="section-head">
-        <div><div class="kicker">ฟีเจอร์และโมดูลหลัก</div></div>
-        <h2>งานพยาบาลประจำวัน<br>ครบในระบบเดียว</h2>
-      </div>
-      <div class="feature-grid">
-        <div class="feature">
-          <div class="ic"><i class="fa-solid fa-bed"></i></div>
-          <div><h4>รับเข้า / ย้ายเตียง / จำหน่าย</h4><p>บันทึกการเคลื่อนไหวผู้ป่วยพร้อมอัปเดตสถานะเตียงให้อัตโนมัติ</p></div>
-        </div>
-        <div class="feature">
-          <div class="ic"><i class="fa-solid fa-notes-medical"></i></div>
-          <div><h4>แบบประเมินแรกรับ (ผู้ใหญ่ / เด็ก)</h4><p>ครอบคลุมประวัติ อาการ และสมรรถนะผู้ป่วยตามแบบมาตรฐานของโรงพยาบาล</p></div>
-        </div>
-        <div class="feature">
-          <div class="ic"><i class="fa-solid fa-layer-group"></i></div>
-          <div><h4>จำแนกประเภทผู้ป่วย (Patient Classification)</h4><p>คำนวณคะแนนและหมวดหมู่ให้อัตโนมัติจากแบบประเมินรายเวร</p></div>
-        </div>
-        <div class="feature">
-          <div class="ic"><i class="fa-solid fa-person-falling"></i></div>
-          <div><h4>ประเมินความเสี่ยงพลัดตกหกล้ม (Morse / MAAS)</h4><p>แจ้งเตือนระดับความเสี่ยงด้วยสีตามมาตรฐาน พร้อมแนวปฏิบัติแนบท้าย</p></div>
-        </div>
-        <div class="feature">
-          <div class="ic"><i class="fa-solid fa-bed-pulse"></i></div>
-          <div><h4>ประเมินแผลกดทับ (Braden Scale)</h4><p>ติดตามคะแนนย้อนหลังทั้งการนอนโรงพยาบาล เห็นแนวโน้มได้ในหน้าเดียว</p></div>
-        </div>
-        <div class="feature">
-          <div class="ic"><i class="fa-solid fa-list-check"></i></div>
-          <div><h4>Focus List และ Nursing Progress Note</h4><p>ตั้งเป้าหมายการพยาบาลและบันทึกความก้าวหน้าแบบ SOIE ต่อเนื่องกันได้</p></div>
-        </div>
-        <div class="feature">
-          <div class="ic"><i class="fa-solid fa-house-medical"></i></div>
-          <div><h4>คำแนะนำก่อนจำหน่าย (D-METHOD)</h4><p>สรุปแผนดูแลตนเองให้ผู้ป่วยก่อนกลับบ้าน อ่านเข้าใจง่าย</p></div>
-        </div>
-        <div class="feature">
-          <div class="ic"><i class="fa-solid fa-robot"></i></div>
-          <div><h4>CANDI — ผู้ช่วยพยาบาล AI</h4><p>ร่างบันทึก SOIE, สรุปส่งเวร SBAR, ตรวจสอบยาความเสี่ยงสูง และตอบคำถามทางคลินิกได้ทันที</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
+        <div class="hero-visual">
+          <div class="hero-orb orb-a"></div>
+          <div class="hero-orb orb-b"></div>
+          <div class="hero-orb orb-c"></div>
 
-  <section id="results">
-    <div class="wrap">
-      <div class="section-head">
-        <div><div class="kicker">ผลลัพธ์และประโยชน์</div></div>
-        <h2>สิ่งที่เปลี่ยนไปหลังย้าย<br>มาอยู่บนระบบเดียว</h2>
-      </div>
+          <div class="hero-float float-a">
+            <b><i class="fa-solid fa-circle-nodes" style="color:var(--cyan);margin-right:6px;"></i>สถาปัตยกรรมชั้นข้อมูล</b>
+            <span>แยกการแสดงผล หน้าต่างบันทึก และระบบสนับสนุนการตัดสินใจให้ส่งต่อข้อมูลกันแบบเป็นระบบ</span>
+          </div>
+          <div class="hero-float float-b">
+            <b><i class="fa-solid fa-heart-pulse" style="color:var(--rose);margin-right:6px;"></i>เฝ้าระวังความเสี่ยง</b>
+            <span>เห็น patient risk, guideline และ alert สำคัญในมุมมองเดียว พร้อมส่งต่อไปยัง workflow ที่เกี่ยวข้อง</span>
+          </div>
+          <div class="hero-float float-c">
+            <b><i class="fa-solid fa-file-waveform" style="color:var(--amber);margin-right:6px;"></i>เวชระเบียนไร้กระดาษ</b>
+            <span>บันทึกข้อมูลประเมิน ฟอร์มการพยาบาล และการให้คำแนะนำลงในระบบได้ต่อเนื่องทุกเวร</span>
+          </div>
+          <div class="hero-float float-d">
+            <b><i class="fa-solid fa-comments" style="color:var(--mint);margin-right:6px;"></i>CANDI UI Mockup</b>
+            <span>ตัวละคร CANDI อยู่ในตำแหน่งกลางหน้าเพื่อสื่อว่าเป็นผู้ช่วยคิด ไม่ใช่ตัวแทนการตัดสินใจแทนพยาบาล</span>
+          </div>
 
-      <div class="stat-row">
-        <div class="stat"><b>20</b><span>ตารางฐานข้อมูล ครอบคลุมงานพยาบาลทุกประเภท</span></div>
-        <div class="stat"><b>8</b><span>แบบฟอร์มการพยาบาลมาตรฐาน ในระบบเดียว</span></div>
-        <div class="stat"><b>2,400+</b><span>ระเบียนผู้ป่วยเดิมย้ายเข้าระบบโดยไม่สูญข้อมูล</span></div>
-        <div class="stat"><b>24/7</b><span>เข้าถึงประวัติผู้ป่วยได้ทุกเวร ไม่ต้องรอไฟล์ว่าง</span></div>
-      </div>
+          <img class="hero-character" src="CANDI.png" alt="น้อง CANDI ผู้ช่วยสนับสนุนการตัดสินใจทางคลินิก">
 
-      <div class="note-block">
-        <b>หมายเหตุด้านข้อมูล:</b> ตัวเลขข้างต้นสะท้อนขนาดและความครอบคลุมของระบบที่พัฒนาแล้วเสร็จ
-        ส่วนผลลัพธ์เชิงคุณภาพ เช่น เวลาที่ประหยัดได้ต่อเวรหรือความพึงพอใจของผู้ใช้งาน อยู่ระหว่างการเก็บข้อมูลใช้งานจริงเพื่อประเมินผลต่อไป
+          <div class="hero-device">
+            <div class="device">
+              <div class="device-screen">
+                <div class="device-top">
+                  <div class="device-brand">
+                    <img src="CANDI.png" alt="CANDI">
+                    <div>
+                      <b>IPD Nurse Workbench</b>
+                      <span>Smart clinical decision hub</span>
+                    </div>
+                  </div>
+                  <div class="device-status">
+                    <span class="pill teal"><i class="fa-solid fa-circle"></i> CANDI Active</span>
+                    <span class="pill blue"><i class="fa-solid fa-lock"></i> Paperless</span>
+                  </div>
+                </div>
+
+                <div class="device-body">
+                  <aside class="device-nav">
+                    <div class="nav-dot active"><i class="fa-solid fa-house-medical"></i></div>
+                    <div class="nav-dot"><i class="fa-solid fa-bed-pulse"></i></div>
+                    <div class="nav-dot"><i class="fa-solid fa-shield-heart"></i></div>
+                    <div class="nav-dot"><i class="fa-solid fa-clipboard-user"></i></div>
+                    <div class="nav-dot"><i class="fa-solid fa-robot"></i></div>
+                    <div class="nav-dot"><i class="fa-solid fa-file-medical"></i></div>
+                  </aside>
+                  <div class="device-main">
+                    <div class="overview-grid">
+                      <div class="overview-card">
+                        <div class="head">
+                          <b>Ward status</b>
+                          <span>Real-time bed flow</span>
+                        </div>
+                        <div class="mini-bars">
+                          <div class="bar" data-label="เตียงว่าง"></div>
+                          <div class="bar alt" style="height:78px" data-label="เตียงใช้งาน"></div>
+                          <div class="bar violet" style="height:106px" data-label="เฝ้าระวัง"></div>
+                        </div>
+                      </div>
+                      <div class="overview-card">
+                        <div class="head">
+                          <b>CANDI insight</b>
+                          <span>clinical support</span>
+                        </div>
+                        <div class="list-lines">
+                          <div class="line w92"></div>
+                          <div class="line w74"></div>
+                          <div class="line w61"></div>
+                          <div class="line w46"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="device-footer">
+                      <div class="feed-card">
+                        <b>มุมมองงานประจำเวร</b>
+                        <div class="message teal">
+                          <strong>Risk alert</strong>
+                          ผู้ป่วยกลุ่มเสี่ยงตกเตียงและแผลกดทับถูกดึงขึ้นมาเป็นแถวสำคัญใน dashboard ทันที
+                        </div>
+                        <div class="message amber">
+                          <strong>Paperless note</strong>
+                          เตรียมบันทึก SOIE / D-METHOD / handoff ได้ในหน้าจอเดียวโดยไม่ต้องพิมพ์แบบฟอร์มซ้ำ
+                        </div>
+                      </div>
+                      <div class="support-card">
+                        <div class="avatar">
+                          <img src="CANDI.png" alt="CANDI">
+                        </div>
+                        <b>น้อง CANDI</b>
+                        <span>
+                          ช่วยตั้งต้นข้อความ สรุปข้อมูลสำคัญ และชี้จุดที่ควรตรวจซ้ำ เพื่อให้พยาบาลตัดสินใจบนข้อมูลที่ครบถ้วนกว่าเดิม
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section id="architecture" class="section light">
+      <div class="section-shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">โครงสร้างระบบ</div>
+            <h2 class="section-title">ออกแบบเป็น 3 ชั้น เพื่อให้ใช้งานง่าย ดูแลง่าย และต่อยอดได้</h2>
+          </div>
+          <p class="section-lede">
+            จุดเน้นของหน้า overview คือแสดงให้เห็นชัดว่า CANDI ไม่ใช่แค่หน้าจอเดียว แต่เป็นระบบที่เชื่อม
+            การใช้งานของพยาบาลเข้ากับข้อมูลคลินิก และผู้ช่วยด้านการตัดสินใจอย่างเป็นระเบียบ
+          </p>
+        </div>
+
+        <div class="architecture-grid">
+          <article class="arch-card">
+            <div class="arch-num">01</div>
+            <div class="icon"><i class="fa-solid fa-display"></i></div>
+            <h3>ชั้นการแสดงผลและประสบการณ์ใช้งาน</h3>
+            <p>ออกแบบให้เต็มความกว้างบนจอคอม แต่ยังตอบสนองได้ดีบนแท็บเล็ตและจอขนาดเล็กสำหรับใช้งานหน้าเตียง</p>
+            <div class="arch-list">
+              <span><i class="fa-solid fa-check"></i> หน้า dashboard, form, modal และ panel ถูกจัดเป็นบล็อกชัดเจน</span>
+              <span><i class="fa-solid fa-check"></i> ใช้สีและสถานะต่างกันเพื่อช่วยแยกกลุ่มเสี่ยงและงานเร่งด่วน</span>
+              <span><i class="fa-solid fa-check"></i> รองรับงานเวรจริงด้วยปุ่มลัดและการสลับหน้าจออย่างรวดเร็ว</span>
+            </div>
+          </article>
+
+          <article class="arch-card">
+            <div class="arch-num">02</div>
+            <div class="icon"><i class="fa-solid fa-database"></i></div>
+            <h3>ชั้นข้อมูลและเวชระเบียน</h3>
+            <p>รองรับเวชระเบียนไร้กระดาษด้วยข้อมูลศูนย์กลางที่อัปเดตตามเวลา พร้อมเชื่อมงาน admission, classification, note และ discharge</p>
+            <div class="arch-list">
+              <span><i class="fa-solid fa-check"></i> ข้อมูลผู้ป่วยอยู่บนชุดข้อมูลกลางเดียวกันทุกเวร</span>
+              <span><i class="fa-solid fa-check"></i> แบบประเมินและแบบบันทึกต่าง ๆ เชื่อมโยงกันได้ต่อเนื่อง</span>
+              <span><i class="fa-solid fa-check"></i> รองรับการเก็บประวัติย้อนหลังและการสืบค้นง่าย</span>
+            </div>
+          </article>
+
+          <article class="arch-card">
+            <div class="arch-num">03</div>
+            <div class="icon"><i class="fa-solid fa-brain"></i></div>
+            <h3>ชั้นสนับสนุนการตัดสินใจทางคลินิก</h3>
+            <p>CANDI ช่วยชี้จุดสำคัญจากข้อมูลคลินิก ให้คำแนะนำเบื้องต้น และนำเสนอ evidence prompt ก่อนให้พยาบาลสรุปผลจริง</p>
+            <div class="arch-list">
+              <span><i class="fa-solid fa-check"></i> ช่วยวิเคราะห์ความเสี่ยง พลัดตกหกล้ม แผลกดทับ และสัญญาณเตือนอื่น ๆ</span>
+              <span><i class="fa-solid fa-check"></i> ช่วยร่างข้อความสำหรับ SOIE, handoff และ discharge education</span>
+              <span><i class="fa-solid fa-check"></i> ตัดสินใจสุดท้ายยังอยู่กับวิชาชีพพยาบาลเสมอ</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="callout-grid">
+          <div class="callout">
+            <h3><i class="fa-solid fa-shield-heart" style="color:var(--teal-deep);margin-right:8px;"></i>Clinical guardrail</h3>
+            <p>
+              ระบบถูกออกแบบให้มีกรอบความปลอดภัยชัดเจน โดยนำเสนอคำเตือน แนวทาง และข้อมูลสรุป
+              เพื่อช่วยให้พยาบาลมองภาพรวมได้เร็วขึ้น แต่ไม่แทนที่การตัดสินใจเชิงวิชาชีพ
+            </p>
+          </div>
+          <div class="callout">
+            <h3><i class="fa-solid fa-file-circle-check" style="color:#2563eb;margin-right:8px;"></i>Paperless workflow</h3>
+            <p>
+              บันทึกการประเมิน การให้คำแนะนำ และการสรุปเวรอยู่ในระบบเดียว ลดงานซ้ำจากกระดาษและช่วยให้ข้อมูลต่อเนื่องระหว่างเวร
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cdss-focus" class="section decision-section">
+      <div class="section-shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Clinical decision support</div>
+            <h2 class="section-title">เห็นความเสี่ยงเร็วขึ้น <em>พร้อมแนวปฏิบัติที่เปิดใช้ได้ทันที</em></h2>
+          </div>
+          <p class="section-lede">
+            แถบเตือนของ CANDI เชื่อมจากผลการประเมินไปยังแนวปฏิบัติการพยาบาลที่เกี่ยวข้อง ช่วยให้ทีมพยาบาลเห็นสัญญาณสำคัญ จัดลำดับงาน และเปิดรายละเอียดเพื่อทบทวนก่อนลงมือดูแลผู้ป่วย
+          </p>
+        </div>
+
+        <div class="risk-board">
+          <div class="risk-panel">
+            <div class="risk-panel-head">
+              <b><i class="fa-solid fa-bell" style="color:#8fffe8;margin-right:8px;"></i>Risk alert สำหรับเวรปัจจุบัน</b>
+              <span>อัปเดตล่าสุด 10:42 น.</span>
+            </div>
+            <div class="risk-list">
+              <button class="risk-alert high" type="button" data-practice="fall">
+                <span class="risk-icon"><i class="fa-solid fa-person-falling"></i></span>
+                <span><b>Fall risk สูง</b><p>ควรทบทวนมาตรการป้องกันการพลัดตกหกล้มและจัดสิ่งแวดล้อมรอบเตียง</p></span>
+                <span class="risk-level">HIGH · เปิดแนวทาง</span>
+              </button>
+              <button class="risk-alert medium" type="button" data-practice="pressure">
+                <span class="risk-icon"><i class="fa-solid fa-bed-pulse"></i></span>
+                <span><b>เสี่ยงแผลกดทับ</b><p>คะแนน Braden ต้องติดตามต่อเนื่อง พร้อมวางแผนเปลี่ยนท่าและประเมินผิวหนัง</p></span>
+                <span class="risk-level">MEDIUM · เปิดแนวทาง</span>
+              </button>
+              <button class="risk-alert ready" type="button" data-practice="handoff">
+                <span class="risk-icon"><i class="fa-solid fa-file-circle-check"></i></span>
+                <span><b>แนวทางพร้อมทบทวน</b><p>มี checklist และข้อความสรุปที่เชื่อมกับ progress note ของผู้ป่วยรายนี้</p></span>
+                <span class="risk-level">READY · ดูรายละเอียด</span>
+              </button>
+            </div>
+          </div>
+          <div class="practice-panel">
+            <div>
+              <div class="practice-panel-head"><b>Guideline hub</b><span>Clinical guardrail</span></div>
+              <div class="practice-icon"><i class="fa-solid fa-shield-heart"></i></div>
+              <h3>เปิดแนวปฏิบัติการพยาบาลจากแถบเตือน</h3>
+              <p>ทุก alert พาไปยัง checklist จำลองที่มีขั้นตอนการเฝ้าระวัง การป้องกัน และช่องให้พยาบาลทบทวนก่อนบันทึกจริง</p>
+            </div>
+            <button class="btn" type="button" data-practice="fall"><i class="fa-solid fa-up-right-from-square"></i> ดู Mockup Popup แนวปฏิบัติ</button>
+          </div>
+        </div>
+        <div class="decision-note"><i class="fa-solid fa-circle-info" style="margin-right:6px;color:#8fffe8;"></i>ระบบนี้เป็น decision support เพื่อช่วยจัดข้อมูลและแนะนำจุดที่ควรทบทวน การตัดสินใจทางคลินิกและการยืนยันแนวทางยังอยู่กับพยาบาลผู้ปฏิบัติงาน</div>
+      </div>
+    </section>
+
+    <section id="modules" class="section white">
+      <div class="section-shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">โมดูลหลัก</div>
+            <h2 class="section-title">บล็อกฟังก์ชันแบบกดดูรายละเอียด <em>พร้อม mockup ของแต่ละระบบย่อย</em></h2>
+          </div>
+          <p class="section-lede">
+            คลิกแต่ละบล็อกเพื่อเปิดรายละเอียดและดูตัวอย่าง UI จำลองของส่วนนั้น ๆ ซึ่งช่วยสื่อสารภาพรวมระบบได้ชัดเจนยิ่งขึ้น
+          </p>
+        </div>
+
+        <div class="module-grid">
+          <button type="button" class="module-card" data-module="wardflow" data-tone="cyan">
+            <div class="top">
+              <div class="meta">
+                <div class="module-icon"><i class="fa-solid fa-bed-pulse"></i></div>
+                <div>
+                  <span class="eyebrow-small">01 · Ward flow</span>
+                  <h3>รับเข้า ย้ายเตียง จำหน่าย และมุมมองเตียงรวม</h3>
+                  <p>จัดการการเคลื่อนไหวผู้ป่วยและสถานะเตียงแบบเรียลไทม์ในหน้าจอเดียว</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#8ba0b5;"></i>
+            </div>
+            <div class="module-preview">
+              <div class="preview-top">
+                <div class="preview-dots"><span></span><span></span><span></span></div>
+                <div class="preview-label">bed board live</div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-column">
+                  <div class="preview-chip"><span>ห้องพิเศษ</span><strong>08 เตียง</strong></div>
+                  <div class="preview-chip"><span>หอชาย</span><strong>12 เตียง</strong></div>
+                  <div class="preview-chip"><span>หอหญิง</span><strong>10 เตียง</strong></div>
+                </div>
+                <div class="preview-chart">
+                  <div class="preview-bar" style="width:92%"></div>
+                  <div class="preview-bar alt" style="width:74%"></div>
+                  <div class="preview-bar violet" style="width:58%"></div>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          <button type="button" class="module-card" data-module="cdss" data-tone="blue">
+            <div class="top">
+              <div class="meta">
+                <div class="module-icon"><i class="fa-solid fa-shield-heart"></i></div>
+                <div>
+                  <span class="eyebrow-small">02 · CDSS</span>
+                  <h3>ประเมินความเสี่ยงและแนวทางดูแลเชิงคลินิก</h3>
+                  <p>รวม fall risk, pressure injury, guideline และ alert ที่พร้อมใช้ในเวรจริง</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#8ba0b5;"></i>
+            </div>
+            <div class="module-preview">
+              <div class="preview-top">
+                <div class="preview-dots"><span></span><span></span><span></span></div>
+                <div class="preview-label">clinical alerts</div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-column">
+                  <div class="preview-chip"><span>Fall risk</span><strong>High</strong></div>
+                  <div class="preview-chip"><span>Braden</span><strong>Need check</strong></div>
+                  <div class="preview-chip"><span>Guideline</span><strong>Open</strong></div>
+                </div>
+                <div class="preview-chart">
+                  <div class="preview-bar alt" style="width:88%"></div>
+                  <div class="preview-bar" style="width:66%"></div>
+                  <div class="preview-bar violet" style="width:40%"></div>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          <button type="button" class="module-card" data-module="assessment" data-tone="mint">
+            <div class="top">
+              <div class="meta">
+                <div class="module-icon"><i class="fa-solid fa-clipboard-user"></i></div>
+                <div>
+                  <span class="eyebrow-small">03 · Assessment</span>
+                  <h3>แบบประเมินแรกรับ ผู้ใหญ่ เด็ก และการจำแนกประเภท</h3>
+                  <p>บันทึกข้อมูลประเมินสำคัญให้ครบถ้วนตั้งแต่รับเข้า ward</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#8ba0b5;"></i>
+            </div>
+            <div class="module-preview">
+              <div class="preview-top">
+                <div class="preview-dots"><span></span><span></span><span></span></div>
+                <div class="preview-label">assessment form</div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-column">
+                  <div class="preview-chip"><span>Adult form</span><strong>Ready</strong></div>
+                  <div class="preview-chip"><span>Pediatric</span><strong>Ready</strong></div>
+                  <div class="preview-chip"><span>Class type</span><strong>Auto score</strong></div>
+                </div>
+                <div class="preview-chart">
+                  <div class="preview-bar" style="width:96%"></div>
+                  <div class="preview-bar alt" style="width:69%"></div>
+                  <div class="preview-bar violet" style="width:52%"></div>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          <button type="button" class="module-card" data-module="notes" data-tone="violet">
+            <div class="top">
+              <div class="meta">
+                <div class="module-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                <div>
+                  <span class="eyebrow-small">04 · Notes</span>
+                  <h3>Focus list และ Nursing Progress Note แบบต่อเนื่อง</h3>
+                  <p>บันทึกเป้าหมายและความก้าวหน้าเป็น S-O-I-E พร้อมใช้ต่อยอดส่งเวร</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#8ba0b5;"></i>
+            </div>
+            <div class="module-preview">
+              <div class="preview-top">
+                <div class="preview-dots"><span></span><span></span><span></span></div>
+                <div class="preview-label">soie timeline</div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-column">
+                  <div class="preview-chip"><span>Focus</span><strong>3 items</strong></div>
+                  <div class="preview-chip"><span>Progress note</span><strong>Draft</strong></div>
+                  <div class="preview-chip"><span>Handoff</span><strong>Ready</strong></div>
+                </div>
+                <div class="preview-chart">
+                  <div class="preview-bar violet" style="width:84%"></div>
+                  <div class="preview-bar" style="width:66%"></div>
+                  <div class="preview-bar alt" style="width:46%"></div>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          <button type="button" class="module-card" data-module="education" data-tone="rose">
+            <div class="top">
+              <div class="meta">
+                <div class="module-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <div>
+                  <span class="eyebrow-small">05 · Education</span>
+                  <h3>บันทึกการให้คำแนะนำและ discharge education</h3>
+                  <p>รวม D-METHOD และรายการคำแนะนำผู้ป่วยก่อนกลับบ้านในฟอร์มเดียว</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#8ba0b5;"></i>
+            </div>
+            <div class="module-preview">
+              <div class="preview-top">
+                <div class="preview-dots"><span></span><span></span><span></span></div>
+                <div class="preview-label">discharge education</div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-column">
+                  <div class="preview-chip"><span>D-METHOD</span><strong>Enabled</strong></div>
+                  <div class="preview-chip"><span>Medication</span><strong>Checklist</strong></div>
+                  <div class="preview-chip"><span>Home care</span><strong>Printed / digital</strong></div>
+                </div>
+                <div class="preview-chart">
+                  <div class="preview-bar alt" style="width:90%"></div>
+                  <div class="preview-bar" style="width:72%"></div>
+                  <div class="preview-bar violet" style="width:48%"></div>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          <button type="button" class="module-card" data-module="candi" data-tone="amber">
+            <div class="top">
+              <div class="meta">
+                <div class="module-icon"><i class="fa-solid fa-robot"></i></div>
+                <div>
+                  <span class="eyebrow-small">06 · CANDI AI</span>
+                  <h3>ผู้ช่วยคิด สรุป และชี้ประเด็นสำคัญก่อนตัดสินใจ</h3>
+                  <p>ช่วยร่างข้อความ สรุปข้อมูล และชี้เตือนความเสี่ยงเพื่อสนับสนุนพยาบาล</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#8ba0b5;"></i>
+            </div>
+            <div class="module-preview">
+              <div class="preview-top">
+                <div class="preview-dots"><span></span><span></span><span></span></div>
+                <div class="preview-label">assistant panel</div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-column">
+                  <div class="preview-chip"><span>Summarize</span><strong>SOIE</strong></div>
+                  <div class="preview-chip"><span>Alert</span><strong>Risk points</strong></div>
+                  <div class="preview-chip"><span>Ask</span><strong>Clinical Q&A</strong></div>
+                </div>
+                <div class="preview-chart">
+                  <div class="preview-bar" style="width:76%"></div>
+                  <div class="preview-bar alt" style="width:84%"></div>
+                  <div class="preview-bar violet" style="width:60%"></div>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow" class="section mint">
+      <div class="section-shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Clinical flow</div>
+            <h2 class="section-title">จากการประเมินสู่การตัดสินใจ <em>และจากการตัดสินใจสู่เวชระเบียนไร้กระดาษ</em></h2>
+          </div>
+          <p class="section-lede">
+            หน้า overview นี้จงใจเน้นเส้นทางการทำงานของพยาบาลตั้งแต่รับข้อมูล ประเมินความเสี่ยง
+            รับคำช่วยจาก CANDI และสรุปเป็นบันทึกดิจิทัลที่พร้อมใช้ในเวรต่อไป
+          </p>
+        </div>
+
+        <div class="flow">
+          <div class="flow-step">
+            <b><i class="fa-solid fa-inbox"></i>รับข้อมูล</b>
+            <span>เปิด chart ของผู้ป่วย แสดงสถานะเตียง HN/AN และข้อมูลสำคัญเพื่อเตรียมเริ่มงานเวร</span>
+          </div>
+          <div class="flow-step">
+            <b><i class="fa-solid fa-triangle-exclamation"></i>คัดกรองความเสี่ยง</b>
+            <span>ระบบดึงงานประเมินที่สำคัญขึ้นมาก่อน เช่น fall risk, Braden scale และ classification</span>
+          </div>
+          <div class="flow-step">
+            <b><i class="fa-solid fa-robot"></i>CANDI ช่วยสรุป</b>
+            <span>ผู้ช่วย AI ช่วยตั้งต้นข้อความ รวบประเด็น และเสนอแนวทางก่อนพยาบาลตรวจทวน</span>
+          </div>
+          <div class="flow-step">
+            <b><i class="fa-solid fa-file-signature"></i>บันทึกต่อเนื่อง</b>
+            <span>บันทึกลงในเวชระเบียนไร้กระดาษ ส่งต่อเป็น progress note, discharge record และ handoff ได้ทันที</span>
+          </div>
+        </div>
+
+        <div class="callout-grid" style="margin-top:20px;">
+          <div class="callout">
+            <h3><i class="fa-solid fa-heart-circle-bolt" style="color:var(--rose);margin-right:8px;"></i>Decision support focus</h3>
+            <p>
+              จุดเด่นของ CANDI คือการนำเสนอข้อมูลที่ช่วยให้เห็นความเสี่ยงเร็วขึ้น ทั้งแบบ visual alert และ
+              ข้อความสรุปสั้น ๆ เพื่อให้ทีมพยาบาลใช้ประกอบการตัดสินใจบนเวรได้อย่างมั่นใจ
+            </p>
+          </div>
+          <div class="callout">
+            <h3><i class="fa-solid fa-folder-open" style="color:#2563eb;margin-right:8px;"></i>Paperless by design</h3>
+            <p>
+              จากแบบฟอร์มประเมินไปจนถึงบันทึกให้คำแนะนำ ทุกอย่างถูกร้อยเข้าด้วยกันเป็น flow ที่ลดงานซ้ำ
+              และช่วยให้ประวัติการดูแลต่อเนื่องระหว่างเวร
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <div class="wrap footer-grid">
+    <div class="section-shell footer-box">
       <div>
-        <div class="hname">โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน</div>
-        <div class="hsub">งานการพยาบาลผู้ป่วยใน (IPD) · จังหวัดสกลนคร</div>
+        <b>โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน</b>
+        <span>IPD Nurse Workbench · Demo overview สำหรับสื่อสารโครงสร้างระบบ ฟังก์ชันการใช้งาน และภาพรวม CANDI</span>
       </div>
-      <div class="credit">IPD Nurse Workbench &amp; CANDI AI<br>เอกสารภาพรวมนวัตกรรม — สำหรับนำเสนอ</div>
+      <div style="text-align:right;">
+        <b>CANDI Clinical Decision Support</b>
+        <span>Designed for paperless nursing records and clinical decision support</span>
+      </div>
     </div>
   </footer>
 
+  <div id="module-modal" class="modal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="module-modal-title">
+      <div class="modal-head">
+        <div>
+          <span id="module-modal-eyebrow" class="eyebrow light"></span>
+          <h2 id="module-modal-title"></h2>
+        </div>
+        <button type="button" class="modal-close" data-close-modal aria-label="ปิดหน้าต่างรายละเอียด">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-copy">
+          <p id="module-modal-summary"></p>
+          <ul id="module-modal-bullets" class="modal-bullets"></ul>
+        </div>
+        <div class="mockup-frame" id="module-modal-mockup"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="practice-modal" class="modal practice-modal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="practice-modal-title">
+      <div class="modal-head">
+        <div>
+          <span class="eyebrow">CANDI · Nursing practice popup</span>
+          <h2 id="practice-modal-title">แนวปฏิบัติการพยาบาล: ป้องกันการพลัดตกหกล้ม</h2>
+        </div>
+        <button type="button" class="modal-close" data-close-practice aria-label="ปิดหน้าต่างแนวปฏิบัติ"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="practice-window">
+          <nav class="practice-nav" aria-label="หมวดแนวปฏิบัติ">
+            <span class="active"><i class="fa-solid fa-person-falling" style="margin-right:7px;"></i>Fall risk</span>
+            <span><i class="fa-solid fa-bed-pulse" style="margin-right:7px;"></i>Pressure injury</span>
+            <span><i class="fa-solid fa-heart-pulse" style="margin-right:7px;"></i>Early warning</span>
+            <span><i class="fa-solid fa-file-signature" style="margin-right:7px;"></i>บันทึกต่อเนื่อง</span>
+          </nav>
+          <div class="practice-content">
+            <div class="practice-content-head"><div><b id="practice-content-title">Fall risk · ระดับสูง</b><span id="practice-content-subtitle">ผู้ป่วย: AN 650124 · หอผู้ป่วยอายุรกรรม</span></div><span class="risk-level high">ต้องทบทวน</span></div>
+            <div class="practice-checklist" id="practice-checklist">
+              <div class="practice-check"><i class="fa-solid fa-circle-check"></i><span>จัดเตียงให้อยู่ระดับต่ำ ล็อกล้อเตียง และวางกริ่งเรียกพยาบาลในระยะเอื้อมถึง</span></div>
+              <div class="practice-check"><i class="fa-solid fa-circle-check"></i><span>ประเมินการเดิน การทรงตัว และความต้องการช่วยเหลือทุกครั้งก่อนลุกจากเตียง</span></div>
+              <div class="practice-check"><i class="fa-solid fa-circle-check"></i><span>สื่อสารความเสี่ยงกับผู้ป่วยและญาติ พร้อมติดสัญลักษณ์แจ้งเตือนตามแนวทางของหน่วยงาน</span></div>
+              <div class="practice-check"><i class="fa-solid fa-circle-check"></i><span>บันทึกมาตรการที่ดำเนินการแล้วใน progress note และส่งต่อประเด็นสำคัญในเวรถัดไป</span></div>
+            </div>
+            <div class="practice-footer"><button class="btn btn-soft" type="button"><i class="fa-solid fa-print"></i> พิมพ์แนวทาง</button><button class="btn btn-primary" type="button" data-close-practice><i class="fa-solid fa-check"></i> รับทราบและกลับไปที่ผู้ป่วย</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const MODULES = {
+      wardflow: {
+        eyebrow: 'Module 01 · Ward flow',
+        title: 'รับเข้า ย้ายเตียง จำหน่าย และมุมมองเตียงรวม',
+        summary: 'โฟลว์สำหรับดูการเคลื่อนไหวผู้ป่วยและสถานะเตียงในภาพเดียว ช่วยให้ทีมพยาบาลเห็น occupancy, bed status และงานเคลื่อนย้ายผู้ป่วยได้เร็วขึ้น',
+        bullets: [
+          'รวมงาน admit, transfer และ discharge อยู่ในจุดเดียว',
+          'ช่วยให้เห็นสถานะเตียงและการใช้งานของแต่ละ ward แบบทันที',
+          'ลดการจดจำด้วยกระดาษและลดการอัปเดตซ้ำระหว่างเวร'
+        ],
+        mockup: `
+          <div class="mockup-shell">
+            <div class="mockup-top">
+              <div><b>Ward flow board</b><span>Live bed movement</span></div>
+              <span>12 occupied / 4 available</span>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-grid two">
+                <div class="mock-card">
+                  <b>สถานะเตียง</b>
+                  <div class="bed-grid">
+                    <div class="bed teal"><strong>Bed 01</strong><span>Admit</span></div>
+                    <div class="bed amber"><strong>Bed 02</strong><span>Observation</span></div>
+                    <div class="bed rose"><strong>Bed 03</strong><span>Transfer</span></div>
+                    <div class="bed"><strong>Bed 04</strong><span>Ready</span></div>
+                    <div class="bed teal"><strong>Bed 05</strong><span>Active</span></div>
+                    <div class="bed"><strong>Bed 06</strong><span>Ready</span></div>
+                  </div>
+                </div>
+                <div class="mock-card dark">
+                  <b>งานล่าสุด</b>
+                  <div class="alert-stack">
+                    <div class="alert teal"><strong>รับเข้าใหม่</strong>ผู้ป่วยหญิงจาก ER ถูกจัดเข้าหอหญิงและอัปเดตข้อมูลเข้าระบบแล้ว</div>
+                    <div class="alert amber"><strong>เตียงใกล้พร้อม</strong>Bed 04 รอทำความสะอาดก่อนเปิดใช้งาน</div>
+                    <div class="alert rose"><strong>ย้ายเตียง</strong>มีการย้ายผู้ป่วยไปหอเฉพาะทางตามแผนการรักษา</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-grid">
+                <div class="mock-card">
+                  <b>Activity summary</b>
+                  <div class="timeline">
+                    <div class="step"><b>Admit</b><span>3 ราย</span></div>
+                    <div class="step"><b>Transfer</b><span>2 ราย</span></div>
+                    <div class="step"><b>Discharge</b><span>1 ราย</span></div>
+                    <div class="step"><b>Open bed</b><span>4 เตียง</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`
+      },
+      cdss: {
+        eyebrow: 'Module 02 · Clinical decision support',
+        title: 'ประเมินความเสี่ยงและแนวทางดูแลเชิงคลินิก',
+        summary: 'บล็อกนี้สื่อสารว่า CANDI ช่วยเปิดความเสี่ยงสำคัญให้เร็วขึ้น ทั้งความเสี่ยงพลัดตกหกล้ม แผลกดทับ และ guideline ที่ใช้บ่อยใน ward',
+        bullets: [
+          'แสดงความเสี่ยงสำคัญด้วยสีและป้ายสถานะที่อ่านได้ง่าย',
+          'เชื่อม guideline และคำเตือนเพื่อช่วยเตรียมการดูแล',
+          'เป็น decision support ไม่ใช่คำสั่งแทนการตัดสินใจของพยาบาล'
+        ],
+        mockup: `
+          <div class="mockup-shell">
+            <div class="mockup-top">
+              <div><b>Clinical alerts</b><span>Decision support panel</span></div>
+              <span>3 active alerts</span>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-grid two">
+                <div class="mock-card">
+                  <b>Risk dashboard</b>
+                  <div class="alert-stack">
+                    <div class="alert rose"><strong>Fall risk</strong>คะแนนสูงมาก ต้องมีมาตรการป้องกันเพิ่ม</div>
+                    <div class="alert amber"><strong>Braden</strong>พื้นที่เสี่ยงกดทับ ควรตรวจสภาพผิวหนังเพิ่มเติม</div>
+                    <div class="alert teal"><strong>Guideline</strong>เปิดแนวทางที่เกี่ยวข้องได้ในคลิกเดียว</div>
+                  </div>
+                </div>
+                <div class="mock-card">
+                  <b>Signal strips</b>
+                  <div class="preview-chart" style="min-height:180px;">
+                    <div class="preview-bar alt" style="width:88%"></div>
+                    <div class="preview-bar" style="width:64%"></div>
+                    <div class="preview-bar violet" style="width:50%"></div>
+                    <div class="preview-bar" style="width:34%;background:linear-gradient(90deg, rgba(19,196,182,.96), rgba(91,140,255,.96));"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-grid">
+                <div class="mock-card">
+                  <b>Guideline quick access</b>
+                  <div class="timeline">
+                    <div class="step"><b>Fall</b><span>Step-up prevention</span></div>
+                    <div class="step"><b>Braden</b><span>Pressure injury care</span></div>
+                    <div class="step"><b>Morse</b><span>Adult risk scale</span></div>
+                    <div class="step"><b>MAAS</b><span>Pediatric safety</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`
+      },
+      assessment: {
+        eyebrow: 'Module 03 · Assessment',
+        title: 'แบบประเมินแรกรับ ผู้ใหญ่ เด็ก และการจำแนกประเภท',
+        summary: 'ใช้หน้าจอเดียวเพื่อจัดการแบบประเมินหลักของ IPD ตั้งแต่การรับผู้ป่วยใหม่ การประเมินสมรรถนะ ไปจนถึงการคำนวณประเภทผู้ป่วยสำหรับเวรพยาบาล',
+        bullets: [
+          'รองรับแบบประเมินผู้ใหญ่และผู้ป่วยเด็กใน workflow เดียวกัน',
+          'ช่วยเก็บข้อมูลเริ่มต้นที่จำเป็นต่อการตัดสินใจต่อเนื่อง',
+          'ทำให้การจำแนกประเภทและการเตรียมกำลังคนอ่านง่ายขึ้น'
+        ],
+        mockup: `
+          <div class="mockup-shell">
+            <div class="mockup-top">
+              <div><b>Assessment form</b><span>Initial triage</span></div>
+              <span>Auto scoring ready</span>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-grid two">
+                <div class="mock-card">
+                  <b>Adult form</b>
+                  <div class="list-lines">
+                    <div class="line w92"></div>
+                    <div class="line w80"></div>
+                    <div class="line w74"></div>
+                    <div class="line w61"></div>
+                    <div class="line w46"></div>
+                  </div>
+                </div>
+                <div class="mock-card">
+                  <b>Pediatric form</b>
+                  <div class="list-lines">
+                    <div class="line w88"></div>
+                    <div class="line w68"></div>
+                    <div class="line w54"></div>
+                    <div class="line w40"></div>
+                    <div class="line w76"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-grid">
+                <div class="mock-card">
+                  <b>Classification summary</b>
+                  <div class="timeline">
+                    <div class="step"><b>Type 1</b><span>Low care load</span></div>
+                    <div class="step"><b>Type 3</b><span>Moderate care load</span></div>
+                    <div class="step"><b>Type 4</b><span>High care load</span></div>
+                    <div class="step"><b>Type 5</b><span>Critical support</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`
+      },
+      notes: {
+        eyebrow: 'Module 04 · Nursing notes',
+        title: 'Focus list และ Nursing Progress Note แบบต่อเนื่อง',
+        summary: 'บล็อกนี้แสดงงานบันทึกที่เชื่อมต่อกันระหว่าง focus list, progress note และการส่งต่อเวร เพื่อให้ข้อมูลสำคัญไม่กระจัดกระจาย',
+        bullets: [
+          'ช่วยจัดหัวข้อปัญหาและเป้าหมายการพยาบาลให้เป็นระบบ',
+          'รองรับการเขียน progress note แบบ S-O-I-E',
+          'ต่อยอดเป็น handoff note ได้ทันทีโดยไม่ต้องย้ายข้อมูลด้วยมือ'
+        ],
+        mockup: `
+          <div class="mockup-shell">
+            <div class="mockup-top">
+              <div><b>Nursing notes</b><span>SOIE workspace</span></div>
+              <span>Shift handoff ready</span>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-grid two">
+                <div class="mock-card">
+                  <b>Focus list</b>
+                  <div class="alert-stack">
+                    <div class="alert teal"><strong>F-01</strong>ติดตามอาการหายใจและ oxygen support</div>
+                    <div class="alert amber"><strong>F-02</strong>เฝ้าระวังภาวะโภชนาการและ intake</div>
+                    <div class="alert rose"><strong>F-03</strong>ประเมินการเคลื่อนไหวและความปลอดภัย</div>
+                  </div>
+                </div>
+                <div class="mock-card">
+                  <b>SOIE preview</b>
+                  <div class="list-lines">
+                    <div class="line w92"></div>
+                    <div class="line w80"></div>
+                    <div class="line w68"></div>
+                    <div class="line w54"></div>
+                    <div class="line w46"></div>
+                    <div class="line w74"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-grid">
+                <div class="mock-card">
+                  <b>Handoff summary</b>
+                  <div class="timeline">
+                    <div class="step"><b>S</b><span>Situation summary</span></div>
+                    <div class="step"><b>O</b><span>Objective findings</span></div>
+                    <div class="step"><b>I</b><span>Intervention plan</span></div>
+                    <div class="step"><b>E</b><span>Evaluation / next steps</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`
+      },
+      education: {
+        eyebrow: 'Module 05 · Education',
+        title: 'บันทึกการให้คำแนะนำและ discharge education',
+        summary: 'รวมงานให้คำแนะนำก่อนจำหน่ายและการดูแลต่อเนื่องไว้เป็นแบบฟอร์มดิจิทัล ทำให้ทีมพยาบาลสื่อสารกับผู้ป่วยและญาติได้ครบถ้วนขึ้น',
+        bullets: [
+          'รองรับ D-METHOD และหัวข้อให้คำแนะนำที่ใช้บ่อย',
+          'ทำให้ข้อมูลก่อนกลับบ้านอยู่ในระบบเดียวกับเวชระเบียน',
+          'ช่วยสร้างความต่อเนื่องระหว่างแผนรักษาในโรงพยาบาลและการดูแลที่บ้าน'
+        ],
+        mockup: `
+          <div class="mockup-shell">
+            <div class="mockup-top">
+              <div><b>Discharge education</b><span>Patient guide</span></div>
+              <span>Printable & digital</span>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-grid two">
+                <div class="mock-card">
+                  <b>D-METHOD checklist</b>
+                  <div class="timeline">
+                    <div class="step"><b>D</b><span>Drug list</span></div>
+                    <div class="step"><b>M</b><span>Monitoring</span></div>
+                    <div class="step"><b>E</b><span>Exercise</span></div>
+                    <div class="step"><b>T</b><span>Treatment plan</span></div>
+                  </div>
+                </div>
+                <div class="mock-card">
+                  <b>Discharge pack</b>
+                  <div class="alert-stack">
+                    <div class="alert teal"><strong>Medication</strong>จัดยากลับบ้านพร้อมคำอธิบายสั้น ๆ</div>
+                    <div class="alert amber"><strong>Home care</strong>แนบคำแนะนำสำหรับญาติและผู้ดูแล</div>
+                    <div class="alert rose"><strong>Follow-up</strong>ระบุวันนัดและสัญญาณเตือนที่ควรมาพบแพทย์</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-grid">
+                <div class="mock-card">
+                  <b>Digital handout preview</b>
+                  <div class="list-lines">
+                    <div class="line w92"></div>
+                    <div class="line w80"></div>
+                    <div class="line w88"></div>
+                    <div class="line w61"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`
+      },
+      candi: {
+        eyebrow: 'Module 06 · CANDI AI',
+        title: 'ผู้ช่วยคิด สรุป และชี้ประเด็นสำคัญก่อนตัดสินใจ',
+        summary: 'บล็อกนี้เป็นภาพแทนของ CANDI ในฐานะผู้ช่วยทางคลินิกที่ไม่ตัดสินใจแทนพยาบาล แต่ช่วยทำให้ข้อมูลที่จำเป็นต่อการตัดสินใจถูกสรุปมาไวขึ้น',
+        bullets: [
+          'ช่วยร่างข้อความและสรุปสาระสำคัญจากข้อมูลที่มี',
+          'ช่วยเตือนจุดเสี่ยงหรือประเด็นที่ควรตรวจซ้ำ',
+          'ใช้งานเป็น clinical assistant ที่เคารพบทบาทวิชาชีพพยาบาล'
+        ],
+        mockup: `
+          <div class="mockup-shell">
+            <div class="mockup-top">
+              <div><b>CANDI assistant</b><span>Clinical conversation</span></div>
+              <span>Guardrails on</span>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-grid two">
+                <div class="mock-card dark">
+                  <b>Prompt window</b>
+                  <div class="message teal">สรุปผู้ป่วยรายนี้ให้แบบสั้น ๆ พร้อมประเด็นเสี่ยงหลัก</div>
+                  <div class="message amber">ตรวจสอบจุดที่ควรเฝ้าระวังเรื่องหกล้มและแผลกดทับ</div>
+                  <div class="message rose">ร่าง SOIE คร่าว ๆ เพื่อให้พยาบาลทบทวนก่อนบันทึกจริง</div>
+                </div>
+                <div class="mock-card">
+                  <b>Assistant output</b>
+                  <div class="list-lines">
+                    <div class="line w92"></div>
+                    <div class="line w80"></div>
+                    <div class="line w74"></div>
+                    <div class="line w61"></div>
+                    <div class="line w46"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mockup-grid">
+                <div class="mock-card">
+                  <b>Safe decision support</b>
+                  <div class="timeline">
+                    <div class="step"><b>Collect</b><span>รวบข้อมูลสำคัญ</span></div>
+                    <div class="step"><b>Summarize</b><span>สรุปประเด็น</span></div>
+                    <div class="step"><b>Warn</b><span>ชี้จุดเสี่ยง</span></div>
+                    <div class="step"><b>Review</b><span>พยาบาลตัดสินใจ</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`
+      }
+    };
+
+    const modal = document.getElementById('module-modal');
+    const modalEyebrow = document.getElementById('module-modal-eyebrow');
+    const modalTitle = document.getElementById('module-modal-title');
+    const modalSummary = document.getElementById('module-modal-summary');
+    const modalBullets = document.getElementById('module-modal-bullets');
+    const modalMockup = document.getElementById('module-modal-mockup');
+    const practiceModal = document.getElementById('practice-modal');
+    const practiceTitle = document.getElementById('practice-modal-title');
+    const practiceContentTitle = document.getElementById('practice-content-title');
+    const practiceContentSubtitle = document.getElementById('practice-content-subtitle');
+    const practiceChecklist = document.getElementById('practice-checklist');
+
+    const PRACTICES = {
+      fall: {
+        title: 'แนวปฏิบัติการพยาบาล: ป้องกันการพลัดตกหกล้ม',
+        contentTitle: 'Fall risk · ระดับสูง',
+        subtitle: 'ผู้ป่วย: AN 650124 · หอผู้ป่วยอายุรกรรม',
+        items: [
+          'จัดเตียงให้อยู่ระดับต่ำ ล็อกล้อเตียง และวางกริ่งเรียกพยาบาลในระยะเอื้อมถึง',
+          'ประเมินการเดิน การทรงตัว และความต้องการช่วยเหลือทุกครั้งก่อนลุกจากเตียง',
+          'สื่อสารความเสี่ยงกับผู้ป่วยและญาติ พร้อมติดสัญลักษณ์แจ้งเตือนตามแนวทางของหน่วยงาน',
+          'บันทึกมาตรการที่ดำเนินการแล้วใน progress note และส่งต่อประเด็นสำคัญในเวรถัดไป'
+        ]
+      },
+      pressure: {
+        title: 'แนวปฏิบัติการพยาบาล: ป้องกันแผลกดทับ',
+        contentTitle: 'Braden score · ต้องติดตาม',
+        subtitle: 'ผู้ป่วย: AN 650124 · ประเมินล่าสุด 10:36 น.',
+        items: [
+          'ตรวจผิวหนังบริเวณปุ่มกระดูกและบันทึกการเปลี่ยนแปลงทุกเวร',
+          'จัดตารางเปลี่ยนท่าและเลือกอุปกรณ์ลดแรงกดให้เหมาะกับระดับความเสี่ยง',
+          'ประเมินความชื้น โภชนาการ และการเคลื่อนไหว พร้อมประสานทีมที่เกี่ยวข้องเมื่อจำเป็น',
+          'บันทึกผลการดูแลและการตอบสนองใน progress note เพื่อให้เวรถัดไปติดตามต่อได้'
+        ]
+      },
+      handoff: {
+        title: 'แนวปฏิบัติการพยาบาล: ส่งต่อข้อมูลสำคัญระหว่างเวร',
+        contentTitle: 'Handoff checklist · พร้อมทบทวน',
+        subtitle: 'ผู้ป่วย: AN 650124 · เวรเช้า → เวรบ่าย',
+        items: [
+          'สรุปสถานการณ์ปัจจุบันและประเด็นเสี่ยงที่ต้องเฝ้าระวังต่อเนื่อง',
+          'ระบุการประเมินล่าสุด การดูแลที่ดำเนินการแล้ว และผลตอบสนองของผู้ป่วย',
+          'แจ้งงานค้าง นัดหมาย หรือสัญญาณเตือนที่ต้องรายงานทันที',
+          'ยืนยันความเข้าใจร่วมกันก่อนปิดการส่งต่อและบันทึกในระบบ'
+        ]
+      }
+    };
+
+    function openPracticeModal(key = 'fall') {
+      const item = PRACTICES[key] || PRACTICES.fall;
+      practiceTitle.textContent = item.title;
+      practiceContentTitle.textContent = item.contentTitle;
+      practiceContentSubtitle.textContent = item.subtitle;
+      practiceChecklist.innerHTML = item.items.map((text) => `<div class="practice-check"><i class="fa-solid fa-circle-check"></i><span>${text}</span></div>`).join('');
+      practiceModal.classList.add('active');
+      practiceModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePracticeModal() {
+      practiceModal.classList.remove('active');
+      practiceModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-practice]').forEach((button) => {
+      button.addEventListener('click', () => openPracticeModal(button.dataset.practice));
+    });
+
+    practiceModal.addEventListener('click', (event) => {
+      if (event.target === practiceModal || event.target.closest('[data-close-practice]')) {
+        closePracticeModal();
+      }
+    });
+
+    function openModuleModal(key) {
+      const item = MODULES[key];
+      if (!item) return;
+      modalEyebrow.textContent = item.eyebrow;
+      modalTitle.textContent = item.title;
+      modalSummary.textContent = item.summary;
+      modalBullets.innerHTML = item.bullets.map((bullet) => `<li><i class="fa-solid fa-circle-check"></i><span>${bullet}</span></li>`).join('');
+      modalMockup.innerHTML = item.mockup;
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModuleModal() {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-module]').forEach((button) => {
+      button.addEventListener('click', () => openModuleModal(button.dataset.module));
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal || event.target.closest('[data-close-modal]')) {
+        closeModuleModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('active')) {
+        closeModuleModal();
+      }
+      if (event.key === 'Escape' && practiceModal.classList.contains('active')) {
+        closePracticeModal();
+      }
+    });
+  </script>
 </body>
 </html>
