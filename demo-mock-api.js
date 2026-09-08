@@ -189,10 +189,12 @@
     // --- Classification (ผู้ป่วยผู้ใหญ่): lowercase, scores เป็น array 8 ข้อ ---
     function classificationRecord(opts) {
         const total = opts.scores.reduce((a, b) => a + b, 0);
+        const category = opts.category || (
+            total >= 27 ? 5 : total >= 21 ? 4 : total >= 15 ? 3 : total >= 9 ? 2 : 1
+        );
         return {
             evalDate: opts.evalDate, shift: opts.shift,
-            scores: opts.scores, total,
-            category: opts.category || (total >= 20 ? 'IV (Intensive Care)' : total >= 14 ? 'III (Total Care)' : total >= 8 ? 'II (Partial Care)' : 'I (Self Care)'),
+            scores: opts.scores, total, category,
             assessor: opts.assessor || DEFAULT_ASSESSOR,
             timestamp: opts.timestamp || isoNow()
         };
@@ -203,13 +205,36 @@
         const formData = {};
         opts.items.forEach((v, i) => { formData['item' + (i + 1)] = v; });
         const score = opts.items.reduce((a, b) => a + b, 0);
+        const category = opts.classType || (
+            score >= 34 ? 'ประเภท 5' : score >= 28 ? 'ประเภท 4' : score >= 22 ? 'ประเภท 3' : score >= 16 ? 'ประเภท 2' : 'ประเภท 1'
+        );
         return {
             evalDate: opts.evalDate, shift: opts.shift,
-            score, classType: opts.classType || (score >= 20 ? 'Intensive Care' : score >= 12 ? 'Total Care' : 'Partial Care'),
+            score, classType: category,
             assessor: opts.assessor || DEFAULT_ASSESSOR,
             formData, scores: opts.items,
             timestamp: opts.timestamp || isoNow()
         };
+    }
+
+    function normalizeDemoAdultClassification(record) {
+        if (!record) return null;
+        const parsed = parseInt(record.category, 10);
+        const total = Number(record.total);
+        const category = parsed >= 1 && parsed <= 5
+            ? parsed
+            : (total >= 27 ? 5 : total >= 21 ? 4 : total >= 15 ? 3 : total >= 9 ? 2 : 1);
+        return { ...record, category };
+    }
+
+    function normalizeDemoPediatricClassification(record) {
+        if (!record) return null;
+        const parsed = parseInt(record.classType, 10);
+        const score = Number(record.score);
+        const category = parsed >= 1 && parsed <= 5
+            ? `ประเภท ${parsed}`
+            : `ประเภท ${score >= 34 ? 5 : score >= 28 ? 4 : score >= 22 ? 3 : score >= 16 ? 2 : 1}`;
+        return { ...record, classType: category };
     }
 
     // --- Nursing Progress Note (SOIE) ---
@@ -980,7 +1005,17 @@
         }
         if (action === 'getPatients') {
             const ward = queryParams.get('ward');
-            return Object.values(DB.patients).filter(p => !ward || p.ward === ward);
+            return Object.values(DB.patients)
+                .filter(p => !ward || p.ward === ward)
+                .map(p => {
+                    const adultHistory = DB.classifications[p.an] || [];
+                    const pediatricHistory = DB.classificationsPed[p.an] || [];
+                    return {
+                        ...p,
+                        latestClass: adultHistory.length ? normalizeDemoAdultClassification(adultHistory[adultHistory.length - 1]) : null,
+                        latestClassPed: pediatricHistory.length ? normalizeDemoPediatricClassification(pediatricHistory[pediatricHistory.length - 1]) : null
+                    };
+                });
         }
         if (action === 'getBeds') {
             return ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'สงฆ์-1', 'สงฆ์-2', 'เด็ก-1', 'เด็ก-2', 'ICU-1', 'ICU-2'];

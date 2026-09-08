@@ -2093,11 +2093,45 @@ function nurseApp() {
 
         // ฟังก์ชันคืนค่า CSS class สีตามระดับความเสี่ยง
         classificationRiskClass(val) {
-            const n = parseInt(val);
+            const match = String(val ?? '').match(/\d+/);
+            const n = match ? parseInt(match[0], 10) : NaN;
             if (isNaN(n) || val === '' || val == null) return 'text-slate-400';
             if (n <= 2) return 'text-emerald-600 font-black';
             if (n === 3) return 'text-amber-600 font-black';
             return 'text-red-600 font-black';
+        },
+        patientClassificationCategory(patient) {
+            if (!patient) return null;
+            const classification = this.isPatientAdult(patient)
+                ? patient.latestClass
+                : patient.latestClassPed;
+            const value = classification && (classification.category ?? classification.classType);
+            const match = String(value ?? '').match(/\d+/);
+            const category = match ? parseInt(match[0], 10) : NaN;
+            return category >= 1 && category <= 5 ? category : null;
+        },
+        classificationBlockClass(patient) {
+            const category = this.patientClassificationCategory(patient);
+            return category ? `ipd-registry-category-${category}` : 'ipd-registry-category-none';
+        },
+        classificationNameClass(patient) {
+            const category = this.patientClassificationCategory(patient);
+            return category ? `ipd-registry-name-category-${category}` : 'ipd-registry-name-category-none';
+        },
+        classificationBedClass(patient) {
+            const category = this.patientClassificationCategory(patient);
+            return category ? `ipd-registry-bed-category-${category}` : 'ipd-registry-bed-category-none';
+        },
+        classificationSeverityIconClass(patient) {
+            const category = this.patientClassificationCategory(patient);
+            const icons = {
+                1: 'fa-solid fa-circle-check text-slate-500',
+                2: 'fa-solid fa-circle-info text-green-700',
+                3: 'fa-solid fa-triangle-exclamation text-yellow-700',
+                4: 'fa-solid fa-triangle-exclamation text-orange-700',
+                5: 'fa-solid fa-skull-crossbones text-red-700'
+            };
+            return icons[category] || 'fa-solid fa-circle-question text-slate-400';
         },
         morseRiskClass(val) {
             const n = parseInt(val);

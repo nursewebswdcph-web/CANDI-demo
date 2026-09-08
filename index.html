@@ -723,6 +723,14 @@
                             </h2>
                             <div class="flex flex-wrap items-center gap-2 mt-1.5">
                                 <p class="text-[11px] text-slate-400 font-medium" x-text="patientSummary.deptStr"></p>
+                                <div class="flex flex-wrap items-center gap-1.5 text-[10px] font-bold text-slate-500" aria-label="คำอธิบายสีประเภทผู้ป่วย">
+                                    <span class="text-slate-400">สีบล็อก:</span>
+                                    <span class="ipd-registry-legend ipd-registry-category-1">ประเภท 1</span>
+                                    <span class="ipd-registry-legend ipd-registry-category-2">ประเภท 2</span>
+                                    <span class="ipd-registry-legend ipd-registry-category-3">ประเภท 3</span>
+                                    <span class="ipd-registry-legend ipd-registry-category-4">ประเภท 4</span>
+                                    <span class="ipd-registry-legend ipd-registry-category-5">ประเภท 5</span>
+                                </div>
                                 <template x-if="patientSummary.total > 0">
                                     <div class="flex items-center gap-1.5">
                                         <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded-full font-bold border border-slate-200">
@@ -811,7 +819,8 @@
                             </tr>
                         </thead>
                         <template x-for="p in filteredPatients" :key="p.an">
-                            <tbody class="group border-b border-slate-100 last:border-b-0 bg-white">
+                            <tbody class="group border-b border-slate-100 last:border-b-0 bg-white"
+                                   :class="classificationBlockClass(p)">
                                 <tr @click="openPatientDetail(p)" class="group-hover:bg-slate-50/80 transition-all cursor-pointer">
                                     <td class="p-4 text-center">
                                         <button @click.stop="openNursingChart(p)" 
@@ -821,7 +830,7 @@
                                         </button>
                                     </td>
                                     <td class="p-4 text-center">
-                                        <span class="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-2xl font-black text-base border border-emerald-200 shadow-sm inline-block min-w-[60px]" x-text="p.bed"></span>
+                                        <span class="ipd-registry-bed-badge" :class="classificationBedClass(p)" x-text="p.bed"></span>
                                     </td>
                                     <td class="p-4">
                                         <div class="flex items-center gap-2 leading-tight">
@@ -836,12 +845,13 @@
                                                     <i class="fa-solid fa-child"></i>
                                                 </span>
                                             </template>
-                                            <div>
+                                            <div class="flex items-center gap-1.5">
+                                                <i :class="classificationSeverityIconClass(p)" class="text-sm shrink-0" aria-hidden="true"></i>
                                                 <template x-if="isPatientAdult(p)">
-                                                    <div class="font-black text-blue-800 text-lg group-hover:text-blue-600 transition-colors" x-text="p.name"></div>
+                                                    <div :class="classificationNameClass(p)" class="font-black text-lg group-hover:brightness-95 transition-colors" x-text="p.name"></div>
                                                 </template>
                                                 <template x-if="!isPatientAdult(p)">
-                                                    <div class="font-black text-pink-700 text-lg group-hover:text-pink-500 transition-colors" x-text="p.name"></div>
+                                                    <div :class="classificationNameClass(p)" class="font-black text-lg group-hover:brightness-95 transition-colors" x-text="p.name"></div>
                                                 </template>
                                             </div>
                                         </div>
@@ -1080,7 +1090,7 @@
                         <div class="flex flex-wrap gap-3 mt-2 text-sm font-bold">
                             <span class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full border border-indigo-100">HN: <span x-text="selectedPatient?.hn"></span></span>
                             <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-100">AN: <span x-text="selectedPatient?.an"></span></span>
-                            <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full border border-amber-100">เตียง: <span x-text="selectedPatient?.bed"></span></span>
+                            <span class="ipd-chart-bed-badge" :class="classificationBedClass(selectedPatient)">เตียง: <span x-text="selectedPatient?.bed"></span></span>
                         </div>
                     </div>
                 </div>
@@ -1369,9 +1379,9 @@
 
                     <!-- Right: Bed & Close Button -->
                     <div class="flex items-center gap-3 shrink-0 ml-4">
-                        <div class="bg-emerald-50 border-2 border-emerald-200 px-4 py-1.5 rounded-xl text-center">
-                            <span class="block text-[9px] font-black text-emerald-400 uppercase tracking-widest">Bed</span>
-                            <span class="text-2xl font-black text-emerald-700 leading-none" x-text="selectedPatient?.bed"></span>
+                        <div class="ipd-chart-bed-card" :class="classificationBedClass(selectedPatient)">
+                            <span class="ipd-chart-bed-card-label">Bed</span>
+                            <span class="ipd-chart-bed-card-number" x-text="selectedPatient?.bed"></span>
                         </div>
                         <button @click="viewMode = 'list'" title="กลับรายชื่อผู้ป่วย"
                             class="w-11 h-11 rounded-xl flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all">
@@ -6252,7 +6262,7 @@
                         <div class="flex items-center gap-2">
                             <span class="font-bold text-slate-900 text-sm" x-text="selectedGuidelinePatient.name"></span>
                             <span class="text-slate-500 text-xs" x-text="'(AN: ' + (selectedGuidelinePatient.an || '-') + ')'"></span>
-                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full" x-text="'เตียง ' + (selectedGuidelinePatient.bed || '-')"></span>
+                            <span class="ipd-chart-bed-badge" :class="classificationBedClass(selectedGuidelinePatient)" x-text="'เตียง ' + (selectedGuidelinePatient.bed || '-')"></span>
                         </div>
                         <div class="text-xs">
                             <span class="text-slate-500 font-bold">ผลประเมินล่าสุด: </span>

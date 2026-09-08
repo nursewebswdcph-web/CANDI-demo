@@ -239,6 +239,285 @@ html.dark .border-slate-200 {
 html.dark .border-slate-100 {
     border-color: #1e293b !important;
 }
+
+/* IPD Registry: severity color is limited to the patient name badge. */
+.ipd-registry-legend.ipd-registry-category-1,
+.ipd-registry-legend.ipd-registry-category-none {
+    background-color: #ffffff !important;
+}
+
+.ipd-registry-legend.ipd-registry-category-2 {
+    background-color: #bbf7d0 !important;
+}
+
+.ipd-registry-legend.ipd-registry-category-3 {
+    background-color: #fef08a !important;
+}
+
+.ipd-registry-legend.ipd-registry-category-4 {
+    background-color: #fdba74 !important;
+}
+
+.ipd-registry-legend.ipd-registry-category-5 {
+    background-color: #fca5a5 !important;
+}
+
+.ipd-registry-name-category-1,
+.ipd-registry-name-category-none {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+}
+
+.ipd-registry-name-category-2 {
+    background-color: #bbf7d0;
+    color: #166534;
+    border: 1px solid #86efac;
+}
+
+.ipd-registry-name-category-3 {
+    background-color: #fef08a;
+    color: #854d0e;
+    border: 1px solid #fde047;
+}
+
+.ipd-registry-name-category-4 {
+    background-color: #fdba74;
+    color: #9a3412;
+    border: 1px solid #fb923c;
+}
+
+.ipd-registry-name-category-5 {
+    background-color: #fca5a5;
+    color: #991b1b;
+    border: 1px solid #f87171;
+}
+
+.ipd-registry-bed-badge,
+.ipd-chart-bed-badge {
+    display: inline-block;
+    font-weight: 900;
+    border-radius: 0.75rem;
+    border: 1px solid;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.ipd-registry-bed-badge {
+    min-width: 60px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.ipd-chart-bed-badge {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.ipd-chart-bed-card {
+    min-width: 76px;
+    padding: 0.375rem 1rem;
+    border: 2px solid;
+    border-radius: 0.75rem;
+    text-align: center;
+}
+
+.ipd-chart-bed-card-label {
+    display: block;
+    font-size: 0.5625rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    opacity: 0.75;
+}
+
+.ipd-chart-bed-card-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.ipd-registry-bed-category-1,
+.ipd-registry-bed-category-none {
+    background-color: #ffffff;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+.ipd-registry-bed-category-2 {
+    background-color: #bbf7d0;
+    color: #166534;
+    border-color: #4ade80;
+}
+
+.ipd-registry-bed-category-3 {
+    background-color: #fef08a;
+    color: #854d0e;
+    border-color: #eab308;
+}
+
+.ipd-registry-bed-category-4 {
+    background-color: #fdba74;
+    color: #9a3412;
+    border-color: #f97316;
+}
+
+.ipd-registry-bed-category-5 {
+    background-color: #fca5a5;
+    color: #991b1b;
+    border-color: #ef4444;
+}
+
+.ipd-chart-bed-card.ipd-registry-bed-category-1,
+.ipd-chart-bed-card.ipd-registry-bed-category-none {
+    background-color: #ffffff;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+.ipd-chart-bed-card.ipd-registry-bed-category-2 {
+    background-color: #bbf7d0;
+    color: #166534;
+    border-color: #4ade80;
+}
+
+.ipd-chart-bed-card.ipd-registry-bed-category-3 {
+    background-color: #fef08a;
+    color: #854d0e;
+    border-color: #eab308;
+}
+
+.ipd-chart-bed-card.ipd-registry-bed-category-4 {
+    background-color: #fdba74;
+    color: #9a3412;
+    border-color: #f97316;
+}
+
+.ipd-chart-bed-card.ipd-registry-bed-category-5 {
+    background-color: #fca5a5;
+    color: #991b1b;
+    border-color: #ef4444;
+}
+
+.ipd-registry-name-category-1,
+.ipd-registry-name-category-none,
+.ipd-registry-name-category-2,
+.ipd-registry-name-category-3,
+.ipd-registry-name-category-4,
+.ipd-registry-name-category-5 {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.55rem;
+    line-height: 1.35;
+}
+
+.ipd-registry-legend {
+    padding: 0.2rem 0.45rem;
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 0.45rem;
+    color: #475569;
+}
+
+html.dark .ipd-registry-legend.ipd-registry-category-1 {
+    background-color: #f8fafc !important;
+    color: #334155;
+}
+
+html.dark .ipd-registry-legend.ipd-registry-category-2 {
+    background-color: #166534 !important;
+}
+
+html.dark .ipd-registry-legend.ipd-registry-category-3 {
+    background-color: #a16207 !important;
+}
+
+html.dark .ipd-registry-legend.ipd-registry-category-4 {
+    background-color: #c2410c !important;
+}
+
+html.dark .ipd-registry-legend.ipd-registry-category-5 {
+    background-color: #b91c1c !important;
+}
+
+html.dark .ipd-registry-name-category-1,
+html.dark .ipd-registry-name-category-none {
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+html.dark .ipd-registry-name-category-2 {
+    background-color: #166534;
+    color: #dcfce7;
+}
+
+html.dark .ipd-registry-name-category-3 {
+    background-color: #a16207;
+    color: #fef9c3;
+}
+
+html.dark .ipd-registry-name-category-4 {
+    background-color: #c2410c;
+    color: #ffedd5;
+}
+
+html.dark .ipd-registry-name-category-5 {
+    background-color: #b91c1c;
+    color: #fee2e2;
+}
+
+html.dark .ipd-registry-bed-category-1,
+html.dark .ipd-registry-bed-category-none {
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+html.dark .ipd-registry-bed-category-2 {
+    background-color: #166534;
+    color: #dcfce7;
+}
+
+html.dark .ipd-registry-bed-category-3 {
+    background-color: #a16207;
+    color: #fef9c3;
+}
+
+html.dark .ipd-registry-bed-category-4 {
+    background-color: #c2410c;
+    color: #ffedd5;
+}
+
+html.dark .ipd-registry-bed-category-5 {
+    background-color: #b91c1c;
+    color: #fee2e2;
+}
+
+html.dark .ipd-chart-bed-card.ipd-registry-bed-category-1,
+html.dark .ipd-chart-bed-card.ipd-registry-bed-category-none {
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+html.dark .ipd-chart-bed-card.ipd-registry-bed-category-2 {
+    background-color: #166534;
+    color: #dcfce7;
+}
+
+html.dark .ipd-chart-bed-card.ipd-registry-bed-category-3 {
+    background-color: #a16207;
+    color: #fef9c3;
+}
+
+html.dark .ipd-chart-bed-card.ipd-registry-bed-category-4 {
+    background-color: #c2410c;
+    color: #ffedd5;
+}
+
+html.dark .ipd-chart-bed-card.ipd-registry-bed-category-5 {
+    background-color: #b91c1c;
+    color: #fee2e2;
+}
 html.dark .bg-slate-50 {
     background-color: #0f172a !important;
 }
