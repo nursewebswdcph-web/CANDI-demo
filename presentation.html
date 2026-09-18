@@ -3,557 +3,292 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CANDI | Academic Presentation</title>
+<title>CQI Presentation | CANDI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#071827; --navy2:#0c2b3b; --teal:#13b9a7; --teal2:#72eadc;
-  --cyan:#79dcff; --blue:#5f87ff; --rose:#ef6680; --amber:#f5bd67;
-  --paper:#f4fafc; --ink:#163246; --muted:#607687; --white:#f7fdff;
-  --line:rgba(22,50,70,.11); --shadow:0 22px 60px rgba(8,28,42,.16);
-}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#03111d;font-family:'Sarabun',sans-serif;color:var(--white)}
-button,a{font:inherit}
-.deck{position:relative;width:100vw;height:100vh;overflow:hidden}
-.slide{
-  position:absolute; inset:0; display:none; overflow:hidden;
-  padding:54px 7vw 58px; background:var(--paper); color:var(--ink);
-}
-.slide.active{display:block}
-.slide.dark{background:
-  radial-gradient(circle at 82% 18%,rgba(19,185,167,.22),transparent 28%),
-  radial-gradient(circle at 8% 76%,rgba(95,135,255,.14),transparent 28%),
-  linear-gradient(145deg,#04111e,#0a2a3b 64%,#083e43); color:var(--white)}
-.slide.dark:before{
-  content:""; position:absolute; inset:0; opacity:.16;
-  background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);
-  background-size:42px 42px; mask-image:linear-gradient(to bottom,rgba(0,0,0,.75),transparent 86%);
-  pointer-events:none;
-}
-.wrap{position:relative;z-index:2;max-width:1320px;height:100%;margin:auto;display:flex;flex-direction:column}
-.kicker{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0b9e90}
-.dark .kicker{color:#7ff7e7}
-.kicker:before{content:"";width:28px;height:4px;border-radius:9px;background:currentColor}
-h1,h2,h3,p{margin:0}
-h1{font-size:clamp(46px,5.2vw,86px);line-height:1.02;letter-spacing:-.02em;font-weight:800}
-h2{font-size:clamp(34px,3.5vw,58px);line-height:1.08;letter-spacing:-.015em;font-weight:800}
-h3{font-size:22px;line-height:1.2}
-.lead{max-width:880px;font-size:clamp(18px,1.55vw,25px);line-height:1.65;color:#6c7f8d}
-.dark .lead{color:#b9d0da}
-.mini{font-size:14px;line-height:1.6;color:var(--muted)}
-.dark .mini{color:#9eb6c2}
-.topline{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
-.badge{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:13px;font-weight:800;color:#355468}
-.dark .badge{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#d9f6fb}
-.card{border:1px solid var(--line);background:#fff;border-radius:24px;box-shadow:0 14px 32px rgba(22,50,70,.08)}
-.dark .card{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.07);box-shadow:none}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;background:#e7f8f5;color:#107f74;font-size:13px;font-weight:800}
-.dark .pill{background:rgba(19,185,167,.13);color:#8ff7ea}
-.big-number{font-size:clamp(54px,6.5vw,96px);font-weight:800;line-height:.95;letter-spacing:-.04em}
-.number-caption{margin-top:9px;font-size:15px;line-height:1.45;color:var(--muted)}
-.dark .number-caption{color:#b7ced6}
-.two{display:grid;grid-template-columns:1.05fr .95fr;gap:42px;align-items:center;flex:1}
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.four{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.meters{display:grid;gap:16px}
-.meter{display:grid;grid-template-columns:170px 1fr 74px;align-items:center;gap:14px}
-.meter .label{font-size:15px;font-weight:700;color:#3d5666}
-.dark .meter .label{color:#d5e7ed}
-.track{height:16px;border-radius:20px;background:#e6eef2;overflow:hidden}
-.dark .track{background:rgba(255,255,255,.08)}
-.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--teal),#5fded1)}
-.meter b{text-align:right;font-size:16px}
-.quote{padding:22px 24px;border-radius:20px;background:linear-gradient(135deg,#0d2a39,#116e69);color:#ecffff}
-.quote strong{display:block;font-size:22px;line-height:1.35}
-.quote span{display:block;margin-top:10px;color:#b8d4db;font-size:14px;line-height:1.55}
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.stat{padding:22px}
-.stat .ico{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;background:#e5f7f4;color:#0c8f83;font-weight:800}
-.stat h3{margin-top:14px}
-.stat p{margin-top:8px;font-size:14px;line-height:1.6;color:var(--muted)}
-.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.step{padding:16px;border:1px solid var(--line);border-radius:18px;background:#fff;position:relative}
-.dark .step{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
-.step .n{font-size:12px;font-weight:800;color:#0b9e90;letter-spacing:.08em}
-.step b{display:block;margin-top:7px;font-size:16px}
-.step span{display:block;margin-top:6px;font-size:12px;line-height:1.55;color:var(--muted)}
-.dark .step span{color:#a9c1cb}
-.arch{display:grid;grid-template-columns:1fr .8fr 1fr;gap:18px;align-items:stretch}
-.layer{padding:22px;border-radius:22px}
-.layer h3{font-size:20px}
-.layer p{margin-top:10px;font-size:14px;line-height:1.6}
-.layer.a{background:#e8fbf7}.layer.b{background:#edf2ff}.layer.c{background:#fff3ec}
-.layer.a h3{color:#087d73}.layer.b h3{color:#425fc6}.layer.c h3{color:#b15d2d}
-.arrow{display:grid;place-items:center;font-size:34px;color:#70a2ac}
-.screen{
-  border-radius:28px;border:1px solid rgba(255,255,255,.12);overflow:hidden;
-  background:#0d2634;box-shadow:0 25px 50px rgba(0,0,0,.28)
-}
-.screenbar{height:34px;padding:0 15px;display:flex;align-items:center;gap:7px;background:#09202e}
-.dot{width:8px;height:8px;border-radius:50%;background:#6a8a98}
-.screenbody{padding:18px;display:grid;gap:12px}
-.ui-row{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}
-.ui-card{padding:14px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
-.ui-card small{display:block;color:#8eaab6;font-size:11px}
-.ui-card b{display:block;margin-top:6px;color:#e9fbff;font-size:18px}
-.ui-card em{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;background:rgba(19,185,167,.13);color:#8ff7ea;font-size:11px;font-style:normal}
-.ui-list{display:grid;gap:8px}.ui-item{height:12px;border-radius:5px;background:rgba(255,255,255,.08)}
-.chip-row{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:#d1e4ea;font-size:11px}
-.persona{display:flex;align-items:center;gap:15px}
-.avatar{width:84px;height:84px;border-radius:24px;object-fit:contain;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
-.metric-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.metric{padding:16px;border:1px solid var(--line);border-radius:19px;background:#fff}
-.metric .v{font-size:30px;font-weight:800;color:#0d8e84}
-.metric .t{margin-top:6px;font-size:12px;line-height:1.45;color:var(--muted)}
-.dark .metric{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
-.dark .metric .v{color:#8ff7ea}
-.dark .metric .t{color:#a8c1cb}
-.footer{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:auto;padding-top:18px;color:#79909d;font-size:12px}
-.dark .footer{color:#7f9ca8}
-.qr{width:200px;height:200px;border-radius:22px;background:#fff;padding:13px;box-shadow:var(--shadow)}
-.qr img{width:100%;height:100%;display:block}
-.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 18px;border-radius:14px;background:var(--teal);color:#fff;text-decoration:none;font-weight:800}
-.outline{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 17px;border-radius:14px;border:1px solid rgba(255,255,255,.2);color:#eafcff;text-decoration:none;font-weight:800;background:rgba(255,255,255,.06)}
-.key{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:25px;padding:0 7px;border-radius:7px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);font-size:12px;font-weight:800}
-.callout{padding:18px 20px;border-left:4px solid var(--teal);background:#effaf8;border-radius:0 17px 17px 0}
-.callout strong{color:#0b8177}
-.dark .callout{background:rgba(19,185,167,.08)}
-.dark .callout strong{color:#92f6e9}
-.footnote{font-size:12px;color:#8196a1;line-height:1.55}
-.controls{
-  position:fixed;z-index:50;left:50%;bottom:18px;transform:translateX(-50%);
-  display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;
-  background:rgba(4,18,29,.82);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.13);
-}
-.ctrl{width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.09);color:#effdff;cursor:pointer;font-weight:800}
-.ctrl:hover{background:rgba(255,255,255,.16)}
-.progress{position:fixed;z-index:55;left:0;right:0;top:0;height:5px;background:rgba(255,255,255,.08)}
-.progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--teal),var(--cyan));transition:width .28s ease}
-.slideNo{position:fixed;z-index:50;right:24px;bottom:18px;color:#a6bcc6;font-size:12px}
-.reveal{animation:rise .5s ease both}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@media(max-width:900px){
-  .slide{padding:40px 5vw 74px}
-  .two,.arch{grid-template-columns:1fr}
-  .three,.four,.timeline,.metric-strip{grid-template-columns:repeat(2,1fr)}
-  .qr{width:150px;height:150px}
-}
-@media(max-width:620px){
-  .three,.four,.timeline,.metric-strip,.stat-grid{grid-template-columns:1fr}
-  .meter{grid-template-columns:110px 1fr 58px}
-  h1{font-size:48px} h2{font-size:34px}
-  .footer{flex-wrap:wrap}
-}
+:root{--navy:#071827;--navy2:#0d2b3a;--teal:#12ad9f;--mint:#76e6da;--blue:#5c83f2;--rose:#ea6a81;--amber:#eab45c;--paper:#f6fafc;--ink:#193548;--muted:#60798a;--line:rgba(25,53,72,.12);--white:#f7fdff}
+*{box-sizing:border-box}html,body{margin:0;height:100%;width:100%;overflow:hidden;font-family:'Sarabun',sans-serif;background:#020d16;color:var(--ink)}a{text-decoration:none;color:inherit}
+.deck{position:relative;height:100vh;width:100vw;overflow:hidden}
+.slide{display:none;position:absolute;inset:0;overflow:hidden;padding:50px 6.8vw 58px;background:var(--paper)}
+.slide.active{display:block}.slide.dark{background:radial-gradient(circle at 84% 18%,rgba(18,173,159,.2),transparent 27%),radial-gradient(circle at 10% 85%,rgba(92,131,242,.14),transparent 27%),linear-gradient(145deg,#04111e,#0b2a39 67%,#073b3d);color:var(--white)}
+.slide.dark:before{content:"";position:absolute;inset:0;opacity:.13;background-image:linear-gradient(rgba(255,255,255,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.11) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.7),transparent 88%)}
+.wrap{position:relative;z-index:2;max-width:1380px;height:100%;margin:auto;display:flex;flex-direction:column}
+.kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:#0b9b8f;display:flex;gap:10px;align-items:center}.dark .kicker{color:#7cefe2}.kicker:before{content:"";width:26px;height:4px;border-radius:8px;background:currentColor}
+h1{font-size:clamp(50px,5.6vw,88px);line-height:.99;letter-spacing:-.03em;margin:0;font-weight:800}h2{font-size:clamp(34px,3.6vw,59px);line-height:1.06;letter-spacing:-.02em;margin:0;font-weight:800}h3{margin:0;font-size:21px;line-height:1.2}
+.lead{font-size:clamp(17px,1.45vw,23px);line-height:1.65;color:#6b7f8d;max-width:980px}.dark .lead{color:#bdd0d9}
+.mini{font-size:13px;line-height:1.6;color:var(--muted)}.dark .mini{color:#a9c0c9}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.badge{padding:7px 11px;border:1px solid var(--line);background:#fff;border-radius:999px;font-size:12px;font-weight:800;color:#3c5b6b}.dark .badge{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);color:#d4edf2}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 15px 35px rgba(16,48,65,.08)}.dark .card{background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.12);box-shadow:none}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:#e6f8f4;color:#0b8075;font-size:12px;font-weight:800}.dark .pill{background:rgba(18,173,159,.14);color:#8af4e8}
+.two{display:grid;grid-template-columns:1.04fr .96fr;gap:42px;align-items:center;flex:1}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.four{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.stat{padding:20px}.ico{width:42px;height:42px;border-radius:14px;background:#e8f8f5;color:#0a8d82;display:grid;place-items:center;font-weight:800}.stat h3{margin-top:12px}.stat p{margin:7px 0 0;font-size:13px;line-height:1.6;color:var(--muted)}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.flow .node{padding:14px;border-radius:17px;border:1px solid var(--line);background:#fff}.flow .node b{display:block;font-size:13px;color:#0b9b8f}.flow .node span{display:block;margin-top:5px;font-size:11px;line-height:1.45;color:var(--muted)}
+.dark .flow .node{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.12)}.dark .flow .node span{color:#a8bec7}.dark .flow .node b{color:#7cefe2}
+.impact{padding:24px;display:flex;flex-direction:column;justify-content:space-between;min-height:235px}.impact .v{font-size:44px;line-height:1;font-weight:800;color:#0b958a}.impact .t{margin-top:8px;font-weight:800;font-size:18px}.impact .d{margin-top:7px;color:var(--muted);font-size:13px;line-height:1.5}
+.metricgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.metric{padding:18px}.metric .v{font-size:32px;font-weight:800;color:#0b958a;line-height:1}.metric .t{margin-top:7px;font-size:12px;line-height:1.45;color:var(--muted)}
+.barwrap{display:grid;gap:15px}.bar{display:grid;grid-template-columns:180px 1fr 74px;gap:12px;align-items:center}.bar label{font-size:13px;font-weight:700;color:#3a5565}.track{height:15px;background:#e8eff2;border-radius:20px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--teal),#68dbd0);border-radius:20px}.bar b{text-align:right;font-size:14px}
+.cycle{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:stretch}.cycle .c{padding:18px;border-radius:20px;background:#fff;border:1px solid var(--line);position:relative}.cycle .c:after{content:"→";position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:24px;color:#7da0ab}.cycle .c:last-child:after{display:none}.cycle b{font-size:13px;color:#0b9b8f}.cycle span{display:block;margin-top:8px;font-size:12px;line-height:1.55;color:var(--muted)}
+.arch{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:13px;align-items:center}.layer{padding:21px;min-height:175px}.layer h3{font-size:20px}.layer p{margin-top:9px;font-size:13px;line-height:1.6;color:var(--muted)}.la{background:#e6fbf7}.lb{background:#edf2ff}.lc{background:#fff3ec}.arrow{font-size:30px;color:#79a0aa}
+.callout{padding:17px 19px;border-left:4px solid var(--teal);background:#eef9f7;border-radius:0 16px 16px 0;font-size:14px;line-height:1.6}.callout strong{color:#087b72}.dark .callout{background:rgba(18,173,159,.08)}.dark .callout strong{color:#8af4e8}
+.note{font-size:11px;line-height:1.5;color:#8195a0}
+.screen{border-radius:25px;overflow:hidden;background:#0d2634;border:1px solid rgba(255,255,255,.12);box-shadow:0 25px 55px rgba(0,0,0,.28)}.screenbar{height:32px;padding:0 13px;display:flex;gap:6px;align-items:center;background:#09202d}.dot{width:8px;height:8px;border-radius:50%;background:#658592}.screenbody{padding:17px;display:grid;gap:11px}.urow{display:grid;grid-template-columns:1.08fr .92fr;gap:10px}.uc{padding:13px;border-radius:15px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}.uc small{font-size:10px;color:#8da7b3}.uc b{display:block;margin-top:5px;font-size:16px;color:#eaffff}.uc em{display:inline-block;margin-top:7px;padding:4px 7px;background:rgba(18,173,159,.13);border-radius:999px;color:#8af4e8;font-size:10px;font-style:normal}.lines{display:grid;gap:7px}.line{height:10px;border-radius:4px;background:rgba(255,255,255,.08)}
+.qrbox{width:190px;height:190px;padding:10px;background:#fff;border-radius:20px}.qrbox img{width:100%;height:100%;display:block}
+.footer{margin-top:auto;padding-top:15px;display:flex;justify-content:space-between;align-items:center;color:#7b909b;font-size:11px}.dark .footer{color:#7f99a4}
+.controls{position:fixed;z-index:30;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:7px;padding:7px 9px;border-radius:999px;background:rgba(3,16,26,.82);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.13)}.ctrl{width:33px;height:33px;border:0;border-radius:50%;background:rgba(255,255,255,.09);color:#effeff;cursor:pointer}.ctrl:hover{background:rgba(255,255,255,.16)}.progress{position:fixed;top:0;left:0;right:0;height:4px;z-index:31;background:rgba(255,255,255,.08)}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),#76ddff);transition:width .25s}.no{position:fixed;z-index:30;right:22px;bottom:19px;color:#a6bac4;font-size:11px}
+@media(max-width:900px){.slide{padding:35px 5vw 70px}.two,.arch{grid-template-columns:1fr}.three,.four,.metricgrid{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:repeat(3,1fr)}.cycle{grid-template-columns:1fr 1fr}.cycle .c:after{display:none}}
+@media(max-width:620px){.three,.four,.metricgrid,.stats,.flow,.cycle{grid-template-columns:1fr}.top{flex-direction:column}h1{font-size:45px}h2{font-size:34px}}
 </style>
 </head>
 <body>
-<div class="deck" id="deck">
-  <section class="slide dark active">
-    <div class="wrap">
-      <div class="topline">
-        <div class="kicker">Academic Quality Improvement Presentation</div>
-        <div class="badge">CANDI · INV-T02</div>
-      </div>
-      <div class="two" style="align-items:center">
-        <div class="reveal">
-          <div class="pill">Clinical Assessment &amp; Nursing Documentation Intelligence</div>
-          <h1 style="margin-top:24px">จาก “การบันทึก”<br><span style="color:var(--cyan)">สู่การตัดสินใจ</span><br>ทางการพยาบาล</h1>
-          <p class="lead" style="margin-top:22px">ระบบเวชระเบียนทางการพยาบาลอัจฉริยะเพื่อสนับสนุนการตัดสินใจทางคลินิก ออกแบบจาก workflow จริงของพยาบาล ไม่ใช่เพียงการย้ายกระดาษขึ้นหน้าจอ</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px">
-            <a class="cta" href="https://nursewebswdcph-web.github.io/CANDI-demo/" target="_blank" rel="noreferrer">เปิด CANDI Demo ↗</a>
-            <span class="outline">โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน</span>
-          </div>
-        </div>
-        <div class="reveal" style="animation-delay:.12s">
-          <div class="persona">
-            <img class="avatar" src="CANDI.png" alt="น้อง CANDI">
-            <div>
-              <div style="font-size:28px;font-weight:800">น้อง CANDI</div>
-              <div class="mini">AI-assisted nursing workflow</div>
-            </div>
-          </div>
-          <div class="screen" style="margin-top:22px">
-            <div class="screenbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:8px;color:#9db6c0;font-size:11px">IPD Nurse Workbench</span></div>
-            <div class="screenbody">
-              <div class="chip-row"><span class="chip">Current Patients</span><span class="chip">Risk Alerts</span><span class="chip">Nursing Note</span></div>
-              <div class="ui-row">
-                <div class="ui-card"><small>Clinical risk</small><b>Fall Risk</b><em>ติดตาม</em></div>
-                <div class="ui-card"><small>Documentation</small><b>S-O-I-E</b><em>พร้อมบันทึก</em></div>
-              </div>
-              <div class="ui-list"><div class="ui-item" style="width:86%"></div><div class="ui-item" style="width:72%"></div><div class="ui-item" style="width:92%"></div></div>
-            </div>
-          </div>
-          <div class="mini" style="margin-top:14px">เจ้าของผลงาน: นายนัทธ์นรินทร คำนาโฮม · พยาบาลวิชาชีพปฏิบัติการ</div>
-        </div>
-      </div>
-      <div class="footer"><span>Academic Presentation · 16:9</span><span>กด <span class="key">→</span> เพื่อเริ่ม</span></div>
-    </div>
-  </section>
+<div class="deck">
 
-  <section class="slide">
-    <div class="wrap">
-      <div class="kicker">01 · Problem</div>
-      <h2 style="margin-top:12px">โจทย์ไม่ได้อยู่ที่ “ไม่มีระบบ”<br>แต่อยู่ที่ <span style="color:#0a9f90">ข้อมูลไม่ช่วยตัดสินใจ</span></h2>
-      <div class="two" style="margin-top:22px">
-        <div class="reveal">
-          <div class="three">
-            <div class="card stat"><div class="ico">01</div><h3>บันทึกซ้ำ</h3><p>ข้อมูลเดียวกันถูกป้อนหลายจุด ทำให้ workflow ขาดความต่อเนื่อง</p></div>
-            <div class="card stat"><div class="ico">02</div><h3>ข้อมูลกระจัดกระจาย</h3><p>การประเมิน ความเสี่ยง และ nursing note แยกออกจากกัน</p></div>
-            <div class="card stat"><div class="ico">03</div><h3>เห็นช้า → ตอบช้า</h3><p>ผู้ปฏิบัติต้องค้นข้อมูลและแนวทางด้วยตนเองจากหลายแหล่ง</p></div>
-          </div>
-          <div class="callout" style="margin-top:18px"><strong>Insight:</strong> การทำให้ “ไร้กระดาษ” เพียงอย่างเดียว ไม่ได้ทำให้การตัดสินใจทางคลินิกดีขึ้นโดยอัตโนมัติ</div>
-        </div>
-        <div class="card" style="padding:26px">
-          <div class="pill">Baseline · Chart quality review</div>
-          <div class="big-number" style="margin-top:22px">76.66%</div>
-          <div style="font-size:20px;font-weight:800;margin-top:6px">ความอ่านได้ของลายมือ</div>
-          <p class="mini" style="margin-top:10px">ใช้เป็นหลักฐานตั้งต้นว่าคุณภาพของการสื่อสารผ่านเวชระเบียนเป็นปัญหาที่ควรออกแบบใหม่</p>
-          <div style="height:1px;background:var(--line);margin:22px 0"></div>
-          <div class="mini"><b style="color:#163246">หลักคิด:</b> เริ่มจากปัญหาที่เกิดในงานจริง → แปลงเป็น workflow → ฝัง decision support ในจุดที่ใช้งานจริง</div>
-        </div>
-      </div>
-      <div class="footer"><span>CANDI | Problem statement</span><span>02</span></div>
+<section class="slide dark active"><div class="wrap">
+  <div class="top"><div class="kicker">CQI · Academic Quality Improvement</div><div class="badge">CANDI · INV-T02</div></div>
+  <div class="two">
+    <div>
+      <div class="pill">ผลงานการพัฒนาคุณภาพการบันทึกเวชระเบียนทางการพยาบาล</div>
+      <h1 style="margin-top:22px">พัฒนาคุณภาพ<br><span style="color:var(--mint)">ก่อนพัฒนาเทคโนโลยี</span></h1>
+      <p class="lead" style="margin-top:19px">การปรับปรุงคุณภาพการบันทึกเวชระเบียนทางการพยาบาลด้วยระบบสนับสนุนการตัดสินใจทางคลินิก โดยใช้ CANDI เป็น “เครื่องมือของ CQI” เพื่อแก้ปัญหาจากกระบวนการทำงานจริง</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:23px"><span class="badge">โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน</span><span class="badge">พยาบาลวิชาชีพปฏิบัติการ</span></div>
     </div>
-  </section>
+    <div>
+      <img src="CANDI.png" alt="CANDI" style="width:150px;height:150px;object-fit:contain;float:right;margin-bottom:12px">
+      <div class="card" style="padding:25px;clear:both">
+        <div class="pill">แก่นของผลงาน</div>
+        <div style="font-size:25px;font-weight:800;line-height:1.25;margin-top:15px;color:#173548">“เปลี่ยนระบบบันทึก” → “เปลี่ยนกระบวนการดูแลข้อมูล”</div>
+        <div class="mini" style="margin-top:12px">CQI เป็นกรอบนำ · นวัตกรรมเป็นเครื่องมือ · ผลลัพธ์เป็นหลักฐาน</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span>นายนัทธ์นรินทร คำนาโฮม</span><span>01</span></div>
+</div></section>
 
-  <section class="slide dark">
-    <div class="wrap">
-      <div class="kicker">02 · Design principle</div>
-      <div class="two">
-        <div class="reveal">
-          <h2>CANDI ถูกออกแบบด้วยคำถามเดียว</h2>
-          <div class="quote" style="margin-top:22px"><strong>“เมื่อพยาบาลต้องตัดสินใจ ระบบควรทำอะไรให้เห็นทันที?”</strong><span>จึงออกแบบให้ Assessment → Risk → Guideline → Documentation เชื่อมเป็น workflow เดียว</span></div>
-          <div class="timeline" style="margin-top:20px">
-            <div class="step"><div class="n">01</div><b>รับข้อมูล</b><span>ผู้ป่วย / chart / context</span></div>
-            <div class="step"><div class="n">02</div><b>ประเมิน</b><span>risk &amp; clinical cues</span></div>
-            <div class="step"><div class="n">03</div><b>ทบทวน</b><span>guideline &amp; checklist</span></div>
-            <div class="step"><div class="n">04</div><b>บันทึก</b><span>Focus / S-O-I-E</span></div>
-            <div class="step"><div class="n">05</div><b>ส่งต่อ</b><span>handoff ต่อเนื่อง</span></div>
-          </div>
-        </div>
-        <div class="reveal" style="animation-delay:.14s">
-          <div class="card" style="padding:26px">
-            <div class="pill">Design thesis</div>
-            <h3 style="margin-top:14px;font-size:28px">“ไม่ใช่ Digital Form แต่คือ Clinical Workflow”</h3>
-            <p class="mini" style="margin-top:12px">ทุกหน้าจอถูกวางให้สัมพันธ์กับการทำงานจริง ลดการสลับหน้าต่าง และพยายามให้ข้อมูลที่ต้องใช้ “อยู่ใกล้จุดตัดสินใจ”</p>
-            <div class="four" style="margin-top:22px">
-              <div class="metric"><div class="v">A</div><div class="t">Assessment</div></div>
-              <div class="metric"><div class="v">R</div><div class="t">Risk</div></div>
-              <div class="metric"><div class="v">G</div><div class="t">Guideline</div></div>
-              <div class="metric"><div class="v">D</div><div class="t">Documentation</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer"><span>CANDI | Design principle</span><span>03</span></div>
+<section class="slide"><div class="wrap">
+  <div class="kicker">01 · ปัญหาและความสำคัญ</div>
+  <h2 style="margin-top:12px">ปัญหาหลักคือ “คุณภาพของข้อมูล” ไม่ใช่เพียง “รูปแบบกระดาษ”</h2>
+  <div class="two" style="margin-top:20px">
+    <div class="stats">
+      <div class="card stat"><div class="ico">A</div><h3>อ่านข้อมูลยาก</h3><p>การบันทึกด้วยลายมือมีข้อจำกัดต่อความชัดเจนและการสื่อสารข้อมูล</p></div>
+      <div class="card stat"><div class="ico">B</div><h3>ข้อมูลกระจาย</h3><p>Assessment, risk และ nursing note ไม่ได้เชื่อมอยู่ใน workflow เดียว</p></div>
+      <div class="card stat"><div class="ico">C</div><h3>บันทึกซ้ำ</h3><p>ผู้ปฏิบัติต้องถ่ายทอดข้อมูลเดิมหลายตำแหน่งในกระบวนการดูแล</p></div>
+      <div class="card stat"><div class="ico">D</div><h3>ใช้ข้อมูลเพื่อ “บันทึก” มากกว่า “ตัดสินใจ”</h3><p>แนวทางดูแลและสัญญาณความเสี่ยงไม่ได้อยู่ใกล้จุดตัดสินใจเสมอ</p></div>
     </div>
-  </section>
+    <div class="card" style="padding:27px">
+      <div class="pill">Baseline · ทบทวนคุณภาพเวชระเบียน</div>
+      <div style="font-size:84px;line-height:1;font-weight:800;color:#0a978c;margin-top:18px">76.66%</div>
+      <div style="font-size:21px;font-weight:800;margin-top:7px">ความอ่านได้ของลายมือ</div>
+      <p class="mini" style="margin-top:10px">ตัวชี้วัดตั้งต้นที่สะท้อนช่องว่างด้านคุณภาพการสื่อสารผ่านเวชระเบียนทางการพยาบาล</p>
+      <div class="callout" style="margin-top:19px"><strong>จุดเปลี่ยน:</strong> จากการแก้ปัญหา “เอกสาร” → มองทั้งระบบการรับข้อมูล–ประเมิน–ตัดสินใจ–บันทึก–ส่งต่อ</div>
+    </div>
+  </div>
+  <div class="footer"><span>CQI · Problem & Baseline</span><span>02</span></div>
+</div></section>
 
-  <section class="slide">
-    <div class="wrap">
-      <div class="kicker">03 · System architecture</div>
-      <h2 style="margin-top:12px">โครงสร้าง 3 ชั้นที่เชื่อม “ข้อมูล” กับ “การตัดสินใจ”</h2>
-      <p class="lead" style="margin-top:14px">ตั้งใจแยกบทบาทของหน้าจอ ข้อมูล และ intelligence เพื่อให้ระบบขยายต่อได้โดยไม่ทำลาย workflow หลัก</p>
-      <div class="arch" style="margin-top:28px;flex:1">
-        <div class="layer a card">
-          <h3>Presentation layer</h3>
-          <p>Dashboard และ module UI สำหรับงานเวร ให้ผู้ใช้เห็น context ของผู้ป่วยและสิ่งที่ต้องทำต่อ</p>
-          <div style="margin-top:18px" class="mini">Patient list · risk badges · note forms · handoff</div>
-        </div>
-        <div class="arrow">→</div>
-        <div class="layer b card">
-          <h3>Clinical record layer</h3>
-          <p>ข้อมูลผู้ป่วยและเวชระเบียนถูกรวมให้เชื่อมต่อกัน ลดการบันทึกซ้ำจากกระดาษ</p>
-          <div style="margin-top:18px" class="mini">Assessment · Focus · Progress · Education</div>
-        </div>
-        <div class="arrow">→</div>
-        <div class="layer c card">
-          <h3>Decision support layer</h3>
-          <p>CANDI Assistant และ rule-based alerts ช่วยสรุป ชี้ประเด็น และพาไปยังแนวทางที่เกี่ยวข้อง</p>
-          <div style="margin-top:18px" class="mini">Risk alerts · guideline hub · AI-assisted drafting</div>
-        </div>
-      </div>
-      <div class="callout" style="margin-top:18px"><strong>หลักการกำกับ:</strong> AI ช่วย “เตรียมข้อมูลและร่างข้อความ” แต่การประเมินความเหมาะสมและการตัดสินใจทางคลินิกยังอยู่ที่พยาบาล</div>
-      <div class="footer"><span>CANDI | Architecture</span><span>04</span></div>
-    </div>
-  </section>
+<section class="slide dark"><div class="wrap">
+  <div class="kicker">02 · วิเคราะห์สาเหตุ</div>
+  <h2 style="margin-top:12px">เมื่อมองเป็นกระบวนการ ปัญหาไม่ได้เกิดจาก “คน” จุดเดียว</h2>
+  <p class="lead" style="margin-top:13px">จึงวิเคราะห์ปัญหาในระดับ workflow และ information flow เพื่อหาจุดที่ควรปรับปรุง</p>
+  <div class="four" style="margin-top:30px;flex:1">
+    <div class="card impact"><div><div class="pill">Process</div><div class="t">กระบวนการ</div><div class="d">หลายขั้นตอนแยกส่วน ทำให้ข้อมูลไม่ต่อเนื่อง</div></div><div class="mini">→ รวม workflow ให้เป็นเส้นทางเดียว</div></div>
+    <div class="card impact"><div><div class="pill">Information</div><div class="t">ข้อมูล</div><div class="d">ข้อมูลสำคัญกระจายและต้องค้นหาหลายจุด</div></div><div class="mini">→ แสดง context เดียวกันในจุดใช้งาน</div></div>
+    <div class="card impact"><div><div class="pill">Decision</div><div class="t">การตัดสินใจ</div><div class="d">risk และแนวทางดูแลไม่ได้เชื่อมกันทันที</div></div><div class="mini">→ ฝัง alert และ guideline ใน workflow</div></div>
+    <div class="card impact"><div><div class="pill">Documentation</div><div class="t">การบันทึก</div><div class="d">โครงสร้าง note และการส่งต่อยังมีภาระการบันทึกซ้ำ</div></div><div class="mini">→ structured nursing record</div></div>
+  </div>
+  <div class="callout" style="margin-top:18px"><strong>ประเด็น CQI:</strong> ถ้าปรับเฉพาะหน้าจอ แต่ไม่ปรับกระบวนการ ปัญหาเดิมจะย้ายที่ ไม่ได้หายไป</div>
+  <div class="footer"><span>CQI · Cause analysis</span><span>03</span></div>
+</div></section>
 
-  <section class="slide dark">
-    <div class="wrap">
-      <div class="kicker">04 · Clinical decision support</div>
-      <div class="two">
-        <div>
-          <h2>Risk alert ไม่ได้มาเพื่อ “เตือนให้ดัง”<br>แต่มาเพื่อ <span style="color:var(--cyan)">เตือนให้ทัน</span></h2>
-          <p class="lead" style="margin-top:18px">ระบบพยายามลด cognitive load ด้วยการรวมสัญญาณสำคัญและแนวทางดูแลไว้ใกล้กัน</p>
-          <div class="three" style="margin-top:24px">
-            <div class="card stat"><div class="ico">FR</div><h3>Fall Risk</h3><p>แสดงระดับความเสี่ยงและจุดที่ควรติดตาม</p></div>
-            <div class="card stat"><div class="ico">BR</div><h3>Braden</h3><p>เชื่อมการประเมินกับการทบทวนการป้องกัน</p></div>
-            <div class="card stat"><div class="ico">GL</div><h3>Guideline</h3><p>เปิดแนวทางและ checklist จากบริบทที่กำลังทำงาน</p></div>
-          </div>
-        </div>
-        <div class="screen">
-          <div class="screenbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:8px;color:#9db6c0;font-size:11px">Risk &amp; Guideline View</span></div>
-          <div class="screenbody">
-            <div class="ui-row">
-              <div class="ui-card"><small>RISK</small><b style="color:#ffb9c6">Fall · High</b><em style="background:rgba(239,102,128,.14);color:#ffb7c4">ต้องติดตาม</em></div>
-              <div class="ui-card"><small>SCORE</small><b>Braden</b><em>ทบทวน</em></div>
-            </div>
-            <div class="ui-card">
-              <small>Suggested action</small>
-              <div class="ui-list" style="margin-top:10px"><div class="ui-item" style="width:90%"></div><div class="ui-item" style="width:78%"></div><div class="ui-item" style="width:65%"></div></div>
-              <div class="chip-row" style="margin-top:12px"><span class="chip">เปิด guideline</span><span class="chip">checklist</span><span class="chip">บันทึกผล</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer"><span>CANDI | Clinical Decision Support</span><span>05</span></div>
-    </div>
-  </section>
+<section class="slide"><div class="wrap">
+  <div class="kicker">03 · วัตถุประสงค์</div>
+  <h2 style="margin-top:12px">เป้าหมายการพัฒนาคือ “คุณภาพการบันทึก” ที่สนับสนุนการดูแล</h2>
+  <div class="three" style="margin-top:30px;flex:1;align-items:stretch">
+    <div class="card impact"><div><div class="pill">Objective 01</div><div class="t">เพิ่มคุณภาพข้อมูล</div><div class="d">ทำให้ข้อมูลการพยาบาลมีความชัดเจน เป็นโครงสร้าง และค้นใช้ได้ง่าย</div></div><div style="font-size:45px;font-weight:800;color:#0b958a">Q</div></div>
+    <div class="card impact"><div><div class="pill">Objective 02</div><div class="t">สนับสนุนการตัดสินใจ</div><div class="d">เชื่อมการประเมินความเสี่ยงกับข้อมูลและแนวทางปฏิบัติที่เกี่ยวข้อง</div></div><div style="font-size:45px;font-weight:800;color:#4f73d2">D</div></div>
+    <div class="card impact"><div><div class="pill">Objective 03</div><div class="t">ลดภาระงานที่ไม่จำเป็น</div><div class="d">ลดการบันทึกซ้ำและลดเวลาที่ใช้ในการค้น/ตั้งต้นข้อมูล</div></div><div style="font-size:45px;font-weight:800;color:#b85e72">T</div></div>
+  </div>
+  <div class="callout" style="margin-top:19px"><strong>ตัวชี้วัด CQI ต้องตอบ 3 คำถาม:</strong> คุณภาพดีขึ้นหรือไม่ · ใช้งานได้จริงหรือไม่ · ผู้ปฏิบัติใช้เวลาอย่างไร</div>
+  <div class="footer"><span>CQI · Objectives</span><span>04</span></div>
+</div></section>
 
-  <section class="slide">
-    <div class="wrap">
-      <div class="kicker">05 · Paperless nursing record</div>
-      <h2 style="margin-top:12px">เวชระเบียนไร้กระดาษที่ “ต่อเรื่อง” ได้ตั้งแต่รับไว้จนจำหน่าย</h2>
-      <div class="two" style="margin-top:24px">
-        <div class="card" style="padding:26px">
-          <div class="pill">8 forms · Admission → Discharge</div>
-          <div class="meters" style="margin-top:26px">
-            <div class="meter"><div class="label">Assessment</div><div class="track"><div class="fill" style="width:92%"></div></div><b>92%</b></div>
-            <div class="meter"><div class="label">Focus / Note</div><div class="track"><div class="fill" style="width:86%"></div></div><b>ต่อเนื่อง</b></div>
-            <div class="meter"><div class="label">Education</div><div class="track"><div class="fill" style="width:76%"></div></div><b>เชื่อม</b></div>
-            <div class="meter"><div class="label">Handoff</div><div class="track"><div class="fill" style="width:88%"></div></div><b>ส่งต่อ</b></div>
-          </div>
-          <p class="footnote" style="margin-top:20px">แถบด้านบนเป็น visual metaphor ของการเชื่อม workflow ไม่ใช่ผลการทดลองเชิงสถิติ</p>
-        </div>
-        <div>
-          <div class="three">
-            <div class="card stat"><div class="ico">F</div><h3>Focus List</h3><p>จัดปัญหาและเป้าหมายให้มองเห็นเป็นรายการเดียว</p></div>
-            <div class="card stat"><div class="ico">S</div><h3>S-O-I-E</h3><p>ช่วยให้การบันทึกมีโครงสร้างและพร้อมทบทวน</p></div>
-            <div class="card stat"><div class="ico">H</div><h3>Handoff</h3><p>นำข้อมูลที่สำคัญไปต่อในเวรถัดไป</p></div>
-          </div>
-          <div class="quote" style="margin-top:18px"><strong>เป้าหมายของ Paperless คือ “ลดการสูญหายของบริบท” ไม่ใช่แค่ลดกระดาษ</strong><span>ทุกการบันทึกควรช่วยให้คนถัดไปเข้าใจผู้ป่วยเร็วขึ้น</span></div>
-        </div>
-      </div>
-      <div class="footer"><span>CANDI | Paperless record</span><span>06</span></div>
-    </div>
-  </section>
+<section class="slide dark"><div class="wrap">
+  <div class="kicker">04 · กลยุทธ์การปรับปรุง</div>
+  <h2 style="margin-top:12px">ใช้วงจร CQI เป็นแกน และพัฒนาเทคโนโลยีเฉพาะจุดที่จำเป็น</h2>
+  <div class="cycle" style="margin-top:34px">
+    <div class="c"><b>01 · REVIEW</b><span>ทบทวนเวชระเบียนและ pain point จากการทำงานจริง</span></div>
+    <div class="c"><b>02 · ANALYZE</b><span>วิเคราะห์จุดสะดุดของข้อมูลและกระบวนการ</span></div>
+    <div class="c"><b>03 · DESIGN</b><span>ออกแบบ workflow และเครื่องมือให้สอดคล้องงาน</span></div>
+    <div class="c"><b>04 · TEST</b><span>ทดลองใช้ รับข้อเสนอแนะ และติดตามการใช้จริง</span></div>
+    <div class="c"><b>05 · IMPROVE</b><span>ปรับระบบจากผลลัพธ์และ feedback แล้ววนซ้ำ</span></div>
+  </div>
+  <div class="card" style="padding:24px;margin-top:24px">
+    <div class="pill">CQI principle</div>
+    <div style="font-size:31px;font-weight:800;line-height:1.15;margin-top:12px">“นวัตกรรมเกิดขึ้นหลังจากเข้าใจปัญหา ไม่ใช่ก่อนวิเคราะห์ปัญหา”</div>
+    <div class="mini" style="margin-top:9px">จุดเน้นของผลงานจึงอยู่ที่กระบวนการพัฒนาและการเปลี่ยนแปลงคุณภาพ มากกว่าความใหม่ของเทคโนโลยีเพียงอย่างเดียว</div>
+  </div>
+  <div class="footer"><span>CQI · Improvement strategy</span><span>05</span></div>
+</div></section>
 
-  <section class="slide dark">
-    <div class="wrap">
-      <div class="kicker">06 · CANDI Assistant</div>
-      <div class="two">
-        <div class="reveal">
-          <h2>AI ที่ “อยู่ข้างพยาบาล”<br>ไม่ใช่ <span style="color:var(--rose)">แทนพยาบาล</span></h2>
-          <p class="lead" style="margin-top:18px">CANDI Assistant ช่วยสรุปบริบท ตั้งต้นข้อความ และเชื่อมข้อมูลไปสู่ nursing note เพื่อประหยัดเวลาในการเริ่มต้นงาน</p>
-          <div class="stat-grid" style="margin-top:22px">
-            <div class="card stat"><div class="ico">1</div><h3>สรุปข้อมูล</h3><p>ดึง context ของเคสที่กำลังเปิดเพื่อช่วยให้เห็นภาพรวม</p></div>
-            <div class="card stat"><div class="ico">2</div><h3>ร่างข้อความ</h3><p>ช่วยตั้งต้น Focus และ S-O-I-E ตามบริบทที่ป้อน</p></div>
-            <div class="card stat"><div class="ico">3</div><h3>Copy to form</h3><p>ส่งข้อความที่ร่างกลับเข้าสู่แบบบันทึกได้</p></div>
-            <div class="card stat"><div class="ico">4</div><h3>Human in the loop</h3><p>พยาบาลตรวจสอบก่อนใช้ทุกครั้ง</p></div>
-          </div>
-        </div>
-        <div class="screen">
-          <div class="screenbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:8px;color:#9db6c0;font-size:11px">CANDI Assistant</span></div>
-          <div class="screenbody">
-            <div class="ui-card"><small>NURSE</small><b style="font-size:14px">“ช่วยสรุปประเด็นที่ควรติดตามของเคสนี้”</b></div>
-            <div class="ui-card"><small>CANDI</small><b style="font-size:14px;color:#d8fdf8">Context → Risk → Suggested nursing actions</b><div class="ui-list" style="margin-top:10px"><div class="ui-item" style="width:94%"></div><div class="ui-item" style="width:82%"></div><div class="ui-item" style="width:68%"></div></div><div class="chip-row" style="margin-top:12px"><span class="chip">คัดลอกลง Note</span><span class="chip">Focus List</span></div></div>
-            <div style="padding:12px;border-radius:15px;background:rgba(239,102,128,.08);border:1px solid rgba(239,102,128,.16);color:#ffd0d8;font-size:12px;line-height:1.55">AI output ต้องได้รับการตรวจสอบโดยพยาบาลก่อนบันทึกหรือใช้ประกอบการดูแล</div>
-          </div>
-        </div>
-      </div>
-      <div class="footer"><span>CANDI | AI-assisted workflow</span><span>07</span></div>
-    </div>
-  </section>
+<section class="slide"><div class="wrap">
+  <div class="kicker">05 · Intervention</div>
+  <h2 style="margin-top:12px">การปรับปรุงไม่ได้มี “CANDI” อย่างเดียว แต่เป็นชุดการเปลี่ยนแปลง</h2>
+  <div class="three" style="margin-top:28px">
+    <div class="card" style="padding:23px"><div class="pill">Process</div><h3 style="margin-top:15px">ปรับ workflow การบันทึก</h3><p class="mini" style="margin-top:9px">เชื่อม Assessment → Focus → Progress Note → Education → Handoff</p><div class="mini" style="margin-top:16px">ลดขั้นตอนที่ซ้ำซ้อน · วางข้อมูลตามลำดับงาน</div></div>
+    <div class="card" style="padding:23px"><div class="pill">Standard</div><h3 style="margin-top:15px">จัดโครงสร้างข้อมูล</h3><p class="mini" style="margin-top:9px">ทำให้รูปแบบการบันทึกและข้อมูลสำคัญมีโครงสร้างเดียวกัน</p><div class="mini" style="margin-top:16px">Focus List · S-O-I-E · structured fields</div></div>
+    <div class="card" style="padding:23px"><div class="pill">Support</div><h3 style="margin-top:15px">เพิ่ม decision support</h3><p class="mini" style="margin-top:9px">แสดง risk alert, guideline และเครื่องมือช่วยร่างข้อมูลใกล้จุดตัดสินใจ</p><div class="mini" style="margin-top:16px">CANDI = เครื่องมือสนับสนุนการปรับปรุง</div></div>
+  </div>
+  <div class="flow" style="margin-top:25px"><div class="node"><b>ก่อน</b><span>ข้อมูลแยกส่วน</span></div><div class="node"><b>→ 1</b><span>รวมข้อมูลสำคัญ</span></div><div class="node"><b>→ 2</b><span>เตือนความเสี่ยง</span></div><div class="node"><b>→ 3</b><span>เชื่อม guideline</span></div><div class="node"><b>→ 4</b><span>บันทึกเป็นโครงสร้าง</span></div><div class="node"><b>หลัง</b><span>ข้อมูลพร้อมใช้ต่อเนื่อง</span></div></div>
+  <div class="footer"><span>CQI · Intervention bundle</span><span>06</span></div>
+</div></section>
 
-  <section class="slide">
-    <div class="wrap">
-      <div class="kicker">07 · Safety &amp; data governance</div>
-      <h2 style="margin-top:12px">ความฉลาดของระบบ ต้องมาพร้อม “ขอบเขตของระบบ”</h2>
-      <div class="three" style="margin-top:30px">
-        <div class="card" style="padding:26px"><div class="pill">01 · Context</div><h3 style="margin-top:16px">De-identification</h3><p class="mini" style="margin-top:10px">ก่อนส่ง context ไปยัง AI ระบบมีแนวคิดในการลดข้อมูลที่สามารถระบุตัวบุคคลได้</p></div>
-        <div class="card" style="padding:26px"><div class="pill">02 · Control</div><h3 style="margin-top:16px">Human in the loop</h3><p class="mini" style="margin-top:10px">AI ทำหน้าที่ช่วยร่างและชี้ประเด็น ไม่ใช่ผู้ให้การวินิจฉัยหรือสั่งการแทนพยาบาล</p></div>
-        <div class="card" style="padding:26px"><div class="pill">03 · Workflow</div><h3 style="margin-top:16px">Patient context lock</h3><p class="mini" style="margin-top:10px">เมื่อเปลี่ยนเคส ระบบล้างบริบทสนทนาเพื่อช่วยลดความเสี่ยงจาก context leakage</p></div>
+<section class="slide dark"><div class="wrap">
+  <div class="kicker">06 · Innovation as a CQI tool</div>
+  <div class="two">
+    <div>
+      <h2>แล้ว “นวัตกรรม” อยู่ตรงไหน?</h2>
+      <p class="lead" style="margin-top:16px">อยู่ที่การแปลงปัญหาคุณภาพให้เป็นเครื่องมือที่ใช้ได้จริงใน workflow ของพยาบาล</p>
+      <div class="stats" style="margin-top:22px">
+        <div class="card stat"><div class="ico">01</div><h3>Risk Alert</h3><p>เห็นสัญญาณความเสี่ยงสำคัญในบริบทของผู้ป่วย</p></div>
+        <div class="card stat"><div class="ico">02</div><h3>Structured Record</h3><p>จัดข้อมูลการบันทึกให้ค้นและทบทวนได้ง่ายขึ้น</p></div>
+        <div class="card stat"><div class="ico">03</div><h3>CANDI Assistant</h3><p>ช่วยสรุปและตั้งต้นข้อความโดยมีพยาบาลตรวจสอบ</p></div>
+        <div class="card stat"><div class="ico">04</div><h3>Copy-to-form</h3><p>ลดการถ่ายทอดข้อความซ้ำระหว่างโมดูล</p></div>
       </div>
-      <div class="quote" style="margin-top:22px"><strong>หลักกำกับของ CANDI: “ช่วยให้เห็นเร็วขึ้น — แต่ไม่ตัดสินใจแทนคน”</strong><span>เป็นแนวคิดเชิงออกแบบของระบบ ไม่ควรตีความว่าเป็นการรับรองความปลอดภัยในทุกบริบทการใช้งาน</span></div>
-      <div class="footer"><span>CANDI | Safety &amp; governance</span><span>08</span></div>
     </div>
-  </section>
+    <div>
+      <img src="candi-onepage-crop.jpg" alt="CANDI system overview" style="width:100%;border-radius:25px;border:1px solid rgba(255,255,255,.14);box-shadow:0 25px 60px rgba(0,0,0,.32)">
+      <div class="mini" style="margin-top:11px">ภาพระบบจาก repository · ใช้เป็นหลักฐานประกอบการอธิบายนวัตกรรม ไม่ใช่ผลลัพธ์การศึกษา</div>
+    </div>
+  </div>
+  <div class="footer"><span>CQI · Innovation as intervention</span><span>07</span></div>
+</div></section>
 
-  <section class="slide">
-    <div class="wrap">
-      <div class="kicker">08 · Evaluation</div>
-      <h2 style="margin-top:12px">ผลลัพธ์: ไม่ได้วัดแค่ “ใช้ได้” แต่ดูว่า “ช่วยงานหรือไม่”</h2>
-      <div class="metric-strip" style="margin-top:30px">
-        <div class="metric"><div class="v">4.90/5</div><div class="t">ความพึงพอใจต่อ automated scoring</div></div>
-        <div class="metric"><div class="v">5.00/5</div><div class="t">ความพึงพอใจต่อ color alert</div></div>
-        <div class="metric"><div class="v">51.0%</div><div class="t">เวลาที่รายงานว่าลดลงต่อรายการ</div></div>
-        <div class="metric"><div class="v">45.6%</div><div class="t">เวลาที่รายงานว่าลดลงต่อชุดเอกสาร</div></div>
+<section class="slide"><div class="wrap">
+  <div class="kicker">07 · การดำเนินงานและการประเมิน</div>
+  <h2 style="margin-top:12px">ประเมินทั้ง “คุณภาพของงาน” และ “ประสบการณ์ของผู้ใช้”</h2>
+  <div class="two" style="margin-top:22px">
+    <div class="card" style="padding:26px">
+      <div class="pill">Implementation evidence</div>
+      <div class="metricgrid" style="grid-template-columns:repeat(2,1fr);margin-top:20px">
+        <div class="metric"><div class="v">8</div><div class="t">แบบฟอร์มหลักตั้งแต่รับไว้จนจำหน่าย</div></div>
+        <div class="metric"><div class="v">10</div><div class="t">พยาบาลที่ให้ข้อมูลเชิงประสบการณ์</div></div>
+        <div class="metric"><div class="v">10/2568–02/2569</div><div class="t">ช่วงทบทวนคุณภาพเวชระเบียน</div></div>
+        <div class="metric"><div class="v">CQI</div><div class="t">ใช้ feedback เพื่อปรับระบบอย่างต่อเนื่อง</div></div>
       </div>
-      <div class="two" style="margin-top:22px">
-        <div class="card" style="padding:25px">
-          <div class="pill">Evidence snapshot</div>
-          <div style="margin-top:20px;font-size:18px;font-weight:800">จาก “อ่านได้ 76.66%” → สู่ข้อมูลที่มีโครงสร้าง</div>
-          <div class="meters" style="margin-top:18px">
-            <div class="meter"><div class="label">Baseline readability</div><div class="track"><div class="fill" style="width:76.66%"></div></div><b>76.66%</b></div>
-            <div class="meter"><div class="label">Auto scoring satisfaction</div><div class="track"><div class="fill" style="width:98%"></div></div><b>4.90/5</b></div>
-            <div class="meter"><div class="label">Color alert satisfaction</div><div class="track"><div class="fill" style="width:100%"></div></div><b>5.00/5</b></div>
-          </div>
-        </div>
-        <div class="card" style="padding:25px">
-          <div class="pill">Interpretation</div>
-          <div class="three" style="margin-top:18px">
-            <div><div style="font-size:34px;font-weight:800;color:#0b9b90">↑</div><div style="font-weight:800">เห็นข้อมูลเร็วขึ้น</div><div class="mini" style="margin-top:6px">ผ่าน alert และ structured record</div></div>
-            <div><div style="font-size:34px;font-weight:800;color:#0b9b90">↓</div><div style="font-weight:800">เริ่มบันทึกเร็วขึ้น</div><div class="mini" style="margin-top:6px">ผ่านการช่วยร่างและ copy-to-form</div></div>
-            <div><div style="font-size:34px;font-weight:800;color:#0b9b90">↺</div><div style="font-weight:800">เชื่อมข้อมูลต่อเนื่อง</div><div class="mini" style="margin-top:6px">จาก assessment ไปสู่ handoff</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="footnote" style="margin-top:15px">หมายเหตุ: ตัวเลขเวลาที่ลดลงเป็นข้อมูลที่รายงาน/ประเมินจากผู้ใช้และควรตีความร่วมกับข้อจำกัดของวิธีเก็บข้อมูล ไม่ใช่การทดลองควบคุมเวลาการปฏิบัติงาน</div>
-      <div class="footer"><span>CANDI | Evaluation</span><span>09</span></div>
     </div>
-  </section>
+    <div class="stats">
+      <div class="card stat"><div class="ico">Q</div><h3>คุณภาพการบันทึก</h3><p>ตรวจสอบความชัดเจน/ความเป็นโครงสร้างของข้อมูล</p></div>
+      <div class="card stat"><div class="ico">U</div><h3>การยอมรับของผู้ใช้</h3><p>ประเมินความพึงพอใจต่อ scoring และ alert</p></div>
+      <div class="card stat"><div class="ico">T</div><h3>เวลาในการทำงาน</h3><p>ติดตามเวลาที่ผู้ใช้รายงานว่าลดลง</p></div>
+      <div class="card stat"><div class="ico">F</div><h3>ความเป็นไปได้</h3><p>พิจารณาความสอดคล้องกับ workflow จริง</p></div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:12px">หมายเหตุ: ตัวเลขช่วงเวลา/จำนวนที่แสดงเป็นข้อมูลจากผลงานที่ใช้เป็นฐานการนำเสนอ ควรใช้รายละเอียดวิธีการและเกณฑ์ในรายงานฉบับเต็มประกอบการอภิปราย</div>
+  <div class="footer"><span>CQI · Implementation & Evaluation</span><span>08</span></div>
+</div></section>
 
-  <section class="slide dark">
-    <div class="wrap">
-      <div class="kicker">09 · Implementation</div>
-      <h2>จาก prototype → สู่ workflow ที่ถูกใช้งานจริง</h2>
-      <div class="two" style="margin-top:20px">
-        <div>
-          <div class="four">
-            <div class="metric"><div class="v">8</div><div class="t">แบบฟอร์มหลักตลอดช่วงดูแล</div></div>
-            <div class="metric"><div class="v">10</div><div class="t">พยาบาลที่ให้ข้อมูลเชิงประสบการณ์</div></div>
-            <div class="metric"><div class="v">6+</div><div class="t">เดือนของการใช้งานตามช่วงที่รายงาน</div></div>
-            <div class="metric"><div class="v">1</div><div class="t">workflow เชื่อม assessment ถึง handoff</div></div>
-          </div>
-          <div class="card" style="padding:24px;margin-top:18px">
-            <h3>แนวทางพัฒนาแบบ CQI</h3>
-            <p class="mini" style="margin-top:8px">Review chart → สัมภาษณ์ผู้ใช้ → ออกแบบ workflow → ทดลองใช้ → ทบทวน pain point → ปรับระบบ</p>
-          </div>
-        </div>
-        <div class="screen" style="align-self:stretch">
-          <div class="screenbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:8px;color:#9db6c0;font-size:11px">Iteration loop</span></div>
-          <div class="screenbody" style="height:100%;justify-content:center">
-            <div class="ui-card"><small>01 · OBSERVE</small><b style="font-size:16px">เห็นปัญหาจากงานจริง</b></div>
-            <div style="text-align:center;color:#76e5d9;font-size:24px">↓</div>
-            <div class="ui-card"><small>02 · BUILD</small><b style="font-size:16px">ออกแบบและพัฒนาด้วย AI-assisted coding</b></div>
-            <div style="text-align:center;color:#76e5d9;font-size:24px">↓</div>
-            <div class="ui-card"><small>03 · LEARN</small><b style="font-size:16px">รับ feedback จากผู้ใช้และปรับ workflow</b></div>
-          </div>
-        </div>
+<section class="slide dark"><div class="wrap">
+  <div class="kicker">08 · ผลลัพธ์</div>
+  <h2 style="margin-top:12px">ผลลัพธ์ที่เห็นชัด: ระบบช่วยให้ “เห็น” และ “เริ่มบันทึก” ได้ง่ายขึ้น</h2>
+  <div class="metricgrid" style="margin-top:30px">
+    <div class="metric"><div class="v">4.90/5</div><div class="t">ความพึงพอใจต่อ automated scoring</div></div>
+    <div class="metric"><div class="v">5.00/5</div><div class="t">ความพึงพอใจต่อ color alert</div></div>
+    <div class="metric"><div class="v">51.0%</div><div class="t">เวลาที่รายงานว่าลดลงต่อรายการ</div></div>
+    <div class="metric"><div class="v">45.6%</div><div class="t">เวลาที่รายงานว่าลดลงต่อชุดเอกสาร</div></div>
+  </div>
+  <div class="two" style="margin-top:28px">
+    <div class="card" style="padding:24px">
+      <div class="pill">จาก baseline สู่ผลลัพธ์</div>
+      <div class="barwrap" style="margin-top:23px">
+        <div class="bar"><label>Baseline readability</label><div class="track"><div class="fill" style="width:76.66%"></div></div><b>76.66%</b></div>
+        <div class="bar"><label>Auto scoring satisfaction</label><div class="track"><div class="fill" style="width:98%"></div></div><b>4.90/5</b></div>
+        <div class="bar"><label>Color alert satisfaction</label><div class="track"><div class="fill" style="width:100%"></div></div><b>5.00/5</b></div>
       </div>
-      <div class="callout" style="margin-top:18px"><strong>หัวใจของการขยายผล:</strong> เก็บ feedback จากหน้างานให้เป็นวงจร ไม่ใช่พัฒนาระบบครั้งเดียวแล้วจบ</div>
-      <div class="footer"><span>CANDI | Implementation</span><span>10</span></div>
+      <div class="note" style="margin-top:15px">แถบกราฟใช้เพื่อสื่อสารสเกล; ไม่ควรตีความเป็นการเปรียบเทียบคะแนนคนละหน่วย</div>
     </div>
-  </section>
+    <div class="card" style="padding:24px">
+      <div class="pill">ตีความผลลัพธ์อย่างระมัดระวัง</div>
+      <h3 style="margin-top:15px">ผลที่ได้ชี้ให้เห็น “ความเป็นไปได้ในการปรับปรุง”</h3>
+      <div class="mini" style="margin-top:10px">ความพึงพอใจอยู่ในระดับสูง และผู้ใช้รายงานว่าภาระเวลาบางส่วนลดลง แต่ข้อมูลเวลาเป็นการรายงานจากผู้ใช้ จึงควรใช้ร่วมกับการวัดแบบ objective ในรอบ CQI ถัดไป</div>
+      <div class="callout" style="margin-top:16px"><strong>บทเรียน:</strong> ผลลัพธ์ของ CQI ไม่ควรจบที่ “ผู้ใช้ชอบระบบ” ต้องผูกกับคุณภาพกระบวนการและ outcome ที่ต้องการปรับปรุง</div>
+    </div>
+  </div>
+  <div class="footer"><span>CQI · Results</span><span>09</span></div>
+</div></section>
 
-  <section class="slide">
-    <div class="wrap">
-      <div class="kicker">10 · Impact</div>
-      <h2 style="margin-top:12px">ผลกระทบที่คาดหวัง: 3 ระดับของคุณค่า</h2>
-      <div class="three" style="margin-top:32px;flex:1;align-items:stretch">
-        <div class="card" style="padding:28px;display:flex;flex-direction:column"><div class="pill">ระดับผู้ปฏิบัติ</div><h3 style="font-size:28px;margin-top:18px">Nurse</h3><p class="lead" style="font-size:17px;margin-top:10px">ลดงานที่ไม่สร้างคุณค่า และช่วยให้พยาบาลเริ่มจากข้อมูลที่เป็นโครงสร้างมากขึ้น</p><div class="mini" style="margin-top:auto;padding-top:18px">✓ เห็น risk เร็วขึ้น<br>✓ ลดการบันทึกซ้ำ<br>✓ ช่วยตั้งต้น note</div></div>
-        <div class="card" style="padding:28px;display:flex;flex-direction:column"><div class="pill">ระดับหน่วยงาน</div><h3 style="font-size:28px;margin-top:18px">Ward</h3><p class="lead" style="font-size:17px;margin-top:10px">ทำให้ข้อมูลร่วมกันในเวรเดียวกัน และส่งต่อข้ามเวรได้ต่อเนื่อง</p><div class="mini" style="margin-top:auto;padding-top:18px">✓ Standardized workflow<br>✓ Handoff continuity<br>✓ Audit-ready record</div></div>
-        <div class="card" style="padding:28px;display:flex;flex-direction:column"><div class="pill">ระดับองค์กร</div><h3 style="font-size:28px;margin-top:18px">Hospital</h3><p class="lead" style="font-size:17px;margin-top:10px">ต่อยอดเป็นฐานข้อมูลการพยาบาลและ clinical intelligence ในระดับองค์กรได้</p><div class="mini" style="margin-top:auto;padding-top:18px">✓ Data-driven quality<br>✓ Reusable modules<br>✓ Scale to other wards</div></div>
-      </div>
-      <div class="footer"><span>CANDI | Expected impact</span><span>11</span></div>
-    </div>
-  </section>
+<section class="slide"><div class="wrap">
+  <div class="kicker">09 · การเปลี่ยนแปลงของกระบวนการ</div>
+  <h2 style="margin-top:12px">สิ่งที่เปลี่ยนไปไม่ใช่แค่ “หน้าจอ” แต่คือรูปแบบการทำงาน</h2>
+  <div class="arch" style="margin-top:30px">
+    <div class="card layer la"><h3>ก่อนพัฒนา</h3><p>ค้นข้อมูลหลายจุด · ประเมินแยกส่วน · บันทึกซ้ำ · ส่งต่อด้วยการสรุปใหม่</p></div>
+    <div class="arrow">→</div>
+    <div class="card layer lb"><h3>หลังปรับกระบวนการ</h3><p>ข้อมูลผู้ป่วยอยู่ในบริบทเดียว · risk alert อยู่ใกล้จุดประเมิน · note มีโครงสร้าง</p></div>
+    <div class="arrow">→</div>
+    <div class="card layer lc"><h3>ผลต่อการทำงาน</h3><p>ลดขั้นตอนที่ไม่จำเป็น · เริ่มบันทึกได้ง่ายขึ้น · ข้อมูลพร้อมส่งต่อและทบทวน</p></div>
+  </div>
+  <div class="flow" style="margin-top:32px">
+    <div class="node"><b>Assessment</b><span>รับข้อมูลอย่างเป็นโครงสร้าง</span></div>
+    <div class="node"><b>Risk</b><span>เห็นประเด็นที่ควรติดตาม</span></div>
+    <div class="node"><b>Guideline</b><span>เปิดแนวทางที่เกี่ยวข้อง</span></div>
+    <div class="node"><b>Focus</b><span>จัดปัญหาและเป้าหมาย</span></div>
+    <div class="node"><b>S-O-I-E</b><span>บันทึกอย่างต่อเนื่อง</span></div>
+    <div class="node"><b>Handoff</b><span>ส่งต่อบริบทให้เวรถัดไป</span></div>
+  </div>
+  <div class="footer"><span>CQI · Process change</span><span>10</span></div>
+</div></section>
 
-  <section class="slide dark">
-    <div class="wrap">
-      <div class="kicker">11 · Next step</div>
-      <div class="two">
-        <div>
-          <h2>ก้าวต่อไปของ CANDI</h2>
-          <p class="lead" style="margin-top:18px">จากระบบช่วยบันทึก → ไปสู่ระบบที่ช่วย “มองเห็นความเสี่ยงและคุณภาพ” ในระดับหน่วยงาน</p>
-          <div class="stat-grid" style="margin-top:24px">
-            <div class="card stat"><div class="ico">01</div><h3>Evidence expansion</h3><p>เก็บ outcome และ time-on-task ด้วยวิธีที่เป็นระบบมากขึ้น</p></div>
-            <div class="card stat"><div class="ico">02</div><h3>Clinical pathways</h3><p>ขยาย guideline / risk bundles ตามบริบทของแต่ละหน่วยงาน</p></div>
-            <div class="card stat"><div class="ico">03</div><h3>Data governance</h3><p>พัฒนาการกำกับสิทธิ์ ข้อมูล และการติดตามการใช้งาน</p></div>
-            <div class="card stat"><div class="ico">04</div><h3>Scale</h3><p>ทดสอบความเหมาะสมกับหอผู้ป่วยอื่นโดยไม่ทำลาย workflow</p></div>
-          </div>
-        </div>
-        <div class="card" style="padding:25px">
-          <div class="pill">A clear closing message</div>
-          <div style="font-size:clamp(30px,3.2vw,48px);font-weight:800;line-height:1.1;margin-top:18px">“ข้อมูลที่ดี<br>ควรพาพยาบาล<br><span style="color:#6fe6da">ไปถึงการดูแลที่ดีขึ้น</span>”</div>
-          <div class="mini" style="margin-top:18px">CANDI จึงถูกออกแบบให้การบันทึก การมองเห็นความเสี่ยง และการตัดสินใจ อยู่ใน workflow เดียวกัน</div>
-        </div>
-      </div>
-      <div class="footer"><span>CANDI | Next step</span><span>12</span></div>
-    </div>
-  </section>
+<section class="slide dark"><div class="wrap">
+  <div class="kicker">10 · การเรียนรู้และข้อจำกัด</div>
+  <h2 style="margin-top:12px">CQI ที่ดีต้องพูดทั้ง “สิ่งที่ดีขึ้น” และ “สิ่งที่ยังต้องพิสูจน์”</h2>
+  <div class="three" style="margin-top:28px">
+    <div class="card" style="padding:25px"><div class="pill">Learning 01</div><h3 style="margin-top:15px">Workflow มาก่อน Technology</h3><p class="mini" style="margin-top:9px">เมื่อเข้าใจ pain point ของผู้ปฏิบัติ การออกแบบระบบจึงตอบโจทย์การใช้งานมากขึ้น</p></div>
+    <div class="card" style="padding:25px"><div class="pill">Learning 02</div><h3 style="margin-top:15px">ข้อมูลต้องเชื่อมกัน</h3><p class="mini" style="margin-top:9px">คุณค่าของระบบเกิดจากการเชื่อม assessment, risk และ documentation ไม่ใช่จาก feature รายตัว</p></div>
+    <div class="card" style="padding:25px"><div class="pill">Learning 03</div><h3 style="margin-top:15px">ต้องวัด outcome ให้มากขึ้น</h3><p class="mini" style="margin-top:9px">รอบต่อไปควรเพิ่ม objective time-on-task, documentation quality และผลลัพธ์ทางคลินิกที่เกี่ยวข้อง</p></div>
+  </div>
+  <div class="callout" style="margin-top:22px"><strong>ข้อจำกัดสำคัญ:</strong> ข้อมูลเวลาที่ลดลงเป็น self-reported/recall-based และความพึงพอใจเป็นตัวชี้วัดประสบการณ์ จึงไม่ควรสรุปเป็น causal effect โดยลำพัง</div>
+  <div class="footer"><span>CQI · Learning & Limitations</span><span>11</span></div>
+</div></section>
 
-  <section class="slide">
-    <div class="wrap">
-      <div class="kicker">12 · Demo &amp; Closing</div>
-      <div class="two">
-        <div>
-          <div class="pill">พร้อมสาธิตระบบ</div>
-          <h2 style="margin-top:18px">ดู CANDI ในงานจริง<br>แล้วค่อยตัดสินจาก workflow</h2>
-          <p class="lead" style="margin-top:16px">สแกน QR หรือเปิด Demo เพื่อดูหน้าผู้ป่วย การประเมินความเสี่ยง Nursing Note และ CANDI Assistant</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
-            <a class="cta" href="https://nursewebswdcph-web.github.io/CANDI-demo/" target="_blank" rel="noreferrer">เปิด Demo ↗</a>
-            <span class="outline" style="background:#fff;color:#163246;border-color:#cbd8dd">nursewebswdcph-web.github.io/CANDI-demo/</span>
-          </div>
-          <div class="mini" style="margin-top:20px"><b style="color:#163246">เจ้าของผลงาน</b><br>นายนัทธ์นรินทร คำนาโฮม · พยาบาลวิชาชีพปฏิบัติการ<br>โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน</div>
-        </div>
-        <div style="display:grid;place-items:center">
-          <div class="qr">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=https%3A%2F%2Fnursewebswdcph-web.github.io%2FCANDI-demo%2F" alt="QR Code CANDI Demo">
-          </div>
-          <div style="margin-top:14px;text-align:center;font-weight:800;color:#3c5d6c">CANDI Demo</div>
-        </div>
-      </div>
-      <div class="footer"><span>Thank you · Questions &amp; Discussion</span><span>13</span></div>
+<section class="slide"><div class="wrap">
+  <div class="kicker">11 · ความยั่งยืน</div>
+  <h2 style="margin-top:12px">จาก “โครงการ” สู่ “วงจรปรับปรุงคุณภาพประจำงาน”</h2>
+  <div class="four" style="margin-top:30px;flex:1;align-items:stretch">
+    <div class="card" style="padding:24px"><div class="pill">01</div><h3 style="margin-top:15px">มาตรฐานงาน</h3><p class="mini" style="margin-top:9px">กำหนด workflow และแนวทางการบันทึกที่ชัดเจน</p></div>
+    <div class="card" style="padding:24px"><div class="pill">02</div><h3 style="margin-top:15px">ติดตามตัวชี้วัด</h3><p class="mini" style="margin-top:9px">ทบทวนคุณภาพเวชระเบียนและ feedback เป็นระยะ</p></div>
+    <div class="card" style="padding:24px"><div class="pill">03</div><h3 style="margin-top:15px">พัฒนาผู้ใช้</h3><p class="mini" style="margin-top:9px">สร้างความเข้าใจร่วมเรื่อง documentation + clinical reasoning</p></div>
+    <div class="card" style="padding:24px"><div class="pill">04</div><h3 style="margin-top:15px">ขยายผล</h3><p class="mini" style="margin-top:9px">ทดสอบกับหน่วยงานอื่นตามบริบท โดยประเมินความเหมาะสมก่อนขยาย</p></div>
+  </div>
+  <div class="callout" style="margin-top:19px"><strong>ภาพอนาคต:</strong> ใช้ข้อมูลจากระบบกลับมาเป็น evidence สำหรับรอบ CQI ถัดไป — ทำให้ “ข้อมูลการพยาบาล” กลายเป็นส่วนหนึ่งของระบบพัฒนาคุณภาพ</div>
+  <div class="footer"><span>CQI · Sustainability</span><span>12</span></div>
+</div></section>
+
+<section class="slide dark"><div class="wrap">
+  <div class="kicker">12 · Closing & Demo</div>
+  <div class="two">
+    <div>
+      <div class="pill">สรุปในประโยคเดียว</div>
+      <h1 style="margin-top:20px">“CANDI ไม่ใช่พระเอกของ CQI”</h1>
+      <p class="lead" style="margin-top:18px">พระเอกคือการเปลี่ยนแปลงกระบวนการบันทึกให้มีคุณภาพ ต่อเนื่อง และสนับสนุนการตัดสินใจ ส่วน CANDI คือเครื่องมือที่ทำให้การเปลี่ยนแปลงนั้นเกิดขึ้นในงานจริง</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px"><a href="https://nursewebswdcph-web.github.io/CANDI-demo/" target="_blank" class="badge" style="background:var(--teal);color:#fff;border-color:transparent;font-size:14px;padding:11px 15px">เปิด CANDI Demo ↗</a><span class="badge">Questions & Discussion</span></div>
     </div>
-  </section>
+    <div style="display:grid;place-items:center">
+      <div class="qrbox"><img src="https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=https%3A%2F%2Fnursewebswdcph-web.github.io%2FCANDI-demo%2F" alt="QR code CANDI Demo"></div>
+      <div style="margin-top:13px;font-weight:800">CANDI Demo</div>
+      <div class="mini" style="margin-top:4px">nursewebswdcph-web.github.io/CANDI-demo/</div>
+    </div>
+  </div>
+  <div class="footer"><span>นายนัทธ์นรินทร คำนาโฮม · โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน</span><span>13</span></div>
+</div></section>
 </div>
 
 <div class="progress"><i id="progress"></i></div>
-<div class="controls" aria-label="Presentation controls">
-  <button class="ctrl" id="prev" title="Previous">←</button>
-  <button class="ctrl" id="next" title="Next">→</button>
-  <button class="ctrl" id="fs" title="Fullscreen">⛶</button>
-</div>
-<div class="slideNo" id="slideNo">01 / 13</div>
-
+<div class="controls"><button class="ctrl" id="prev">←</button><button class="ctrl" id="next">→</button><button class="ctrl" id="fs">⛶</button></div><div class="no" id="no">01 / 13</div>
 <script>
-const slides=[...document.querySelectorAll('.slide')];
-let idx=0;
-function render(next){
-  idx=Math.max(0,Math.min(slides.length-1,next));
-  slides.forEach((s,i)=>s.classList.toggle('active',i===idx));
-  const active=slides[idx];
-  active.querySelectorAll('.reveal').forEach((el,i)=>{
-    el.style.animation='none'; void el.offsetWidth; el.style.animation=''; el.style.animationDelay=(i*.07)+'s';
-  });
-  document.getElementById('progress').style.width=((idx+1)/slides.length*100)+'%';
-  document.getElementById('slideNo').textContent=String(idx+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
-}
-function go(step){render(idx+step)}
-document.getElementById('prev').onclick=()=>go(-1);
-document.getElementById('next').onclick=()=>go(1);
-document.getElementById('fs').onclick=()=>{
-  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.();
-};
-document.addEventListener('keydown',e=>{
-  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(1)}
-  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(-1)}
-  if(e.key==='Home'){e.preventDefault();render(0)}
-  if(e.key==='End'){e.preventDefault();render(slides.length-1)}
-  if(e.key.toLowerCase()==='f'){document.getElementById('fs').click()}
-});
-let touchX=null;
-document.addEventListener('touchstart',e=>touchX=e.changedTouches[0].clientX,{passive:true});
-document.addEventListener('touchend',e=>{
-  if(touchX===null)return;
-  const dx=e.changedTouches[0].clientX-touchX; touchX=null;
-  if(Math.abs(dx)>55) go(dx<0?1:-1);
-},{passive:true});
-render(0);
+const S=[...document.querySelectorAll('.slide')],P=document.getElementById('progress'),N=document.getElementById('no');let i=0;
+function show(n){i=Math.max(0,Math.min(S.length-1,n));S.forEach((s,k)=>s.classList.toggle('active',k===i));P.style.width=((i+1)/S.length*100)+'%';N.textContent=String(i+1).padStart(2,'0')+' / '+String(S.length).padStart(2,'0')}
+show(0);document.getElementById('prev').onclick=()=>show(i-1);document.getElementById('next').onclick=()=>show(i+1);
+document.getElementById('fs').onclick=()=>document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();
+document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(i+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}if(e.key==='Home'){e.preventDefault();show(0)}if(e.key==='End'){e.preventDefault();show(S.length-1)}if(e.key.toLowerCase()==='f')document.getElementById('fs').click()});
+let tx=null;document.addEventListener('touchstart',e=>tx=e.changedTouches[0].clientX,{passive:true});document.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>50)show(i+(dx<0?1:-1))},{passive:true});
 </script>
-</body>
-</html>
+</body></html>
